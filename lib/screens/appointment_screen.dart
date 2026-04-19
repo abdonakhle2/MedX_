@@ -20,6 +20,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   String selectedTime = "02:30 PM";
   int _navIndex = 2;
 
+  void _onNavTap(int index) {
+    if (index == _navIndex) return;
+
+    final routes = ['/home', '/search', '/bookings', '/profile'];
+    Navigator.pushReplacementNamed(context, routes[index]);
+  }
+
   DateTime today = DateTime.now();
   DateTime selectedDate = DateTime.now();
   DateTime displayedMonth = DateTime(
@@ -67,7 +74,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       extendBody: true,
       bottomNavigationBar: GlassBottomNavBar(
         currentIndex: _navIndex,
-        onTap: (index) => setState(() => _navIndex = index),
+        onTap: _onNavTap,
       ),
       appBar: AppBar(
         title: Text(
@@ -114,7 +121,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             buildAppotmentPrice(),
             SizedBox(height: 30),
             buildConfirmButton(),
-            SizedBox(height: 50),
+            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
               child: Text.rich(
@@ -134,6 +141,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         ..onTap = () {
                           _showPolicyDialog(
                             context,
+
                             "Terms of Service",
                             "1. User must be 18+ years old.\n"
                                 "2. Accurate information is required.\n"
@@ -166,6 +174,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 ),
               ),
             ),
+            SizedBox(height: 100),
           ],
         ),
       ),
@@ -184,7 +193,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             title,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.blue,
+              color: AppColors.primary,
             ),
           ),
           content: SingleChildScrollView(
@@ -681,7 +690,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   Widget _buildDoctorCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         color: AppColors.greyLight,

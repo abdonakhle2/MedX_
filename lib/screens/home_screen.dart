@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/models/user.dart';
-import 'package:project_1/screens/log_in_screen.dart';
-import 'package:project_1/screens/sign_up_screen.dart';
 import 'package:project_1/widgets/bottom_nav_bar.dart';
 import 'package:project_1/widgets/card_clinic.dart';
 import 'package:project_1/constants/constants.dart';
@@ -17,7 +15,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? user;
   int currentIndex = 0;
-  List<Widget> pages = [HomeScreen(), LogInScreen(), SignUpScreen()];
+
+  void _onNavTap(int index) {
+    if (index == currentIndex) return;
+
+    final routes = ['/home', '/search', '/bookings', '/profile'];
+    Navigator.pushReplacementNamed(context, routes[index]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.greyLight,
       bottomNavigationBar: GlassBottomNavBar(
         currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
+        onTap: _onNavTap,
       ),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -51,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Padding buildBodyPage() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

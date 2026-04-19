@@ -15,6 +15,14 @@ class DepartmentScreen extends StatefulWidget {
 
 class _DepartmentScreenState extends State<DepartmentScreen> {
   int _navIndex = 0;
+
+  void _onNavTap(int index) {
+    if (index == _navIndex) return;
+
+    final routes = ['/home', '/search', '/bookings', '/profile'];
+    Navigator.pushReplacementNamed(context, routes[index]);
+  }
+
   Doctor myDoctor = Doctor(
     id: 1,
     name_en: "Dr. Julian Vane",
@@ -34,7 +42,7 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
       extendBody: true,
       bottomNavigationBar: GlassBottomNavBar(
         currentIndex: _navIndex,
-        onTap: (index) => setState(() => _navIndex = index),
+        onTap: _onNavTap,
       ),
       appBar: AppBar(
         title: Text(
@@ -82,13 +90,13 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
 Widget buildDoctorCard(Doctor doctor) {
   return Container(
     margin: EdgeInsets.only(bottom: 16),
-    padding: EdgeInsets.all(16),
+    padding: EdgeInsets.symmetric(vertical: 16),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(24),
       color: AppColors.greyLight,
       boxShadow: [
         BoxShadow(
-          color: AppColors.black.withOpacity(0.5),
+          color: AppColors.black.withOpacity(0.1),
           spreadRadius: 2,
           blurRadius: 15,
           offset: Offset(2, 2),

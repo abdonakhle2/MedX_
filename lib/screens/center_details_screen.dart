@@ -14,13 +14,20 @@ class CenterDetailsScreen extends StatefulWidget {
 class _CenterDetailsScreenState extends State<CenterDetailsScreen> {
   int _navIndex = 0;
 
+  void _onNavTap(int index) {
+    if (index == _navIndex) return;
+
+    final routes = ['/home', '/search', '/bookings', '/profile'];
+    Navigator.pushReplacementNamed(context, routes[index]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: GlassBottomNavBar(
         currentIndex: _navIndex,
-        onTap: (index) => setState(() => _navIndex = index),
+        onTap: _onNavTap,
       ),
       appBar: AppBar(
         title: Text(
@@ -203,7 +210,7 @@ Widget buildDepartmentCard(
       );
     },
     child: Container(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: EdgeInsets.symmetric(vertical: 8),
       width: double.infinity,
 
       padding: EdgeInsets.all(20),
@@ -212,7 +219,7 @@ Widget buildDepartmentCard(
         color: AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withOpacity(0.5),
+            color: AppColors.black.withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 15,
             offset: Offset(2, 2),

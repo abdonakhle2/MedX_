@@ -15,13 +15,20 @@ bool isPending = true;
 class _BookingScreenState extends State<BookingScreen> {
   int _navIndex = 2;
 
+  void _onNavTap(int index) {
+    if (index == _navIndex) return;
+
+    final routes = ['/home', '/search', '/bookings', '/profile'];
+    Navigator.pushReplacementNamed(context, routes[index]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: GlassBottomNavBar(
         currentIndex: _navIndex,
-        onTap: (index) => setState(() => _navIndex = index),
+        onTap: _onNavTap,
       ),
       appBar: AppBar(
         title: Text(
@@ -115,6 +122,15 @@ class _BookingScreenState extends State<BookingScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text('Dr.Elena Rodriguez', style: AppFonts.headlineMedium),
+                SizedBox(height: 10),
+                Text(
+                  'MedX Center',
+                  style: AppFonts.bodyMedium.copyWith(
+                    color: AppColors.greyMedium,
+                  ),
+                ),
+                SizedBox(height: 20),
                 Row(
                   children: [
                     Icon(
@@ -157,35 +173,57 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.greyLight,
-                      foregroundColor: AppColors.black,
-                    ),
-                    onPressed: () {},
-                    child: Text("Reschedule"),
+            child: (isPending)
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.greyLight,
+                            foregroundColor: AppColors.black,
+                          ),
+                          onPressed: () {},
+                          child: Text("Reschedule"),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              color: AppColors.error.withOpacity(0.4),
+                            ),
+                            foregroundColor: AppColors.error,
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            "Cancel\n Appointment",
+                            style: AppFonts.bodyLarge,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.white,
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            "Rating",
+                            style: AppFonts.bodyMedium.copyWith(
+                              color: AppColors.neutral,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: AppColors.error.withOpacity(0.4)),
-                      foregroundColor: AppColors.error,
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      "Cancel\n Appointment",
-                      style: AppFonts.bodyLarge,
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ),
         ],
       ),

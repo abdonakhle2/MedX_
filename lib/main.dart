@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/screens/booking_screen.dart';
+import 'package:project_1/screens/home_screen.dart';
 import 'package:project_1/screens/log_in_screen.dart';
+import 'package:project_1/screens/search_screen.dart';
+import 'package:project_1/screens/profile_screen.dart';
+import 'package:project_1/screens/sign_up_screen.dart';
 import 'package:project_1/constants/constants.dart';
 
 void main() {
@@ -14,6 +18,15 @@ class TheApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const LogInScreen(),
+        '/signup': (context) => const SignUpScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/search': (context) => const SearchScreen(),
+        '/bookings': (context) => const BookingScreen(),
+        '/profile': (context) => const ProfileScreen(),
+      },
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -35,7 +48,6 @@ class TheApp extends StatelessWidget {
           labelSmall: AppFonts.labelSmall,
         ),
       ),
-      home: const LogInScreen(),
     );
   }
 }
