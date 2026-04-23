@@ -26,14 +26,38 @@ class _SearchScreenState extends State<SearchScreen> {
       extendBody: true,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
-          'Search',
-          style: AppFonts.headlineExtraLarge.copyWith(color: AppColors.primary),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                gradient: AppGradients.primaryGradient,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.search_rounded,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'Search',
+              style: AppFonts.headlineMedium.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.5,
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
       ),
       backgroundColor: AppColors.greyLight,
-      bottomNavigationBar: GlassBottomNavBar(
+      bottomNavigationBar: BottomNavBar(
         currentIndex: _navIndex,
         onTap: _onNavTap,
       ),
@@ -43,31 +67,69 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: 'Search for doctors, departments, or centers',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    borderSide: BorderSide.none,
+              // Search bar
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: AppShadows.softShadow,
+                ),
+                child: TextField(
+                  style: AppFonts.bodyMedium,
+                  decoration: InputDecoration(
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Icon(
+                        Icons.search_rounded,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    hintText: 'Search for doctors, departments, or centers',
+                    hintStyle: AppFonts.bodyMedium.copyWith(
+                      color: AppColors.secondary.withOpacity(0.5),
+                    ),
+                    filled: false,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               Text(
                 'Search Results',
                 style: AppFonts.headlineMedium.copyWith(
                   color: AppColors.primary,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.5,
                 ),
               ),
               const SizedBox(height: 12),
               Expanded(
                 child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   itemCount: 4,
                   itemBuilder: (context, index) {
-                    return buildResultSearch(index);
+                    return TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      duration: Duration(milliseconds: 300 + (index * 100)),
+                      curve: Curves.easeOut,
+                      builder: (context, value, child) {
+                        return Opacity(
+                          opacity: value,
+                          child: Transform.translate(
+                            offset: Offset(0, 15 * (1 - value)),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: buildResultSearch(index),
+                    );
                   },
                 ),
               ),
@@ -81,20 +143,30 @@ class _SearchScreenState extends State<SearchScreen> {
   Container buildResultSearch(int index) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10),
-        ],
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: AppShadows.softShadow,
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: AppColors.primary.withOpacity(0.15),
-            child: const Icon(Symbols.search, color: AppColors.primary),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primary.withOpacity(0.15),
+                  AppColors.primary.withOpacity(0.05),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
+              Icons.person_rounded,
+              color: AppColors.primary,
+              size: 24,
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -103,14 +175,31 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Text(
                   'Dr. Search Result ${index + 1}',
-                  style: AppFonts.headlineSmall,
+                  style: AppFonts.headlineSmall.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Cardiology · MedX Center',
-                  style: AppFonts.bodyMedium.copyWith(color: Colors.grey),
+                  style: AppFonts.bodySmall.copyWith(
+                    color: AppColors.secondary,
+                  ),
                 ),
               ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.greyLight,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: AppColors.primary,
+              size: 14,
             ),
           ),
         ],

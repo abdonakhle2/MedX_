@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project_1/models/user.dart';
 import 'package:project_1/widgets/bottom_nav_bar.dart';
 import 'package:project_1/widgets/card_clinic.dart';
@@ -12,9 +13,32 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   User? user;
   int currentIndex = 0;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   void _onNavTap(int index) {
     if (index == currentIndex) return;
@@ -29,20 +53,24 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBody: true,
       appBar: buildAppBar(),
       backgroundColor: AppColors.greyLight,
-      bottomNavigationBar: GlassBottomNavBar(
+      bottomNavigationBar: BottomNavBar(
         currentIndex: currentIndex,
         onTap: _onNavTap,
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            child: Column(
-              children: [
-                buildHeaderPage(),
-                SizedBox(height: 24),
-                buildBodyPage(),
-              ],
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              child: Column(
+                children: [
+                  buildHeaderPage(),
+                  const SizedBox(height: 20),
+                  buildBodyPage(),
+                ],
+              ),
             ),
           ),
         ),
@@ -56,67 +84,221 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Medical Centers', style: AppFonts.headlineLarge),
-
-          Text(
-            'Facities available ',
-            style: AppFonts.bodySmall.copyWith(color: Colors.grey),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Medical Centers',
+                    style: AppFonts.headlineMedium.copyWith(
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Facilities available nearby',
+                    style: AppFonts.bodySmall.copyWith(
+                      color: AppColors.secondary,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'View All',
+                  style: AppFonts.labelMedium.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 20),
           ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: 5,
             itemBuilder: (context, index) {
-              return CardClinic();
+              return TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.0, end: 1.0),
+                duration: Duration(milliseconds: 400 + (index * 100)),
+                curve: Curves.easeOut,
+                builder: (context, value, child) {
+                  return Opacity(
+                    opacity: value,
+                    child: Transform.translate(
+                      offset: Offset(0, 20 * (1 - value)),
+                      child: child,
+                    ),
+                  );
+                },
+                child: const CardClinic(),
+              );
             },
           ),
-          const SizedBox(height: 30), // مسافة قبل الإحصائيات
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2, // عنصرين في كل سطر
-              childAspectRatio: 2.5, // لضبط ارتفاع العناصر
+          const SizedBox(height: 30),
+          // Stats Section
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              gradient: AppGradients.headerGradient,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: AppShadows.elevatedShadow,
+            ),
+            child: Column(
               children: [
-                _buildStatItem('500+', 'SPECIALISTS'),
-                _buildStatItem('15', 'DISTRICTS'),
-                _buildStatItem('24/7', 'SUPPORT'),
-                _buildStatItem('4.8', 'AVG RATING'),
+                Text(
+                  'OUR NETWORK',
+                  style: AppFonts.labelSmall.copyWith(
+                    color: Colors.white.withOpacity(0.7),
+                    letterSpacing: 2,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    _buildStatItem(
+                      '500+',
+                      'SPECIALISTS',
+                      Icons.medical_services_rounded,
+                    ),
+                    _buildDivider(),
+                    _buildStatItem(
+                      '15',
+                      'DISTRICTS',
+                      Icons.location_city_rounded,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    _buildStatItem(
+                      '24/7',
+                      'SUPPORT',
+                      Icons.support_agent_rounded,
+                    ),
+                    _buildDivider(),
+                    _buildStatItem('4.8', 'AVG RATING', Icons.star_rounded),
+                  ],
+                ),
               ],
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 100),
         ],
       ),
     );
   }
 
-  Container buildHeaderPage() {
+  Widget _buildDivider() {
     return Container(
-      padding: const EdgeInsets.all(25),
+      width: 1,
+      height: 50,
+      color: Colors.white.withOpacity(0.2),
+    );
+  }
+
+  Widget buildHeaderPage() {
+    return Container(
+      padding: const EdgeInsets.all(24),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(25),
+        gradient: AppGradients.headerGradient,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: AppShadows.elevatedShadow,
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hello , ${widget.userName}',
-              style: AppFonts.headlineLarge.copyWith(color: Colors.white),
+      child: Stack(
+        children: [
+          // Decorative circles
+          Positioned(
+            right: -20,
+            top: -20,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withOpacity(0.08),
+              ),
             ),
-            SizedBox(height: 12),
-            Text(
-              'Find the specialist care you deserve ...Explore our curated network of premier medical centers .',
-              style: AppFonts.bodyMedium.copyWith(color: Colors.white),
+          ),
+          Positioned(
+            right: 20,
+            bottom: -30,
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withOpacity(0.05),
+              ),
             ),
-          ],
-        ),
+          ),
+          // Content
+          Padding(
+            padding: const EdgeInsets.only(left: 4, top: 8, bottom: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.waving_hand_rounded,
+                        color: AppColors.amber,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Welcome back',
+                        style: AppFonts.labelSmall.copyWith(
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Hello, ${widget.userName ?? 'User'}',
+                  style: AppFonts.headlineLarge.copyWith(color: Colors.white),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Find the specialist care you deserve.\nExplore our curated network of premier medical centers.',
+                  style: AppFonts.bodyMedium.copyWith(
+                    color: Colors.white.withOpacity(0.85),
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -124,30 +306,80 @@ class _HomeScreenState extends State<HomeScreen> {
   AppBar buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
-      title: Text(
-        'MedX',
-        style: AppFonts.headlineExtraLarge.copyWith(color: AppColors.primary),
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              gradient: AppGradients.primaryGradient,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(
+              Icons.local_hospital_rounded,
+              color: Colors.white,
+              size: 18,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            'MedX',
+            style: AppFonts.headlineMedium.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.5,
+            ),
+          ),
+        ],
       ),
       centerTitle: true,
+      actions: [
+        Container(
+          margin: const EdgeInsets.only(right: 16),
+          decoration: BoxDecoration(
+            color: AppColors.greyLight,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.notifications_none_rounded,
+              color: AppColors.primary,
+              size: 22,
+            ),
+            onPressed: () {},
+          ),
+        ),
+      ],
     );
   }
 }
 
-Widget _buildStatItem(String value, String label) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text(
-        value,
-        style: AppFonts.headlineSmall.copyWith(color: AppColors.primary),
-      ),
-      Text(
-        label,
-        style: AppFonts.labelSmall.copyWith(
-          color: Colors.grey,
-          letterSpacing: 1.2,
+Widget _buildStatItem(String value, String label, IconData icon) {
+  return Expanded(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: Colors.white.withOpacity(0.6), size: 20),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: AppFonts.headlineSmall.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w800,
+          ),
         ),
-      ),
-    ],
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: AppFonts.labelSmall.copyWith(
+            color: Colors.white.withOpacity(0.6),
+            letterSpacing: 1.2,
+            fontSize: 10,
+          ),
+        ),
+      ],
+    ),
   );
 }

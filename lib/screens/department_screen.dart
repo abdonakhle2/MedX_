@@ -16,13 +16,6 @@ class DepartmentScreen extends StatefulWidget {
 class _DepartmentScreenState extends State<DepartmentScreen> {
   int _navIndex = 0;
 
-  void _onNavTap(int index) {
-    if (index == _navIndex) return;
-
-    final routes = ['/home', '/search', '/bookings', '/profile'];
-    Navigator.pushReplacementNamed(context, routes[index]);
-  }
-
   Doctor myDoctor = Doctor(
     id: 1,
     name_en: "Dr. Julian Vane",
@@ -40,47 +33,134 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: GlassBottomNavBar(
+      backgroundColor: AppColors.greyLight,
+      bottomNavigationBar: BottomNavBar(
         currentIndex: _navIndex,
-        onTap: _onNavTap,
+        onTap: (index) {
+          if (index == _navIndex) return;
+
+          final routes = ['/home', '/search', '/bookings', '/profile'];
+          Navigator.pushReplacementNamed(context, routes[index]);
+        },
       ),
       appBar: AppBar(
-        title: Text(
-          'MedX',
-          style: AppFonts.headlineExtraLarge.copyWith(color: AppColors.primary),
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                gradient: AppGradients.primaryGradient,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.local_hospital_rounded,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'MedX',
+              style: AppFonts.headlineMedium.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.5,
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.primary),
+          icon: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.greyLight,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: AppColors.primary,
+              size: 18,
+            ),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(16),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(16),
         children: [
-          Text(
-            "DEPARTMENT",
-            style: AppFonts.bodyMedium.copyWith(color: AppColors.primary),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.medical_services_rounded,
+                  color: AppColors.primary,
+                  size: 14,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  "DEPARTMENT",
+                  style: AppFonts.labelSmall.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Text(
             "${widget.Category}",
-            style: AppFonts.headlineExtraLarge.copyWith(color: AppColors.black),
+            style: AppFonts.headlineExtraLarge.copyWith(
+              color: AppColors.black,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.5,
+            ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 12),
           Text(
-            style: AppFonts.bodySmall.copyWith(color: AppColors.secondary),
-            'Select a leading specialist from our ${widget.Category} editorial team.Each practitioner is selected for clinical exceliience and an empathetic approach to health.',
+            'Select a leading specialist from our ${widget.Category} editorial team. Each practitioner is selected for clinical excellence and an empathetic approach to health.',
+            style: AppFonts.bodyMedium.copyWith(
+              color: AppColors.secondary,
+              height: 1.5,
+            ),
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 32),
           ListView.builder(
             itemCount: 5,
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return buildDoctorCard(myDoctor);
+              return TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.0, end: 1.0),
+                duration: Duration(milliseconds: 400 + (index * 100)),
+                curve: Curves.easeOut,
+                builder: (context, value, child) {
+                  return Opacity(
+                    opacity: value,
+                    child: Transform.translate(
+                      offset: Offset(0, 20 * (1 - value)),
+                      child: child,
+                    ),
+                  );
+                },
+                child: buildDoctorCard(myDoctor),
+              );
             },
           ),
+          const SizedBox(height: 100),
         ],
       ),
     );
@@ -89,60 +169,138 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
 
 Widget buildDoctorCard(Doctor doctor) {
   return Container(
-    margin: EdgeInsets.only(bottom: 16),
-    padding: EdgeInsets.symmetric(vertical: 16),
+    margin: const EdgeInsets.only(bottom: 20),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(24),
-      color: AppColors.greyLight,
-      boxShadow: [
-        BoxShadow(
-          color: AppColors.black.withOpacity(0.1),
-          spreadRadius: 2,
-          blurRadius: 15,
-          offset: Offset(2, 2),
-        ),
-      ],
+      color: Colors.white,
+      boxShadow: AppShadows.cardShadow,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          child: SizedBox(
-            height: 250,
+          child: Container(
+            height: 220,
             width: double.infinity,
-            child: Icon(Symbols.psychology_sharp, size: 200),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primary.withOpacity(0.08),
+                  AppColors.primaryLight.withOpacity(0.04),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Stack(
+              children: [
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.08),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.person_rounded,
+                      size: 80,
+                      color: AppColors.primary.withOpacity(0.3),
+                    ),
+                  ),
+                ),
+                // Experience badge
+                Positioned(
+                  top: 14,
+                  right: 14,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: AppShadows.softShadow,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.star_rounded,
+                          color: AppColors.amber,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          "4.9",
+                          style: AppFonts.labelMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(22),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 doctor.name_en!,
-                style: AppFonts.bodyLarge.copyWith(color: AppColors.black),
+                style: AppFonts.headlineSmall.copyWith(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.3,
+                ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 8),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    doctor.specialization!,
-                    style: AppFonts.bodyLarge.copyWith(
-                      color: AppColors.primary,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      doctor.specialization!,
+                      style: AppFonts.labelMedium.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
-                  Text('${doctor.hourly_rate.toString()}\$'),
+                  const Spacer(),
+                  Text(
+                    '\$${doctor.hourly_rate}',
+                    style: AppFonts.headlineSmall.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    '/hr',
+                    style: AppFonts.bodySmall.copyWith(
+                      color: AppColors.secondary,
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: 10),
-              Divider(),
-              SizedBox(height: 20),
-
+              const SizedBox(height: 16),
+              Container(height: 1, color: AppColors.greyLight),
+              const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
-                height: 50,
+                height: 52,
                 child: Builder(
                   builder: (context) {
                     return ElevatedButton(
@@ -160,21 +318,24 @@ Widget buildDoctorCard(Doctor doctor) {
                         foregroundColor: AppColors.neutral,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                          Text(
                             "Book Appointment",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: AppFonts.labelLarge.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                           const SizedBox(width: 8),
                           Icon(
-                            Icons.arrow_forward_ios,
-                            size: 12,
-                            color: AppColors.neutral,
+                            Icons.arrow_forward_rounded,
+                            size: 18,
+                            color: Colors.white.withOpacity(0.8),
                           ),
                         ],
                       ),

@@ -37,6 +37,7 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       cursorColor: AppColors.primary,
+      cursorRadius: const Radius.circular(2),
 
       style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
 
@@ -50,7 +51,9 @@ class CustomTextField extends StatelessWidget {
           : null,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: AppFonts.bodyMedium.copyWith(color: Colors.grey[500]),
+        hintStyle: AppFonts.bodyMedium.copyWith(
+          color: AppColors.secondary.withOpacity(0.4),
+        ),
 
         labelText: labelText,
         labelStyle: TextStyle(color: AppColors.primary),
@@ -60,7 +63,7 @@ class CustomTextField extends StatelessWidget {
         prefixIcon: prefixText != null
             ? Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
+                  horizontal: 14,
                   vertical: 14,
                 ),
                 child: Text(
@@ -78,18 +81,23 @@ class CustomTextField extends StatelessWidget {
         filled: true,
         fillColor: AppColors.greyLight,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
 
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(color: AppColors.primary, width: 1.5),
         ),
 
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+        ),
+
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 16,
         ),
       ),
     );

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:project_1/constants/constants.dart';
 
-class GlassCard extends StatelessWidget {
+class NavCard extends StatelessWidget {
   final Widget child;
   final double? width;
   final double? height;
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onTap;
 
-  const GlassCard({
+  const NavCard({
     super.key,
     required this.child,
     this.width,
@@ -23,25 +23,26 @@ class GlassCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24.0),
+        borderRadius: BorderRadius.circular(28.0),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          filter: ImageFilter.blur(sigmaX: 18.0, sigmaY: 18.0),
           child: Container(
             width: width,
             height: height,
             padding: padding ?? const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(24.0),
+              color: Colors.white.withOpacity(0.75),
+              borderRadius: BorderRadius.circular(28.0),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withOpacity(0.3),
                 width: 1.0,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10.0,
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 20.0,
                   spreadRadius: -5.0,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),

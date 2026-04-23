@@ -8,20 +8,43 @@ class CustomButton extends StatelessWidget {
   Color? color;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: color ?? AppColors.primary,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        width: double.infinity,
-        height: 60,
-        child: Center(
-          child: Text(
-            text,
-            style: AppFonts.labelLarge.copyWith(
-              color: Colors.white,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        splashColor: Colors.white.withOpacity(0.2),
+        highlightColor: Colors.white.withOpacity(0.1),
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: color != null ? null : AppGradients.primaryGradient,
+            color: color,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: AppShadows.elevatedShadow,
+          ),
+          child: Container(
+            width: double.infinity,
+            height: 56,
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  style: AppFonts.labelLarge.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Icon(
+                  Icons.arrow_forward_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ],
             ),
           ),
         ),

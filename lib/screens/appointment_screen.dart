@@ -18,7 +18,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   int stepIndex = 1;
   String selectedMethod = "schedule";
   String selectedTime = "02:30 PM";
-  int _navIndex = 2;
+  int _navIndex = 0;
 
   void _onNavTap(int index) {
     if (index == _navIndex) return;
@@ -72,38 +72,93 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: GlassBottomNavBar(
+      backgroundColor: AppColors.greyLight,
+      bottomNavigationBar: BottomNavBar(
         currentIndex: _navIndex,
         onTap: _onNavTap,
       ),
       appBar: AppBar(
-        title: Text(
-          'MedX',
-          style: AppFonts.headlineExtraLarge.copyWith(color: AppColors.primary),
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                gradient: AppGradients.primaryGradient,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.local_hospital_rounded,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'MedX',
+              style: AppFonts.headlineMedium.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.5,
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.primary),
+          icon: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.greyLight,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: AppColors.primary,
+              size: 18,
+            ),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeaderText(),
-            const SizedBox(height: 50),
+            const SizedBox(height: 32),
             _buildDoctorCard(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Selection Method', style: AppFonts.headlineMedium),
                 Text(
-                  'Step $stepIndex of 2 ',
-                  style: AppFonts.bodyMedium.copyWith(
-                    color: AppColors.secondary,
+                  'Selection Method',
+                  style: AppFonts.headlineSmall.copyWith(
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    'Step $stepIndex of 2',
+                    style: AppFonts.labelSmall.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
@@ -115,27 +170,30 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             // تظهر خيارات الجدولة فقط عند اختيار "Doctor's Schedule"
             if (selectedMethod == "schedule") _buildSchedulingCard(),
 
-            const SizedBox(height: 50),
+            const SizedBox(height: 40),
             buildAddNote(),
-            SizedBox(height: 20),
+            const SizedBox(height: 24),
             buildAppotmentPrice(),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             buildConfirmButton(),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: Text.rich(
                 textAlign: TextAlign.center,
                 TextSpan(
                   text: 'By confirming, you agree to our ',
-                  style: TextStyle(color: AppColors.secondary, fontSize: 12),
+                  style: AppFonts.bodySmall.copyWith(
+                    color: AppColors.secondary,
+                  ),
                   children: [
                     TextSpan(
                       text: 'Terms of Service',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
+                        decorationColor: AppColors.primary.withOpacity(0.3),
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
@@ -152,10 +210,11 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     const TextSpan(text: ' and '),
                     TextSpan(
                       text: 'Privacy Policy',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
+                        decorationColor: AppColors.primary.withOpacity(0.3),
                       ),
                       // عند الضغط على "Privacy Policy"
                       recognizer: TapGestureRecognizer()
@@ -174,7 +233,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 100),
+            const SizedBox(height: 100),
           ],
         ),
       ),
@@ -187,27 +246,63 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(28),
           ),
-          title: Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
-            ),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  title.contains("Terms")
+                      ? Icons.description_rounded
+                      : Icons.shield_rounded,
+                  color: AppColors.primary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: AppFonts.headlineSmall.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primary,
+                ),
+              ),
+            ],
           ),
           content: SingleChildScrollView(
             child: Text(
               rules,
-              style: const TextStyle(fontSize: 14, height: 1.5),
+              style: AppFonts.bodyMedium.copyWith(
+                height: 1.6,
+                color: AppColors.secondary,
+              ),
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(
-                "I Understand",
-                style: TextStyle(fontWeight: FontWeight.bold),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                child: Text(
+                  "I Understand",
+                  style: AppFonts.labelLarge.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
             ),
           ],
@@ -219,7 +314,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Widget buildConfirmButton() {
     return SizedBox(
       width: double.infinity,
-      height: 50,
+      height: 56,
       child: Builder(
         builder: (context) {
           return ElevatedButton(
@@ -231,18 +326,33 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               foregroundColor: AppColors.neutral,
               elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(18),
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "Confirm Booking",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: AppFonts.labelLarge.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
                 ),
-                const SizedBox(width: 8),
-                Icon(Symbols.check_circle, size: 20, color: AppColors.neutral),
+                const SizedBox(width: 10),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.check_rounded,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
           );
@@ -257,41 +367,61 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(28),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min, // ليأخذ المربع حجم المحتوى فقط
             children: [
-              const Icon(
-                Icons.check_circle,
-                color: AppColors.success,
-                size: 80,
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.success.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_circle_rounded,
+                  color: AppColors.success,
+                  size: 60,
+                ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               Text(
                 'Success!',
                 style: AppFonts.headlineLarge.copyWith(
                   color: AppColors.primary,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 'Your appointment has been booked successfully.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 25),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context), // إغلاق المربع
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                style: AppFonts.bodyMedium.copyWith(
+                  color: AppColors.secondary,
+                  height: 1.4,
                 ),
-                child: const Text(
-                  'Great!',
-                  style: TextStyle(color: Colors.white),
+              ),
+              const SizedBox(height: 28),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context), // إغلاق المربع
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    'Great!',
+                    style: AppFonts.labelLarge.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -303,44 +433,51 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   Widget buildAppotmentPrice() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        color: AppColors.greyLight,
+        color: Colors.white,
+        boxShadow: AppShadows.softShadow,
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Consultation Fee', style: AppFonts.bodyLarge),
-              Text(
-                '\$${widget.myDoctor.hourly_rate}',
-                style: AppFonts.bodyLarge.copyWith(color: AppColors.primary),
-              ),
-            ],
+          _buildPriceRow(
+            'Consultation Fee',
+            '\$${widget.myDoctor.hourly_rate}',
           ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Digital Platform Fee', style: AppFonts.bodyLarge),
-              Text(
-                '\$${widget.myDoctor.hourly_rate}',
-                style: AppFonts.bodyLarge.copyWith(color: AppColors.primary),
-              ),
-            ],
+          const SizedBox(height: 14),
+          _buildPriceRow(
+            'Digital Platform Fee',
+            '\$${widget.myDoctor.hourly_rate}',
           ),
-          SizedBox(height: 10),
-          Divider(thickness: 1),
+          const SizedBox(height: 14),
+          Container(
+            height: 1,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  AppColors.greyLight,
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total Payable', style: AppFonts.headlineMedium),
+              Text(
+                'Total Payable',
+                style: AppFonts.headlineSmall.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
               Text(
                 '\$${widget.myDoctor.hourly_rate}',
-                style: AppFonts.headlineMedium.copyWith(
+                style: AppFonts.headlineSmall.copyWith(
                   color: AppColors.primary,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ],
@@ -350,41 +487,90 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     );
   }
 
+  Widget _buildPriceRow(String label, String price) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: AppFonts.bodyMedium.copyWith(color: AppColors.secondary),
+        ),
+        Text(
+          price,
+          style: AppFonts.bodyLarge.copyWith(
+            color: AppColors.primary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget buildAddNote() {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(Symbols.note_alt, color: AppColors.primary),
-            Text(' Consultation Notes', style: AppFonts.headlineLarge),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(Symbols.note_alt, color: AppColors.primary, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Consultation Notes',
+              style: AppFonts.headlineSmall.copyWith(
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.3,
+              ),
+            ),
           ],
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 14),
         Text(
-          'Mention any specific symptoms,medical history,or concerns you wish to discuss during the session',
-          style: AppFonts.bodyMedium.copyWith(color: AppColors.secondary),
+          'Mention any specific symptoms, medical history, or concerns you wish to discuss during the session.',
+          style: AppFonts.bodyMedium.copyWith(
+            color: AppColors.secondary,
+            height: 1.5,
+          ),
         ),
-        SizedBox(height: 20),
-        TextField(
-          cursorColor: AppColors.greyMedium,
-          maxLines: 5,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppColors.greyMedium.withOpacity(0.2),
-            hintText: 'Type your notes here...',
-            hintStyle: AppFonts.bodyMedium.copyWith(color: AppColors.secondary),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
+        const SizedBox(height: 16),
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: Colors.grey.shade200, width: 1),
+          ),
+          child: TextField(
+            cursorColor: AppColors.primary,
+            maxLines: 5,
+            style: AppFonts.bodyMedium,
+            decoration: InputDecoration(
+              filled: false,
+              hintText: 'Type your notes here...',
+              hintStyle: AppFonts.bodyMedium.copyWith(
+                color: AppColors.secondary.withOpacity(0.4),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide(
+                  color: AppColors.primary.withOpacity(0.3),
+                  width: 1.5,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.all(18),
             ),
           ),
         ),
@@ -400,17 +586,17 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           child: _buildOptionCard(
             title: "Earliest Available",
             subtitle: "Today at 4:30 PM",
-            icon: Icons.flash_on,
+            icon: Icons.flash_on_rounded,
             isActive: selectedMethod == "earliest",
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
         GestureDetector(
           onTap: () => setState(() => selectedMethod = "schedule"),
           child: _buildOptionCard(
             title: "Doctor's Schedule",
             subtitle: "Pick a custom date/time",
-            icon: Icons.calendar_today_outlined,
+            icon: Icons.calendar_today_rounded,
             isActive: selectedMethod == "schedule",
           ),
         ),
@@ -420,16 +606,17 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   Widget _buildSchedulingCard() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: AppColors.greyLight,
-        borderRadius: BorderRadius.circular(28),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: AppShadows.softShadow,
       ),
       child: Column(
         children: [
           _buildDateSelector(),
           const SizedBox(height: 20),
-          const Divider(),
+          Container(height: 1, color: AppColors.greyLight),
           const SizedBox(height: 20),
           _buildTimeGrid(),
         ],
@@ -452,47 +639,74 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           children: [
             Text(
               "${_getMonthName(displayedMonth.month)} ${displayedMonth.year}",
-              style: AppFonts.headlineSmall,
+              style: AppFonts.headlineSmall.copyWith(
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.3,
+              ),
             ),
             Row(
               children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      displayedMonth = DateTime(
-                        displayedMonth.year,
-                        displayedMonth.month - 1,
-                      );
-                    });
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    size: 14,
-                    color: AppColors.primary,
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.greyLight,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        displayedMonth = DateTime(
+                          displayedMonth.year,
+                          displayedMonth.month - 1,
+                        );
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_rounded,
+                      size: 14,
+                      color: AppColors.primary,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 36,
+                      minHeight: 36,
+                    ),
+                    padding: EdgeInsets.zero,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      displayedMonth = DateTime(
-                        displayedMonth.year,
-                        displayedMonth.month + 1,
-                      );
-                    });
-                  },
-                  icon: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 14,
-                    color: AppColors.primary,
+                const SizedBox(width: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.greyLight,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        displayedMonth = DateTime(
+                          displayedMonth.year,
+                          displayedMonth.month + 1,
+                        );
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 14,
+                      color: AppColors.primary,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 36,
+                      minHeight: 36,
+                    ),
+                    padding: EdgeInsets.zero,
                   ),
                 ),
               ],
             ),
           ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
           child: Row(
             children: List.generate(daysInMonth, (index) {
               DateTime dateItem = DateTime(
@@ -543,32 +757,34 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        margin: const EdgeInsets.only(right: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        curve: Curves.easeInOut,
+        margin: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-            color: isSelected ? Colors.transparent : Colors.grey.shade200,
-            width: 1,
-          ),
+          gradient: isSelected ? AppGradients.primaryGradient : null,
+          color: isSelected ? null : AppColors.greyLight,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: isSelected ? AppShadows.elevatedShadow : [],
         ),
         child: Column(
           children: [
             Text(
               day,
-              style: TextStyle(
-                color: isSelected ? Colors.white70 : AppColors.secondary,
-                fontSize: 12,
+              style: AppFonts.labelSmall.copyWith(
+                color: isSelected
+                    ? Colors.white.withOpacity(0.7)
+                    : AppColors.secondary,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 6),
             Text(
               date,
-              style: TextStyle(
+              style: AppFonts.headlineSmall.copyWith(
                 color: isSelected ? Colors.white : AppColors.black,
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ],
@@ -591,7 +807,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 2.2,
+        childAspectRatio: 2.4,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
@@ -600,21 +816,20 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         bool isSelected = times[index] == selectedTime;
         return GestureDetector(
           onTap: () => setState(() => selectedTime = times[index]),
-          child: Container(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: isSelected ? AppColors.primary : Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: isSelected ? Colors.transparent : Colors.grey.shade300,
-              ),
+              gradient: isSelected ? AppGradients.primaryGradient : null,
+              color: isSelected ? null : AppColors.greyLight,
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: isSelected ? AppShadows.elevatedShadow : [],
             ),
             child: Text(
               times[index],
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontSize: 13,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              style: AppFonts.labelMedium.copyWith(
+                color: isSelected ? Colors.white : AppColors.secondary,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
           ),
@@ -631,57 +846,70 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   }) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: isActive ? AppColors.primary : Colors.white,
+        gradient: isActive ? AppGradients.primaryGradient : null,
+        color: isActive ? null : Colors.white,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: isActive
-            ? [
-                BoxShadow(
-                  color: AppColors.primary.withOpacity(0.3),
-                  blurRadius: 15,
-                  offset: const Offset(0, 8),
-                ),
-              ]
-            : [],
+        boxShadow: isActive ? AppShadows.elevatedShadow : AppShadows.softShadow,
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: isActive
                   ? Colors.white.withOpacity(0.2)
-                  : AppColors.greyLight,
-              borderRadius: BorderRadius.circular(12),
+                  : AppColors.primary.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(
               icon,
               color: isActive ? Colors.white : AppColors.primary,
-              size: 28,
+              size: 26,
             ),
           ),
-          const SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  color: isActive ? Colors.white : Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+          const SizedBox(width: 18),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppFonts.bodyLarge.copyWith(
+                    color: isActive ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  color: isActive ? Colors.white70 : Colors.grey,
-                  fontSize: 14,
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: AppFonts.bodySmall.copyWith(
+                    color: isActive
+                        ? Colors.white.withOpacity(0.7)
+                        : AppColors.secondary,
+                  ),
                 ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isActive
+                    ? Colors.white.withOpacity(0.5)
+                    : AppColors.greyLight,
+                width: 2,
               ),
-            ],
+              color: isActive
+                  ? Colors.white.withOpacity(0.2)
+                  : Colors.transparent,
+            ),
+            child: isActive
+                ? Icon(Icons.check_rounded, color: Colors.white, size: 16)
+                : const SizedBox(width: 16, height: 16),
           ),
         ],
       ),
@@ -690,30 +918,68 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   Widget _buildDoctorCard() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 24),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        color: AppColors.greyLight,
+        color: Colors.white,
+        boxShadow: AppShadows.softShadow,
       ),
       child: Row(
         children: [
-          const Icon(Icons.person, size: 80, color: AppColors.primary),
-          const SizedBox(width: 15),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primary.withOpacity(0.12),
+                  AppColors.primary.withOpacity(0.04),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Icon(
+              Icons.person_rounded,
+              size: 44,
+              color: AppColors.primary,
+            ),
+          ),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.myDoctor.name_en ?? "Doctor Name",
-                  style: AppFonts.headlineLarge,
+                  style: AppFonts.headlineSmall.copyWith(
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.3,
+                  ),
                 ),
-                Text(
-                  widget.myDoctor.specialization ?? "Specialization",
-                  style: AppFonts.bodyLarge.copyWith(color: AppColors.primary),
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    widget.myDoctor.specialization ?? "Specialization",
+                    style: AppFonts.labelSmall.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
+                const SizedBox(height: 6),
                 Text(
-                  '\$${widget.myDoctor.hourly_rate}',
-                  style: AppFonts.bodyLarge,
+                  '\$${widget.myDoctor.hourly_rate}/hr',
+                  style: AppFonts.bodyLarge.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
@@ -727,22 +993,39 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'SCHEDULING PORTAL',
-          style: AppFonts.bodyMedium.copyWith(color: AppColors.primary),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withOpacity(0.08),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.calendar_today_rounded,
+                color: AppColors.primary,
+                size: 14,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                'SCHEDULING PORTAL',
+                style: AppFonts.labelSmall.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1,
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 14),
         Text(
           'Confirm your\nappointment',
           style: AppFonts.headlineExtraLarge.copyWith(
-            fontWeight: FontWeight.bold,
-            shadows: [
-              Shadow(
-                color: AppColors.black.withOpacity(0.3),
-                blurRadius: 10,
-                offset: const Offset(0, 5),
-              ),
-            ],
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.5,
+            height: 1.2,
           ),
         ),
       ],
