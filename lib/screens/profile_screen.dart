@@ -551,9 +551,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           highlightColor: AppColors.error.withOpacity(0.1),
           splashColor: AppColors.error.withOpacity(0.1),
           onTap: () {
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const LogInScreen()),
+              (route) => false,
             );
           },
           child: Padding(

@@ -78,7 +78,7 @@ class _CenterDetailsScreenState extends State<CenterDetailsScreen> {
         ),
       ),
       body: ListView(
-        physics: const BouncingScrollPhysics(),
+        physics: ScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
           buildHeaderImage(),
@@ -384,7 +384,7 @@ Widget buildDepartmentCard(
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DepartmentScreen(Category: title),
+          builder: (context) => DepartmentScreen(Category: category),
         ),
       );
     },
@@ -469,19 +469,6 @@ Widget buildDepartmentCard(
               Text(
                 "12 Specialists",
                 style: AppFonts.bodySmall.copyWith(color: AppColors.secondary),
-              ),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.greyLight,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 14,
-                  color: AppColors.primary,
-                ),
               ),
             ],
           ),

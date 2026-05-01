@@ -22,9 +22,7 @@ class _CardClinicState extends State<CardClinic> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => CenterDetailsScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => CenterDetailsScreen()),
         );
       },
       child: AnimatedScale(
@@ -97,7 +95,10 @@ class _CardClinicState extends State<CardClinic> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 20,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -140,7 +141,11 @@ class _CardClinicState extends State<CardClinic> {
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.star_rounded, color: AppColors.amber, size: 16),
+                                Icon(
+                                  Icons.star_rounded,
+                                  color: AppColors.amber,
+                                  size: 16,
+                                ),
                                 const SizedBox(width: 3),
                                 Text(
                                   "4.9",
@@ -159,10 +164,12 @@ class _CardClinicState extends State<CardClinic> {
                       // Hospital name
                       Text(
                         "City General Hospital",
-                        style: AppFonts.headlineSmall.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w800,
+                        style: TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.bold,
                           letterSpacing: -0.3,
+                          fontSize: 20,
+                          fontFamily: 'Inter',
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -177,10 +184,7 @@ class _CardClinicState extends State<CardClinic> {
                       ),
 
                       const SizedBox(height: 16),
-                      Container(
-                        height: 1,
-                        color: AppColors.greyLight,
-                      ),
+                      Container(height: 1, color: AppColors.greyLight),
                       const SizedBox(height: 16),
 
                       // Distance and Arrow
@@ -207,25 +211,6 @@ class _CardClinicState extends State<CardClinic> {
                             ),
                           ),
                           const Spacer(),
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              gradient: AppGradients.primaryGradient,
-                              borderRadius: BorderRadius.circular(14),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.primary.withOpacity(0.3),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_rounded,
-                              color: Colors.white,
-                              size: 18,
-                            ),
-                          ),
                         ],
                       ),
                     ],

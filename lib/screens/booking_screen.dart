@@ -63,7 +63,7 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
       backgroundColor: AppColors.greyLight,
       body: ListView(
-        physics: const BouncingScrollPhysics(),
+        physics: ScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
           buildTextHeader(),

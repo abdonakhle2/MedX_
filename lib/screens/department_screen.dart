@@ -91,7 +91,7 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
         ),
       ),
       body: ListView(
-        physics: const BouncingScrollPhysics(),
+        physics: ScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
           Container(
@@ -138,29 +138,21 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
             ),
           ),
           const SizedBox(height: 32),
-          ListView.builder(
+          GridView.builder(
             itemCount: 5,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.7,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+            ),
             itemBuilder: (context, index) {
-              return TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0.0, end: 1.0),
-                duration: Duration(milliseconds: 400 + (index * 100)),
-                curve: Curves.easeOut,
-                builder: (context, value, child) {
-                  return Opacity(
-                    opacity: value,
-                    child: Transform.translate(
-                      offset: Offset(0, 20 * (1 - value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: buildDoctorCard(myDoctor),
-              );
+              return buildDoctorCard(myDoctor);
             },
           ),
-          const SizedBox(height: 100),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -169,138 +161,138 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
 
 Widget buildDoctorCard(Doctor doctor) {
   return Container(
-    margin: const EdgeInsets.only(bottom: 20),
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(20),
       color: Colors.white,
       boxShadow: AppShadows.cardShadow,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          child: Container(
-            height: 220,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primary.withOpacity(0.08),
-                  AppColors.primaryLight.withOpacity(0.04),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+        Expanded(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primary.withOpacity(0.08),
+                    AppColors.primaryLight.withOpacity(0.04),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
-            ),
-            child: Stack(
-              children: [
-                Center(
-                  child: Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.08),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 80,
-                      color: AppColors.primary.withOpacity(0.3),
+              child: Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.08),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.person_rounded,
+                        size: 40,
+                        color: AppColors.primary.withOpacity(0.3),
+                      ),
                     ),
                   ),
-                ),
-                // Experience badge
-                Positioned(
-                  top: 14,
-                  right: 14,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: AppShadows.softShadow,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.star_rounded,
-                          color: AppColors.amber,
-                          size: 16,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          "4.9",
-                          style: AppFonts.labelMedium.copyWith(
-                            fontWeight: FontWeight.bold,
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: AppShadows.softShadow,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.star_rounded,
+                            color: AppColors.amber,
+                            size: 12,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 2),
+                          Text(
+                            "4.9",
+                            style: AppFonts.labelSmall.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(22),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 doctor.name_en!,
-                style: AppFonts.headlineSmall.copyWith(
+                style: AppFonts.labelLarge.copyWith(
                   color: AppColors.black,
                   fontWeight: FontWeight.w800,
-                  letterSpacing: -0.3,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  doctor.specialization!,
+                  style: AppFonts.labelSmall.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      doctor.specialization!,
-                      style: AppFonts.labelMedium.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
                   Text(
                     '\$${doctor.hourly_rate}',
-                    style: AppFonts.headlineSmall.copyWith(
+                    style: AppFonts.labelLarge.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   Text(
                     '/hr',
-                    style: AppFonts.bodySmall.copyWith(
+                    style: AppFonts.labelSmall.copyWith(
                       color: AppColors.secondary,
+                      fontSize: 10,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Container(height: 1, color: AppColors.greyLight),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
-                height: 52,
+                height: 32,
                 child: Builder(
                   builder: (context) {
                     return ElevatedButton(
@@ -314,30 +306,20 @@ Widget buildDoctorCard(Doctor doctor) {
                         );
                       },
                       style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
                         backgroundColor: AppColors.primary,
                         foregroundColor: AppColors.neutral,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Book Appointment",
-                            style: AppFonts.labelLarge.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Icon(
-                            Icons.arrow_forward_rounded,
-                            size: 18,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ],
+                      child: Text(
+                        "Book",
+                        style: AppFonts.labelMedium.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     );
                   },

@@ -29,38 +29,17 @@ class _LogInScreenState extends State<LogInScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.greyLight,
+      backgroundColor: AppColors.white,
       body: Center(
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: const ScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 20),
+              SizedBox(height: 40),
               // Logo
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  gradient: AppGradients.primaryGradient,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: AppShadows.elevatedShadow,
-                ),
-                child: const Icon(
-                  Icons.local_hospital_rounded,
-                  size: 36,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'MedX',
-                style: AppFonts.headlineExtraLarge.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.5,
-                ),
-              ),
-              const SizedBox(height: 8),
+              Image.asset('assets/images/logo.png', width: 200, height: 250),
+
               Text(
                 'Human-Centric Authority in Healthcare.',
                 style: AppFonts.bodyMedium.copyWith(color: AppColors.secondary),
@@ -99,54 +78,6 @@ class _LogInScreenState extends State<LogInScreen>
                     child: Column(
                       children: [
                         // Welcome Header
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            gradient: AppGradients.surfaceGradient,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: AppColors.primary.withOpacity(0.08),
-                              width: 1,
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primary.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Icon(
-                                      Icons.login_rounded,
-                                      color: AppColors.primary,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    'Welcome Back',
-                                    style: AppFonts.headlineMedium.copyWith(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Sign in to your account',
-                                style: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.secondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                         const SizedBox(height: 28),
                         // Phone Number
                         Row(
@@ -195,8 +126,12 @@ class _LogInScreenState extends State<LogInScreen>
                                   color: AppColors.black,
                                 ),
                                 onlyNumbers: true,
-                                hintText: '91 111 111',
+
+                                hintText: '912 211 111',
+                                hintLetterSpacing: 7,
+
                                 inputType: TextInputType.phone,
+                                labelLetterSpacing: 7,
                                 suffixIcon: Icon(
                                   Icons.phone_rounded,
                                   color: AppColors.secondary.withOpacity(0.5),
@@ -224,6 +159,8 @@ class _LogInScreenState extends State<LogInScreen>
                             color: AppColors.black,
                           ),
                           hintText: '••••••••',
+                          hintLetterSpacing: 7,
+                          labelLetterSpacing: 7,
                           obscureText: obscureText,
                           inputType: TextInputType.visiblePassword,
                           suffixIcon: IconButton(

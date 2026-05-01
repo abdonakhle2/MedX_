@@ -17,6 +17,8 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.controller,
+    this.hintLetterSpacing,
+    this.labelLetterSpacing,
   });
 
   final Function(String)? onChanged;
@@ -31,6 +33,8 @@ class CustomTextField extends StatelessWidget {
   final bool readOnly;
   final VoidCallback? onTap;
   final TextEditingController? controller;
+  final double? hintLetterSpacing;
+  final double? labelLetterSpacing;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,11 @@ class CustomTextField extends StatelessWidget {
       cursorColor: AppColors.primary,
       cursorRadius: const Radius.circular(2),
 
-      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      style: AppFonts.bodyMedium.copyWith(
+        color: AppColors.black,
+        letterSpacing: hintLetterSpacing,
+        fontSize: 16,
+      ),
 
       obscureText: obscureText,
       readOnly: readOnly,
@@ -56,7 +64,10 @@ class CustomTextField extends StatelessWidget {
         ),
 
         labelText: labelText,
-        labelStyle: TextStyle(color: AppColors.primary),
+        labelStyle: TextStyle(
+          color: AppColors.primary,
+          letterSpacing: labelLetterSpacing,
+        ),
 
         suffixIcon: suffixIcon,
 

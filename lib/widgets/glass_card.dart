@@ -24,30 +24,27 @@ class NavCard extends StatelessWidget {
       onTap: onTap,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(28.0),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 18.0, sigmaY: 18.0),
-          child: Container(
-            width: width,
-            height: height,
-            padding: padding ?? const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.75),
-              borderRadius: BorderRadius.circular(28.0),
-              border: Border.all(
-                color: Colors.white.withOpacity(0.3),
-                width: 1.0,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.06),
-                  blurRadius: 20.0,
-                  spreadRadius: -5.0,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+        child: Container(
+          width: width,
+          height: height,
+          padding: padding ?? const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.75),
+            borderRadius: BorderRadius.circular(28.0),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+              width: 1.0,
             ),
-            child: child,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 20.0,
+                spreadRadius: -5.0,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
+          child: child,
         ),
       ),
     );

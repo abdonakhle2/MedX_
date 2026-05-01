@@ -105,8 +105,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: AppColors.greyLight,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          physics: ScrollPhysics(),
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
@@ -201,6 +201,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               CustomTextField(
                                 key: const ValueKey('signup_full_name'),
                                 hintText: 'user name',
+                                hintLetterSpacing: 4,
+                                labelLetterSpacing: 4,
                                 inputType: TextInputType.name,
                                 textStyle: AppFonts.bodyMedium.copyWith(
                                   color: AppColors.black,
@@ -219,6 +221,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               CustomTextField(
                                 key: const ValueKey('signup_email'),
                                 hintText: 'emailName@gmail.com',
+                                hintLetterSpacing: 4,
+                                labelLetterSpacing: 4,
                                 inputType: TextInputType.emailAddress,
                                 textStyle: AppFonts.bodyMedium.copyWith(
                                   color: AppColors.black,
@@ -263,8 +267,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     child: CustomTextField(
                                       key: const ValueKey('signup_phone'),
                                       hintText: "91 111 111",
-
                                       onlyNumbers: true,
+                                      hintLetterSpacing: 7,
+                                      labelLetterSpacing: 7,
                                       inputType: TextInputType.phone,
                                       textStyle: AppFonts.bodyMedium.copyWith(
                                         color: AppColors.black,
@@ -308,6 +313,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 key: const ValueKey('signup_birthdate'),
                                 controller: birthdateController,
                                 hintText: 'Select birthdate',
+                                hintLetterSpacing: 4,
+                                labelLetterSpacing: 4,
                                 textStyle: AppFonts.bodyMedium.copyWith(
                                   color: AppColors.black,
                                 ),
@@ -329,6 +336,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   color: AppColors.black,
                                 ),
                                 hintText: 'City, Country',
+                                hintLetterSpacing: 4,
+                                labelLetterSpacing: 4,
                                 suffixIcon: Icon(
                                   Icons.location_on_rounded,
                                   color: AppColors.secondary.withOpacity(0.4),
@@ -347,6 +356,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   color: AppColors.black,
                                 ),
                                 hintText: 'Document Number',
+                                hintLetterSpacing: 4,
+                                labelLetterSpacing: 4,
                                 suffixIcon: Icon(
                                   Icons.badge_rounded,
                                   color: AppColors.secondary.withOpacity(0.4),
@@ -364,6 +375,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   color: AppColors.black,
                                 ),
                                 hintText: '••••••••',
+                                hintLetterSpacing: 7,
+                                labelLetterSpacing: 7,
                                 obscureText: obscurePassword,
                                 inputType: TextInputType.visiblePassword,
                                 suffixIcon: IconButton(
@@ -392,6 +405,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   color: AppColors.black,
                                 ),
                                 hintText: '••••••••',
+                                hintLetterSpacing: 7,
+                                labelLetterSpacing: 7,
                                 obscureText: obscureConfirmPassword,
                                 inputType: TextInputType.visiblePassword,
                                 suffixIcon: IconButton(
