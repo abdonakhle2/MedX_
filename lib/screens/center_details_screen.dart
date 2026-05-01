@@ -3,6 +3,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/screens/department_screen.dart';
 import 'package:project_1/widgets/bottom_nav_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CenterDetailsScreen extends StatefulWidget {
   const CenterDetailsScreen({super.key});
@@ -338,7 +339,9 @@ Widget buildLocationSection() {
           width: double.infinity,
           height: 48,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              openGooglMaps(latitude: 47.6062, longitude: -122.3321);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.white,
               elevation: 0,
@@ -476,4 +479,22 @@ Widget buildDepartmentCard(
       ),
     ),
   );
+}
+
+Future<void> openGooglMaps({
+  required double latitude,
+  required double longitude,
+}) async {
+  try {
+    Uri webUrl = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
+    );
+    if (await canLaunchUrl(webUrl)) {
+      await launchUrl(webUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch Google Maps';
+    }
+  } catch (e) {
+    print('Error launching Google Maps: $e');
+  }
 }
