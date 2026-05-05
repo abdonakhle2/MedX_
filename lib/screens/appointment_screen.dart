@@ -1,3 +1,7 @@
+import 'dart:io' as io;
+
+import 'package:file_picker/file_picker.dart' as file_picker;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
@@ -173,10 +177,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             const SizedBox(height: 40),
             buildAddNote(),
             const SizedBox(height: 24),
+            buildUploadFile(),
+            const SizedBox(height: 10),
             buildAppotmentPrice(),
             const SizedBox(height: 30),
             buildConfirmButton(),
-            const SizedBox(height: 10),
+
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: Text.rich(
@@ -237,6 +244,44 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildUploadFile() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.white,
+        foregroundColor: AppColors.primaryDark,
+        padding: const EdgeInsets.all(22),
+        elevation: 0.1,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Symbols.upload_file_rounded, color: AppColors.primary, size: 20),
+          const SizedBox(width: 10),
+          Text(
+            "Upload Medical Document",
+            style: AppFonts.labelLarge.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+      onPressed: () async {
+        FilePickerResult? result = await FilePicker.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['pdf', 'jpg', 'png'],
+        );
+        if (result != null) {
+          PlatformFile file = result.files.first;
+          print('Picked file: ${file.name}, size: ${file.size} bytes');
+        } else {
+          print('user canceled the picker');
+        }
+      },
     );
   }
 
