@@ -6,6 +6,7 @@ import 'package:project_1/screens/search_screen.dart';
 import 'package:project_1/screens/profile_screen.dart';
 import 'package:project_1/screens/sign_up_screen.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/screens/splash_view.dart';
 
 void main() {
   runApp(const TheApp());
@@ -18,8 +19,9 @@ class TheApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/splash',
       routes: {
+        '/splash': (context) => const SplashView(),
         '/login': (context) => const LogInScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/home': (context) => const HomeScreen(),

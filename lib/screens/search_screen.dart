@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/widgets/bottom_nav_bar.dart';
 
@@ -11,7 +10,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  int _navIndex = 1;
+final  int _navIndex = 1;
 
   void _onNavTap(int index) {
     if (index == _navIndex) return;

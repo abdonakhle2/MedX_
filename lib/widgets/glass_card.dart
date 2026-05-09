@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:project_1/constants/constants.dart';
 
 class NavCard extends StatelessWidget {
   final Widget child;

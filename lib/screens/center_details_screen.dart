@@ -13,7 +13,7 @@ class CenterDetailsScreen extends StatefulWidget {
 }
 
 class _CenterDetailsScreenState extends State<CenterDetailsScreen> {
-  int _navIndex = 0;
+ final int _navIndex = 0;
 
   void _onNavTap(int index) {
     if (index == _navIndex) return;
@@ -387,7 +387,7 @@ Widget buildDepartmentCard(
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DepartmentScreen(Category: category),
+          builder: (context) => DepartmentScreen(category: category),
         ),
       );
     },

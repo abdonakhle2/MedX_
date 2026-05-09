@@ -1,6 +1,4 @@
-import 'dart:io' as io;
 
-import 'package:file_picker/file_picker.dart' as file_picker;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -22,7 +20,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   int stepIndex = 1;
   String selectedMethod = "schedule";
   String selectedTime = "02:30 PM";
-  int _navIndex = 0;
+ final int _navIndex = 0;
 
   void _onNavTap(int index) {
     if (index == _navIndex) return;

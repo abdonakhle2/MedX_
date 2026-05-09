@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/models/doctor.dart';
 import 'package:project_1/screens/appointment_screen.dart';
 import 'package:project_1/widgets/bottom_nav_bar.dart';
 
 class DepartmentScreen extends StatefulWidget {
-  final String? Category;
-  const DepartmentScreen({super.key, this.Category});
+  final String? category;
+  const DepartmentScreen({super.key, this.category});
 
   @override
   State<DepartmentScreen> createState() => _DepartmentScreenState();
 }
 
 class _DepartmentScreenState extends State<DepartmentScreen> {
-  int _navIndex = 0;
+  final int _navIndex = 0;
 
   Doctor myDoctor = Doctor(
     id: 1,
@@ -122,7 +121,7 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            "${widget.Category}",
+            "${widget.category}",
             style: AppFonts.headlineExtraLarge.copyWith(
               color: AppColors.black,
               fontWeight: FontWeight.w800,
@@ -131,7 +130,7 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            'Select a leading specialist from our ${widget.Category} editorial team. Each practitioner is selected for clinical excellence and an empathetic approach to health.',
+            'Select a leading specialist from our ${widget.category} editorial team. Each practitioner is selected for clinical excellence and an empathetic approach to health.',
             style: AppFonts.bodyMedium.copyWith(
               color: AppColors.secondary,
               height: 1.5,

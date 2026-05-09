@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:project_1/models/user.dart';
 import 'package:project_1/widgets/bottom_nav_bar.dart';
 import 'package:project_1/widgets/card_clinic.dart';
@@ -24,10 +23,7 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+ 
 
   void _onNavTap(int index) {
     if (index == currentIndex) return;
