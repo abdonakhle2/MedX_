@@ -96,7 +96,7 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white, body: SplashViewBody());
+    return Scaffold(body: SplashViewBody());
   }
 }
 
@@ -175,7 +175,10 @@ class SlidingText extends StatelessWidget {
           child: Text(
             textAlign: TextAlign.center,
             'Your Health,Our Priority',
-            style: AppFonts.headlineLarge.copyWith(color: AppColors.black),
+            style: AppFonts.bodyLarge.copyWith(
+              color: AppColors.black,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         );
       },

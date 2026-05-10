@@ -1,4 +1,3 @@
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -20,7 +19,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   int stepIndex = 1;
   String selectedMethod = "schedule";
   String selectedTime = "02:30 PM";
- final int _navIndex = 0;
+  final int _navIndex = 0;
 
   void _onNavTap(int index) {
     if (index == _navIndex) return;
@@ -1063,14 +1062,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           ),
         ),
         const SizedBox(height: 14),
-        Text(
-          'Confirm your\nappointment',
-          style: AppFonts.headlineExtraLarge.copyWith(
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.5,
-            height: 1.2,
-          ),
-        ),
       ],
     );
   }

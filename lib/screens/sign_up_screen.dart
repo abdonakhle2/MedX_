@@ -103,10 +103,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.greyLight,
       body: SafeArea(
         child: ListView(
-          physics: ScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
@@ -138,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 16,
@@ -147,23 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 5),
-                      Text(
-                        'Create your professional profile',
-                        style: AppFonts.headlineLarge.copyWith(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Join the network of premier healthcare specialists.',
-                        style: AppFonts.bodyMedium.copyWith(
-                          color: AppColors.secondary,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 25),
                       // Step indicators
                       Row(
                         children: [
@@ -182,9 +165,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                       // Form container
                       Container(
+                        height: MediaQuery.of(context).size.height * .63,
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -456,13 +440,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     print("Is Verified: ${user.Is_verified}");
                                     print("========================");
 
-                                    Navigator.pushAndRemoveUntil(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             HomeScreen(userName: user.name),
                                       ),
-                                      (route) => false,
                                     );
                                   }
                                 },
@@ -569,50 +552,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 24),
+
                       // Security note
-                      Container(
-                        padding: const EdgeInsets.all(18),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.primary.withOpacity(0.08),
-                              AppColors.primary.withOpacity(0.03),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: AppColors.primary.withOpacity(0.1),
-                            width: 1,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: AppShadows.softShadow,
-                              ),
-                              child: Icon(
-                                Icons.shield_rounded,
-                                color: AppColors.primary,
-                                size: 22,
-                              ),
-                            ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: Text(
-                                "Your data is encrypted and secure. We comply with global healthcare privacy standards.",
-                                style: AppFonts.bodySmall.copyWith(
-                                  color: AppColors.secondary,
-                                  height: 1.5,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                       const SizedBox(height: 24),
                       // Footer
                       Padding(

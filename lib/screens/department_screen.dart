@@ -32,7 +32,6 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: AppColors.greyLight,
       bottomNavigationBar: BottomNavBar(
         currentIndex: _navIndex,
         onTap: (index) {
@@ -119,23 +118,7 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 12),
-          Text(
-            "${widget.category}",
-            style: AppFonts.headlineExtraLarge.copyWith(
-              color: AppColors.black,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.5,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'Select a leading specialist from our ${widget.category} editorial team. Each practitioner is selected for clinical excellence and an empathetic approach to health.',
-            style: AppFonts.bodyMedium.copyWith(
-              color: AppColors.secondary,
-              height: 1.5,
-            ),
-          ),
+
           const SizedBox(height: 32),
           GridView.builder(
             itemCount: 5,

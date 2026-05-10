@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: AppColors.greyLight,
+
       bottomNavigationBar: BottomNavBar(
         currentIndex: _navIndex,
         onTap: _onNavTap,

@@ -23,8 +23,6 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
   }
 
- 
-
   void _onNavTap(int index) {
     if (index == currentIndex) return;
 
@@ -37,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       extendBody: true,
       appBar: buildAppBar(),
-      backgroundColor: AppColors.greyLight,
       bottomNavigationBar: BottomNavBar(
         currentIndex: currentIndex,
         onTap: _onNavTap,
@@ -77,16 +74,10 @@ class _HomeScreenState extends State<HomeScreen>
                     'Medical Centers',
                     style: AppFonts.headlineMedium.copyWith(
                       fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
+                      letterSpacing: -0.1,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Facilities available nearby',
-                    style: AppFonts.bodySmall.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
                 ],
               ),
               Container(

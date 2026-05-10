@@ -29,7 +29,6 @@ class _LogInScreenState extends State<LogInScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
       body: Center(
         child: SingleChildScrollView(
           physics: const ScrollPhysics(),
@@ -38,7 +37,7 @@ class _LogInScreenState extends State<LogInScreen>
             children: [
               SizedBox(height: 40),
               // Logo
-              Image.asset('assets/images/logo.png', width: 200, height: 250),
+              Image.asset('assets/images/logo.png', width: 150, height: 150),
 
               Text(
                 'Human-Centric Authority in Healthcare.',
