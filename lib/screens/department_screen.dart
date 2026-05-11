@@ -32,7 +32,7 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: BottomNavBar(
+      bottomNavigationBar: GlassBottomNavBar(
         currentIndex: _navIndex,
         onTap: (index) {
           if (index == _navIndex) return;

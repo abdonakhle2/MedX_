@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:project_1/widgets/glass_card.dart';
-import 'package:project_1/constants/constants.dart';
+import 'package:glass_liquid_navbar/glass_liquid_navbar.dart';
 
-class BottomNavBar extends StatelessWidget {
+class GlassBottomNavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
 
-  const BottomNavBar({
+  const GlassBottomNavBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
@@ -15,72 +14,31 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: NavCard(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildNavItem(Symbols.home_app_logo, 'HOME', 0),
-            _buildNavItem(Symbols.manage_search, 'SEARCH', 1),
-            _buildNavItem(Symbols.calendar_today, 'BOOKINGS', 2),
-            _buildNavItem(Symbols.person, 'PROFILE', 3),
-          ],
-        ),
-      ),
-    );
-  }
+    // Check the current theme brightness to determine the highest contrast color
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final contentColor = isDark ? Colors.white : Colors.black;
+    final unselectedContentColor = isDark
+        ? Colors.white.withOpacity(0.6)
+        : Colors.black.withOpacity(0.6);
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
-    final isSelected = currentIndex == index;
-
-    return GestureDetector(
-      onTap: () => onTap(index),
-      behavior: HitTestBehavior.translucent,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          gradient: isSelected ? AppGradients.primaryGradient : null,
-          color: isSelected ? null : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: AppColors.primary.withOpacity(0.25),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : [],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? Colors.white
-                  : AppColors.secondary.withOpacity(0.6),
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: AppFonts.labelSmall.copyWith(
-                color: isSelected
-                    ? Colors.white
-                    : AppColors.secondary.withOpacity(0.5),
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                fontSize: 9,
-                letterSpacing: 0.5,
-              ),
-            ),
-          ],
-        ),
+    return LiquidGlassNavbar(
+      currentIndex: currentIndex,
+      onTap: onTap,
+      isFullWidth: false,
+      showLabels: true,
+      theme: LiquidGlassTheme(
+        glassColor: Colors.white.withOpacity(0.02), // Less opaque color
+        glassBlur: 15.0, // Less blur for more transparency
+        glassBorderColor: Colors.white.withOpacity(0.1),
+        selectedColor: contentColor,
+        unselectedColor: unselectedContentColor,
       ),
+      items: const [
+        LiquidNavItem(icon: Symbols.home_app_logo, label: 'Home'),
+        LiquidNavItem(icon: Symbols.manage_search, label: 'Search'),
+        LiquidNavItem(icon: Symbols.calendar_today, label: 'Bookings'),
+        LiquidNavItem(icon: Symbols.person, label: 'Profile'),
+      ],
     );
   }
 }

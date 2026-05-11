@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       extendBody: true,
 
-      bottomNavigationBar: BottomNavBar(
+      bottomNavigationBar: GlassBottomNavBar(
         currentIndex: _navIndex,
         onTap: _onNavTap,
       ),

@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   User? user;
   int currentIndex = 0;
-  bool hasUpcomingAppointment = false; // Toggle this to see different states
+  bool hasUpcomingAppointment = true; // Toggle to see different states
 
   @override
   void initState() {
@@ -33,22 +33,59 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.neutral, // soft off-white for a clean look
       extendBody: true,
-      appBar: buildAppBar(),
-      bottomNavigationBar: BottomNavBar(
+      appBar: _buildPremiumAppBar(),
+      bottomNavigationBar: GlassBottomNavBar(
         currentIndex: currentIndex,
         onTap: _onNavTap,
       ),
       body: SingleChildScrollView(
-        physics: const ScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildHeaderPage(),
                 const SizedBox(height: 20),
-                buildBodyPage(),
+                if (hasUpcomingAppointment) ...[
+                  _buildSectionHeader(
+                    'Upcoming Appointment',
+                    action: 'See all',
+                  ),
+                  const SizedBox(height: 16),
+                  _buildPremiumAppointmentCard(),
+                  const SizedBox(height: 32),
+                ],
+                _buildSectionHeader('Medical Centers', action: 'View all'),
+                const SizedBox(height: 16),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      duration: Duration(milliseconds: 400 + (index * 100)),
+                      curve: Curves.easeOut,
+                      builder: (context, value, child) {
+                        return Opacity(
+                          opacity: value,
+                          child: Transform.translate(
+                            offset: Offset(0, 20 * (1 - value)),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.only(bottom: 16.0),
+                        child: CardClinic(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 100), // Space for BottomNavBar
               ],
             ),
           ),
@@ -57,326 +94,198 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Padding buildBodyPage() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 1),
+  AppBar _buildPremiumAppBar() {
+    return AppBar(
+      backgroundColor: AppColors.neutral,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      toolbarHeight: 80,
+      titleSpacing: 20,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Good Morning,',
+            style: AppFonts.bodyMedium.copyWith(
+              color: AppColors.secondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            widget.userName ?? 'Sarah Mitchell',
+            style: AppFonts.headlineMedium.copyWith(
+              color: AppColors.black,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.white,
+              boxShadow: AppShadows.softShadow,
+              border: Border.all(color: AppColors.greyLight, width: 1),
+            ),
+            child: IconButton(
+              icon: const Icon(
+                Icons.notifications_none_rounded,
+                color: AppColors.black,
+                size: 24,
+              ),
+              onPressed: () {},
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader(String title, {String? action}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          title,
+          style: AppFonts.headlineSmall.copyWith(
+            fontWeight: FontWeight.w800,
+            color: AppColors.black,
+            letterSpacing: -0.3,
+          ),
+        ),
+        if (action != null)
+          GestureDetector(
+            onTap: () {},
+            child: Text(
+              action,
+              style: AppFonts.labelLarge.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildPremiumAppointmentCard() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: AppShadows.cardShadow,
+        border: Border.all(
+          color: AppColors.greyLight.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Medical Centers',
-                    style: AppFonts.headlineMedium.copyWith(
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.1,
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.primary.withOpacity(0.1),
+                ),
+                child: const Icon(
+                  Icons.person_rounded,
+                  color: AppColors.primary,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Dr. Eleanor Pena',
+                      style: AppFonts.headlineSmall.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      'Neurologist • Medical Center',
+                      style: AppFonts.bodySmall.copyWith(
+                        color: AppColors.secondary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.primary.withOpacity(0.1),
+                  shape: BoxShape.circle,
                 ),
-                child: Text(
-                  'View All',
-                  style: AppFonts.labelMedium.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
+                child: const Icon(
+                  Icons.call_rounded,
+                  color: AppColors.primary,
+                  size: 24,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0.0, end: 1.0),
-                duration: Duration(milliseconds: 400 + (index * 100)),
-                curve: Curves.easeOut,
-                builder: (context, value, child) {
-                  return Opacity(
-                    opacity: value,
-                    child: Transform.translate(
-                      offset: Offset(0, 20 * (1 - value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: const CardClinic(),
-              );
-            },
-          ),
-          const SizedBox(height: 30),
-          // Stats Section
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             decoration: BoxDecoration(
-              gradient: AppGradients.headerGradient,
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: AppShadows.elevatedShadow,
+              color: AppColors.neutral,
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(
-                  'OUR NETWORK',
-                  style: AppFonts.labelSmall.copyWith(
-                    color: Colors.white.withOpacity(0.7),
-                    letterSpacing: 2,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 20),
                 Row(
                   children: [
-                    _buildStatItem(
-                      '500+',
-                      'SPECIALISTS',
-                      Icons.medical_services_rounded,
+                    const Icon(
+                      Icons.calendar_month_rounded,
+                      color: AppColors.primary,
+                      size: 20,
                     ),
-                    _buildDivider(),
-                    _buildStatItem(
-                      '15',
-                      'DISTRICTS',
-                      Icons.location_city_rounded,
+                    const SizedBox(width: 8),
+                    Text(
+                      'Mon, 12 Aug',
+                      style: AppFonts.labelLarge.copyWith(
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                Container(width: 1, height: 20, color: AppColors.greyLight),
                 Row(
                   children: [
-                    _buildStatItem(
-                      '24/7',
-                      'SUPPORT',
-                      Icons.support_agent_rounded,
+                    const Icon(
+                      Icons.access_time_rounded,
+                      color: AppColors.primary,
+                      size: 20,
                     ),
-                    _buildDivider(),
-                    _buildStatItem('4.8', 'AVG RATING', Icons.star_rounded),
+                    const SizedBox(width: 8),
+                    Text(
+                      '10:00 AM',
+                      style: AppFonts.labelLarge.copyWith(
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 100),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Container(
-      width: 1,
-      height: 50,
-      color: Colors.white.withOpacity(0.2),
-    );
-  }
-
-  Widget buildHeaderPage() {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: AppGradients.headerGradient,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: AppShadows.elevatedShadow,
-      ),
-      child: Stack(
-        children: [
-          // Decorative circles
-          Positioned(
-            right: -20,
-            top: -20,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.08),
-              ),
-            ),
-          ),
-          Positioned(
-            right: 20,
-            bottom: -30,
-            child: Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.05),
-              ),
-            ),
-          ),
-          // Content
-          Padding(
-            padding: const EdgeInsets.only(left: 4, top: 8, bottom: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (hasUpcomingAppointment) ...[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Upcoming\nAppointment',
-                        style: AppFonts.headlineLarge.copyWith(
-                          color: Colors.white,
-                          height: 1.2,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          'Today, 10:00 AM',
-                          style: AppFonts.labelSmall.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Icon(
-                            Icons.person_rounded,
-                            color: AppColors.primary,
-                            size: 28,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Dr. Sarah Mitchell',
-                                style: AppFonts.labelLarge.copyWith(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Cardiologist • Video Consult',
-                                style: AppFonts.labelSmall.copyWith(
-                                  color: AppColors.secondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.videocam_rounded,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ] else ...[
-                  Text(
-                    'Prioritize Your\nHealth Today',
-                    style: AppFonts.headlineLarge.copyWith(
-                      color: Colors.white,
-                      height: 1.2,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'You have no upcoming appointments. Schedule a visit to stay on top of your health.',
-                    style: AppFonts.bodyMedium.copyWith(
-                      color: Colors.white.withOpacity(0.85),
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/search',
-                        (route) => false,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: AppColors.primary,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 14,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Book Appointment',
-                          style: AppFonts.labelLarge.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Icon(Icons.arrow_forward_rounded, size: 18),
-                      ],
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
@@ -384,59 +293,4 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
-
-  AppBar buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      surfaceTintColor: Colors.transparent,
-      elevation: 0,
-      title: Image.asset('assets/images/logo.png', width: 120, height: 60),
-      centerTitle: true,
-      actions: [
-        Container(
-          margin: const EdgeInsets.only(right: 16),
-          decoration: BoxDecoration(
-            color: AppColors.greyLight,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: IconButton(
-            icon: Icon(
-              Icons.notifications_none_rounded,
-              color: AppColors.primary,
-              size: 22,
-            ),
-            onPressed: () {},
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-Widget _buildStatItem(String value, String label, IconData icon) {
-  return Expanded(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: Colors.white.withOpacity(0.6), size: 20),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: AppFonts.headlineSmall.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: AppFonts.labelSmall.copyWith(
-            color: Colors.white.withOpacity(0.6),
-            letterSpacing: 1.2,
-            fontSize: 10,
-          ),
-        ),
-      ],
-    ),
-  );
 }

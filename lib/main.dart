@@ -21,14 +21,41 @@ class TheApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/splash',
-      routes: {
-        '/splash': (context) => const SplashView(),
-        '/login': (context) => const LogInScreen(),
-        '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/search': (context) => const SearchScreen(),
-        '/bookings': (context) => const BookingScreen(),
-        '/profile': (context) => const ProfileScreen(),
+      onGenerateRoute: (settings) {
+        Widget page;
+        switch (settings.name) {
+          case '/splash':
+            page = const SplashView();
+            break;
+          case '/login':
+            page = const LogInScreen();
+            break;
+          case '/signup':
+            page = const SignUpScreen();
+            break;
+          case '/home':
+            page = const HomeScreen();
+            break;
+          case '/search':
+            page = const SearchScreen();
+            break;
+          case '/bookings':
+            page = const BookingScreen();
+            break;
+          case '/profile':
+            page = const ProfileScreen();
+            break;
+          default:
+            return null;
+        }
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, __, ___) => page,
+          transitionsBuilder: (_, animation, __, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: const Duration(milliseconds: 200),
+        );
       },
       // theme: ThemeData(
       //   useMaterial3: true,
