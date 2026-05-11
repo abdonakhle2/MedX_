@@ -27,6 +27,7 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
@@ -43,3 +44,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Platform specific plugins and ephemeral files
+macos/Flutter/ephemeral
+macos/Flutter/GeneratedPluginRegistrant.swift
+windows/flutter/ephemeral/
+windows/flutter/generated_plugin_registrant.cc
+linux/flutter/ephemeral/
+linux/flutter/generated_plugin_registrant.cc
+lib/generated_plugin_registrant.dart
