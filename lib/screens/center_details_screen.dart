@@ -26,7 +26,7 @@ class _CenterDetailsScreenState extends State<CenterDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: BottomNavBar(
+      bottomNavigationBar: GlassBottomNavBar(
         currentIndex: _navIndex,
         onTap: _onNavTap,
       ),

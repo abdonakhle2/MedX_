@@ -74,7 +74,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     return Scaffold(
       extendBody: true,
       backgroundColor: AppColors.greyLight,
-      bottomNavigationBar: BottomNavBar(
+      bottomNavigationBar: GlassBottomNavBar(
         currentIndex: _navIndex,
         onTap: _onNavTap,
       ),

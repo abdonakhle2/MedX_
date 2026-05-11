@@ -12,177 +12,153 @@ class LogInScreen extends StatefulWidget {
   State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _LogInScreenState extends State<LogInScreen>
-    with SingleTickerProviderStateMixin {
+class _LogInScreenState extends State<LogInScreen> {
   bool obscureText = true;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          physics: const ScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 40),
-              // Logo
-              Image.asset('assets/images/logo.png', width: 150, height: 150),
-
-              Text(
-                'Human-Centric Authority in Healthcare.',
-                style: AppFonts.bodyMedium.copyWith(color: AppColors.secondary),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Container(
-                  height: 1,
+      backgroundColor: AppColors.neutral,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 40),
+                // Logo Section
+                Container(
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.transparent,
-                        AppColors.primary.withOpacity(0.3),
-                        Colors.transparent,
+                    color: AppColors.primary.withOpacity(0.08),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withOpacity(0.3),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
                       ],
+                    ),
+                    child: const Icon(
+                      Icons.health_and_safety,
+                      size: 44,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              // Main Card
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(28),
-                  color: Colors.white,
-                  boxShadow: AppShadows.cardShadow,
-                ),
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(24).copyWith(
-                    bottom: 24 + MediaQuery.of(context).viewInsets.bottom,
+                const SizedBox(height: 24),
+                Text(
+                  'MedX',
+                  style: AppFonts.headlineExtraLarge.copyWith(
+                    color: AppColors.primary,
+                    letterSpacing: 1.5,
                   ),
-                  child: Form(
-                    child: Column(
-                      children: [
-                        // Welcome Header
-                        const SizedBox(height: 28),
-                        // Phone Number
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Phone Number',
-                              style: AppFonts.bodyLarge.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Human-Centric Authority in Healthcare.',
+                  style: AppFonts.bodyMedium.copyWith(
+                    color: AppColors.secondary,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 40),
+
+                // Form Section
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        blurRadius: 24,
+                        offset: const Offset(0, 12),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Welcome Back',
+                            style: AppFonts.headlineMedium.copyWith(
+                              color: AppColors.black,
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Container(
-                              width: 64,
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.greyLight,
-                                    AppColors.greyLight.withOpacity(0.8),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: Colors.grey.shade200,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "+963",
-                                  style: AppFonts.labelLarge.copyWith(
-                                    fontWeight: FontWeight.bold,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Sign in to your account to continue',
+                            style: AppFonts.bodyMedium.copyWith(
+                              color: AppColors.secondary,
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          Text(
+                            'Phone Number',
+                            style: AppFonts.labelLarge.copyWith(
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  hintText: '+963 91 234 567',
+                                  onlyNumbers: true,
+                                  inputType: TextInputType.phone,
+                                  suffixIcon: const Icon(
+                                    Icons.phone_outlined,
+                                    color: Colors.grey,
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: CustomTextField(
-                                textStyle: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.black,
-                                ),
-                                onlyNumbers: true,
-
-                                hintText: '912 211 111',
-                                hintLetterSpacing: 7,
-
-                                inputType: TextInputType.phone,
-                                labelLetterSpacing: 7,
-                                suffixIcon: Icon(
-                                  Icons.phone_rounded,
-                                  color: AppColors.secondary.withOpacity(0.5),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        // Password
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Password',
-                              style: AppFonts.bodyLarge.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        CustomTextField(
-                          textStyle: AppFonts.bodyMedium.copyWith(
-                            color: AppColors.black,
+                            ],
                           ),
-                          hintText: '••••••••',
-                          hintLetterSpacing: 7,
-                          labelLetterSpacing: 7,
-                          obscureText: obscureText,
-                          inputType: TextInputType.visiblePassword,
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                obscureText = !obscureText;
-                              });
-                            },
-                            icon: Icon(
-                              obscureText
-                                  ? Icons.visibility_off_rounded
-                                  : Icons.visibility_rounded,
-                              color: AppColors.secondary.withOpacity(0.5),
+                          const SizedBox(height: 24),
+                          Text(
+                            'Password',
+                            style: AppFonts.labelLarge.copyWith(
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          onChanged: (data) {},
-                        ),
-                        const SizedBox(height: 10),
-                        // Forgot Password
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {},
+                          const SizedBox(height: 8),
+                          CustomTextField(
+                            hintText: '••••••••',
+                            obscureText: obscureText,
+                            inputType: TextInputType.visiblePassword,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  obscureText = !obscureText;
+                                });
+                              },
+                              icon: Icon(
+                                obscureText
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Align(
+                            alignment: Alignment.centerRight,
                             child: Text(
                               'Forgot Password?',
                               style: AppFonts.labelMedium.copyWith(
@@ -191,139 +167,118 @@ class _LogInScreenState extends State<LogInScreen>
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        CustomButton(
-                          text: 'Login',
-                          onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
+                          const SizedBox(height: 32),
+                          CustomButton(
+                            text: 'Sign In',
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomeScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 32),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Divider(
+                                  color: Colors.grey.shade200,
+                                  thickness: 1,
+                                ),
                               ),
-                            );
-                          },
-                          color: AppColors.primary,
-                        ),
-                        const SizedBox(height: 24),
-                        // Divider
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                height: 1,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.grey.shade300,
-                                    ],
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Text(
+                                  "NEW TO THE PLATFORM?",
+                                  style: AppFonts.labelSmall.copyWith(
+                                    color: AppColors.secondary,
+                                    letterSpacing: 0.5,
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
+                              Expanded(
+                                child: Divider(
+                                  color: Colors.grey.shade200,
+                                  thickness: 1,
+                                ),
                               ),
-                              child: Text(
-                                "NEW TO THE PLATFORM?",
-                                style: AppFonts.labelSmall.copyWith(
+                            ],
+                          ),
+                          const SizedBox(height: 24),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Don\'t have an account?',
+                                style: AppFonts.bodyMedium.copyWith(
                                   color: AppColors.secondary,
-                                  letterSpacing: 1,
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                height: 1,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.grey.shade300,
-                                      Colors.transparent,
-                                    ],
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignUpScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Create Account',
+                                  style: AppFonts.labelLarge.copyWith(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Don\'t have an account?',
-                              style: AppFonts.bodyMedium.copyWith(
-                                color: AppColors.secondary,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SignUpScreen(),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                'Create Account',
-                                style: AppFonts.labelLarge.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              // Footer
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildFooterItem(
-                      Icons.verified_user_rounded,
+                    _buildTrustBadge(
+                      Icons.verified_user_outlined,
                       'HIPAA COMPLIANT',
                     ),
-                    Container(
-                      width: 1,
-                      height: 16,
-                      color: Colors.grey.shade300,
-                    ),
-                    _buildFooterItem(Icons.lock_rounded, '256-BIT AES'),
+                    const SizedBox(width: 32),
+                    _buildTrustBadge(Icons.lock_outline, '256-BIT AES'),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 40),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-}
 
-Widget _buildFooterItem(IconData icon, String label) {
-  return Row(
-    children: [
-      Icon(icon, size: 14, color: AppColors.secondary.withOpacity(0.5)),
-      const SizedBox(width: 6),
-      Text(
-        label,
-        style: AppFonts.labelSmall.copyWith(
-          color: AppColors.secondary.withOpacity(0.5),
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.5,
+  Widget _buildTrustBadge(IconData icon, String label) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 16, color: AppColors.secondary),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: AppFonts.labelSmall.copyWith(
+            color: AppColors.secondary,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }
