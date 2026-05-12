@@ -73,173 +73,166 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: AppColors.greyLight,
       bottomNavigationBar: BottomNavBar(
         currentIndex: _navIndex,
         onTap: _onNavTap,
       ),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                gradient: AppGradients.primaryGradient,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.local_hospital_rounded,
-                color: Colors.white,
-                size: 18,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              'MedX',
-              style: AppFonts.headlineMedium.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.5,
-              ),
-            ),
-          ],
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.greyLight,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              Icons.arrow_back_ios_rounded,
-              color: AppColors.primary,
-              size: 18,
-            ),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SingleChildScrollView(
-        physics: ScrollPhysics(),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeaderText(),
-            const SizedBox(height: 32),
-            _buildDoctorCard(),
-            const SizedBox(height: 28),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: AppColors.neutral,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Selection Method',
-                  style: AppFonts.headlineSmall.copyWith(
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.3,
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    gradient: AppGradients.primaryGradient,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.local_hospital_rounded,
+                    color: Colors.white,
+                    size: 18,
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    'Step $stepIndex of 2',
-                    style: AppFonts.labelSmall.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                const SizedBox(width: 10),
+                Text(
+                  'MedX',
+                  style: AppFonts.headlineMedium.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            _buildMethodSelection(),
-            const SizedBox(height: 25),
-
-            // تظهر خيارات الجدولة فقط عند اختيار "Doctor's Schedule"
-            if (selectedMethod == "schedule") _buildSchedulingCard(),
-
-            const SizedBox(height: 40),
-            buildAddNote(),
-            const SizedBox(height: 24),
-            buildUploadFile(),
-            const SizedBox(height: 10),
-            buildAppotmentPrice(),
-            const SizedBox(height: 30),
-            buildConfirmButton(),
-
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: Text.rich(
-                textAlign: TextAlign.center,
-                TextSpan(
-                  text: 'By confirming, you agree to our ',
-                  style: AppFonts.bodySmall.copyWith(
-                    color: AppColors.secondary,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: 'Terms of Service',
-                      style: TextStyle(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationColor: AppColors.primary.withOpacity(0.3),
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          _showPolicyDialog(
-                            context,
-
-                            "Terms of Service",
-                            "1. User must be 18+ years old.\n"
-                                "2. Accurate information is required.\n"
-                                "3. Cancellations must be 24h prior.",
-                          );
-                        },
-                    ),
-                    const TextSpan(text: ' and '),
-                    TextSpan(
-                      text: 'Privacy Policy',
-                      style: TextStyle(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationColor: AppColors.primary.withOpacity(0.3),
-                      ),
-                      // عند الضغط على "Privacy Policy"
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          _showPolicyDialog(
-                            context,
-                            "Privacy Policy",
-                            "• We value your health data privacy.\n"
-                                "• Data is encrypted and secured.\n"
-                                "• We do not share data with third parties.",
-                          );
-                        },
-                    ),
-                    const TextSpan(text: '.'),
-                  ],
+            centerTitle: true,
+            leading: IconButton(
+              icon: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.greyLight,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: AppColors.primary,
+                  size: 18,
                 ),
               ),
+              onPressed: () => Navigator.pop(context),
             ),
-            const SizedBox(height: 100),
-          ],
-        ),
+          ),
+          SliverToBoxAdapter(
+            child: SingleChildScrollView(
+              physics: ScrollPhysics(),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 2, horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: AppColors.primaryLight.withOpacity(0.3),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Symbols.date_range, color: AppColors.primary),
+                        SizedBox(width: 8),
+                        Text(
+                          'Selection Method',
+                          style: AppFonts.headlineSmall.copyWith(
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildMethodSelection(),
+                  const SizedBox(height: 25),
+
+                  // تظهر خيارات الجدولة فقط عند اختيار "Doctor's Schedule"
+                  if (selectedMethod == "schedule") _buildSchedulingCard(),
+
+                  const SizedBox(height: 10),
+                  buildAddNote(),
+                  const SizedBox(height: 24),
+                  buildUploadFile(),
+                  const SizedBox(height: 10),
+                  buildAppotmentPrice(),
+                  const SizedBox(height: 10),
+                  buildConfirmButton(),
+
+                  SizedBox(height: 10),
+                  Text.rich(
+                    textAlign: TextAlign.center,
+                    TextSpan(
+                      text: 'By confirming, you agree to our ',
+                      style: AppFonts.bodySmall.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Terms of Service',
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.primary.withOpacity(0.3),
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              _showPolicyDialog(
+                                context,
+
+                                "Terms of Service",
+                                "1. User must be 18+ years old.\n"
+                                    "2. Accurate information is required.\n"
+                                    "3. Cancellations must be 24h prior.",
+                              );
+                            },
+                        ),
+                        const TextSpan(text: ' and '),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.primary.withOpacity(0.3),
+                          ),
+                          // عند الضغط على "Privacy Policy"
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              _showPolicyDialog(
+                                context,
+                                "Privacy Policy",
+                                "• We value your health data privacy.\n"
+                                    "• Data is encrypted and secured.\n"
+                                    "• We do not share data with third parties.",
+                              );
+                            },
+                        ),
+                        const TextSpan(text: '.'),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 100),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -955,114 +948,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildDoctorCard() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: Colors.white,
-        boxShadow: AppShadows.softShadow,
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primary.withOpacity(0.12),
-                  AppColors.primary.withOpacity(0.04),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Icon(
-              Icons.person_rounded,
-              size: 44,
-              color: AppColors.primary,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.myDoctor.name_en ?? "Doctor Name",
-                  style: AppFonts.headlineSmall.copyWith(
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.3,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    widget.myDoctor.specialization ?? "Specialization",
-                    style: AppFonts.labelSmall.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '\$${widget.myDoctor.hourly_rate}/hr',
-                  style: AppFonts.bodyLarge.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeaderText() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.08),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.calendar_today_rounded,
-                color: AppColors.primary,
-                size: 14,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                'SCHEDULING PORTAL',
-                style: AppFonts.labelSmall.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 14),
-      ],
     );
   }
 }
