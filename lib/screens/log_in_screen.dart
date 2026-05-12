@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project_1/screens/home_screen.dart';
 import 'package:project_1/screens/sign_up_screen.dart';
 import 'package:project_1/widgets/custom_button.dart';
-import 'package:project_1/widgets/custom_text_field.dart';
 import 'package:project_1/constants/constants.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -120,20 +120,49 @@ class _LogInScreenState extends State<LogInScreen>
                             ),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: CustomTextField(
-                                textStyle: AppFonts.bodyMedium.copyWith(
+                              child: TextField(
+                                style: AppFonts.bodyMedium.copyWith(
                                   color: AppColors.black,
+                                  letterSpacing: 1,
                                 ),
-                                onlyNumbers: true,
-
-                                hintText: '912 211 111',
-                                hintLetterSpacing: 7,
-
-                                inputType: TextInputType.phone,
-                                labelLetterSpacing: 7,
-                                suffixIcon: Icon(
-                                  Icons.phone_rounded,
-                                  color: AppColors.secondary.withOpacity(0.5),
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ],
+                                decoration: InputDecoration(
+                                  hintText: '094 123 456',
+                                  hintStyle: AppFonts.bodyMedium.copyWith(
+                                    color: AppColors.secondary.withOpacity(0.5),
+                                    letterSpacing: 1,
+                                  ),
+                                  suffixIcon: Icon(
+                                    Icons.phone_rounded,
+                                    color: AppColors.secondary.withOpacity(0.5),
+                                  ),
+                                  filled: true,
+                                  fillColor: AppColors.greyLight,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey.shade200,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 18,
+                                    vertical: 16,
+                                  ),
                                 ),
                               ),
                             ),
@@ -153,29 +182,58 @@ class _LogInScreenState extends State<LogInScreen>
                           ],
                         ),
                         const SizedBox(height: 10),
-                        CustomTextField(
-                          textStyle: AppFonts.bodyMedium.copyWith(
+                        TextField(
+                          style: AppFonts.bodyMedium.copyWith(
                             color: AppColors.black,
+                            letterSpacing: 0.5,
                           ),
-                          hintText: '••••••••',
-                          hintLetterSpacing: 7,
-                          labelLetterSpacing: 7,
                           obscureText: obscureText,
-                          inputType: TextInputType.visiblePassword,
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                obscureText = !obscureText;
-                              });
-                            },
-                            icon: Icon(
-                              obscureText
-                                  ? Icons.visibility_off_rounded
-                                  : Icons.visibility_rounded,
+                          keyboardType: TextInputType.visiblePassword,
+                          onChanged: (data) {},
+                          decoration: InputDecoration(
+                            hintText: '*****',
+                            hintStyle: AppFonts.bodyMedium.copyWith(
                               color: AppColors.secondary.withOpacity(0.5),
+                              letterSpacing: 3,
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  obscureText = !obscureText;
+                                });
+                              },
+                              icon: Icon(
+                                obscureText
+                                    ? Icons.visibility_off_rounded
+                                    : Icons.visibility_rounded,
+                                color: AppColors.secondary.withOpacity(0.5),
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: AppColors.greyLight,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide: BorderSide(
+                                color: AppColors.primary,
+                                width: 1.5,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade200,
+                                width: 1,
+                              ),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 16,
                             ),
                           ),
-                          onChanged: (data) {},
                         ),
                         const SizedBox(height: 10),
                         // Forgot Password

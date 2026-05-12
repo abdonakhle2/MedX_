@@ -23,7 +23,6 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-
       bottomNavigationBar: BottomNavBar(
         currentIndex: _navIndex,
         onTap: _onNavTap,

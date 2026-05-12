@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project_1/models/user.dart';
 import 'package:project_1/screens/home_screen.dart';
 import 'package:project_1/screens/log_in_screen.dart';
-import 'package:project_1/widgets/custom_text_field.dart';
 import 'package:project_1/constants/constants.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -135,128 +135,183 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 24,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 25),
-                      // Step indicators
-                      Row(
-                        children: [
-                          buildStepIndicator('BASIC INFO', currentStep >= 0, 0),
-                          const SizedBox(width: 8),
-                          buildStepIndicator(
-                            'CREDENTIALS',
-                            currentStep >= 1,
-                            1,
-                          ),
-                          const SizedBox(width: 8),
-                          buildStepIndicator(
-                            'VERIFICATION',
-                            currentStep >= 2,
-                            2,
-                          ),
-                        ],
+            SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 24,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 25),
+                    // Step indicators
+                    Row(
+                      children: [
+                        buildStepIndicator('BASIC INFO', currentStep >= 0, 0),
+                        const SizedBox(width: 8),
+                        buildStepIndicator('CREDENTIALS', currentStep >= 1, 1),
+                        const SizedBox(width: 8),
+                        buildStepIndicator('VERIFICATION', currentStep >= 2, 2),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    // Form container
+                    Container(
+                      height: MediaQuery.of(context).size.height * .63,
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: AppShadows.cardShadow,
                       ),
-                      const SizedBox(height: 30),
-                      // Form container
-                      Container(
-                        height: MediaQuery.of(context).size.height * .63,
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(24),
-                          boxShadow: AppShadows.cardShadow,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (currentStep == 0) ...[
-                              const SizedBox(height: 10),
-                              _buildFieldLabel('Full Name'),
-                              const SizedBox(height: 10),
-                              CustomTextField(
-                                key: const ValueKey('signup_full_name'),
-                                hintText: 'user name',
-                                hintLetterSpacing: 4,
-                                labelLetterSpacing: 4,
-                                inputType: TextInputType.name,
-                                textStyle: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.black,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (currentStep == 0) ...[
+                            const SizedBox(height: 10),
+                            _buildFieldLabel('Full Name'),
+                            const SizedBox(height: 10),
+                            TextField(
+                              key: const ValueKey('signup_full_name'),
+                              style: AppFonts.bodyMedium.copyWith(
+                                color: AppColors.black,
+                              ),
+                              keyboardType: TextInputType.name,
+                              onChanged: (data) {
+                                user.name = data;
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Ahmad Al-Faraj',
+                                hintStyle: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary.withOpacity(0.4),
                                 ),
                                 suffixIcon: Icon(
                                   Icons.person_rounded,
                                   color: AppColors.secondary.withOpacity(0.4),
                                 ),
-                                onChanged: (data) {
-                                  user.name = data;
-                                },
+                                filled: true,
+                                fillColor: AppColors.greyLight,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 16,
+                                ),
                               ),
-                              const SizedBox(height: 20),
-                              _buildFieldLabel('Email Address'),
-                              const SizedBox(height: 10),
-                              CustomTextField(
-                                key: const ValueKey('signup_email'),
-                                hintText: 'emailName@gmail.com',
-                                hintLetterSpacing: 4,
-                                labelLetterSpacing: 4,
-                                inputType: TextInputType.emailAddress,
-                                textStyle: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.black,
+                            ),
+                            const SizedBox(height: 20),
+                            _buildFieldLabel('Email Address'),
+                            const SizedBox(height: 10),
+                            TextField(
+                              key: const ValueKey('signup_email'),
+                              style: AppFonts.bodyMedium.copyWith(
+                                color: AppColors.black,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              onChanged: (data) {
+                                user.email = data;
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'ahmad@example.com',
+                                hintStyle: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary.withOpacity(0.4),
                                 ),
                                 suffixIcon: Icon(
                                   Icons.email_rounded,
                                   color: AppColors.secondary.withOpacity(0.4),
                                 ),
-                                onChanged: (data) {
-                                  user.email = data;
-                                },
+                                filled: true,
+                                fillColor: AppColors.greyLight,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 16,
+                                ),
                               ),
-                              const SizedBox(height: 20),
-                              _buildFieldLabel('Phone Number'),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 64,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 16,
+                            ),
+                            const SizedBox(height: 20),
+                            _buildFieldLabel('Phone Number'),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 64,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.greyLight,
+                                    borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(
+                                      color: Colors.grey.shade200,
+                                      width: 1,
                                     ),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.greyLight,
-                                      borderRadius: BorderRadius.circular(14),
-                                      border: Border.all(
-                                        color: Colors.grey.shade200,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "+963",
-                                        style: AppFonts.labelLarge.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "+963",
+                                      style: AppFonts.labelLarge.copyWith(
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: CustomTextField(
-                                      key: const ValueKey('signup_phone'),
-                                      hintText: "91 111 111",
-                                      onlyNumbers: true,
-                                      hintLetterSpacing: 7,
-                                      labelLetterSpacing: 7,
-                                      inputType: TextInputType.phone,
-                                      textStyle: AppFonts.bodyMedium.copyWith(
-                                        color: AppColors.black,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: TextField(
+                                    key: const ValueKey('signup_phone'),
+                                    style: AppFonts.bodyMedium.copyWith(
+                                      color: AppColors.black,
+                                    ),
+                                    keyboardType: TextInputType.phone,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ],
+                                    onChanged: (data) {
+                                      user.phone_number =
+                                          int.tryParse(data) ?? 0;
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: '094 123 456',
+                                      hintStyle: AppFonts.bodyMedium.copyWith(
+                                        color: AppColors.secondary.withOpacity(
+                                          0.4,
+                                        ),
                                       ),
                                       suffixIcon: Icon(
                                         Icons.phone_rounded,
@@ -265,104 +320,209 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         ),
                                         size: 20,
                                       ),
-                                      onChanged: (data) {
-                                        user.phone_number =
-                                            int.tryParse(data) ?? 0;
-                                      },
+                                      filled: true,
+                                      fillColor: AppColors.greyLight,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                        borderSide: BorderSide(
+                                          color: AppColors.primary,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey.shade200,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            horizontal: 18,
+                                            vertical: 16,
+                                          ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ] else if (currentStep == 1) ...[
-                              const SizedBox(height: 10),
-                              _buildFieldLabel('Gender'),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  _buildGenderOption(
-                                    'Male',
-                                    Icons.male_rounded,
-                                  ),
-                                  const SizedBox(width: 14),
-                                  _buildGenderOption(
-                                    'Female',
-                                    Icons.female_rounded,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              _buildFieldLabel('Birthdate'),
-                              const SizedBox(height: 10),
-                              CustomTextField(
-                                key: const ValueKey('signup_birthdate'),
-                                controller: birthdateController,
-                                hintText: 'Select birthdate',
-                                hintLetterSpacing: 4,
-                                labelLetterSpacing: 4,
-                                textStyle: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.black,
                                 ),
-                                readOnly: true,
-                                inputType: TextInputType.datetime,
+                              ],
+                            ),
+                          ] else if (currentStep == 1) ...[
+                            const SizedBox(height: 10),
+                            _buildFieldLabel('Gender'),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                _buildGenderOption('Male', Icons.male_rounded),
+                                const SizedBox(width: 14),
+                                _buildGenderOption(
+                                  'Female',
+                                  Icons.female_rounded,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            _buildFieldLabel('Birthdate'),
+                            const SizedBox(height: 10),
+                            TextField(
+                              key: const ValueKey('signup_birthdate'),
+                              controller: birthdateController,
+                              style: AppFonts.bodyMedium.copyWith(
+                                color: AppColors.black,
+                              ),
+                              readOnly: true,
+                              keyboardType: TextInputType.datetime,
+                              onTap: () => _pickBirthdate(context),
+                              decoration: InputDecoration(
+                                hintText: '10-07-1990',
+                                hintStyle: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary.withOpacity(0.4),
+                                ),
                                 suffixIcon: Icon(
                                   Icons.calendar_today_rounded,
                                   color: AppColors.secondary.withOpacity(0.4),
                                 ),
-                                onTap: () => _pickBirthdate(context),
-                                onChanged: null,
-                              ),
-                              const SizedBox(height: 20),
-                              _buildFieldLabel('Address'),
-                              const SizedBox(height: 10),
-                              CustomTextField(
-                                key: const ValueKey('signup_address'),
-                                textStyle: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.black,
+                                filled: true,
+                                fillColor: AppColors.greyLight,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide.none,
                                 ),
-                                hintText: 'City, Country',
-                                hintLetterSpacing: 4,
-                                labelLetterSpacing: 4,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            _buildFieldLabel('Address'),
+                            const SizedBox(height: 10),
+                            TextField(
+                              key: const ValueKey('signup_address'),
+                              style: AppFonts.bodyMedium.copyWith(
+                                color: AppColors.black,
+                              ),
+                              onChanged: (data) {
+                                user.address = data;
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Damascus, Syria',
+                                hintStyle: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary.withOpacity(0.4),
+                                ),
                                 suffixIcon: Icon(
                                   Icons.location_on_rounded,
                                   color: AppColors.secondary.withOpacity(0.4),
                                 ),
-                                onChanged: (data) {
-                                  user.address = data;
-                                },
-                              ),
-                            ] else if (currentStep == 2) ...[
-                              const SizedBox(height: 10),
-                              _buildFieldLabel('ID / Passport Number'),
-                              const SizedBox(height: 10),
-                              CustomTextField(
-                                key: const ValueKey('signup_id_passport'),
-                                textStyle: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.black,
+                                filled: true,
+                                fillColor: AppColors.greyLight,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide.none,
                                 ),
-                                hintText: 'Document Number',
-                                hintLetterSpacing: 4,
-                                labelLetterSpacing: 4,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 16,
+                                ),
+                              ),
+                            ),
+                          ] else if (currentStep == 2) ...[
+                            const SizedBox(height: 10),
+                            _buildFieldLabel('ID / Passport Number'),
+                            const SizedBox(height: 10),
+                            TextField(
+                              key: const ValueKey('signup_id_passport'),
+                              style: AppFonts.bodyMedium.copyWith(
+                                color: AppColors.black,
+                              ),
+                              onChanged: (data) {
+                                user.id_passport = int.tryParse(data) ?? 0;
+                              },
+                              decoration: InputDecoration(
+                                hintText: '0123456789',
+                                hintStyle: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary.withOpacity(0.4),
+                                ),
                                 suffixIcon: Icon(
                                   Icons.badge_rounded,
                                   color: AppColors.secondary.withOpacity(0.4),
                                 ),
-                                onChanged: (data) {
-                                  user.id_passport = int.tryParse(data) ?? 0;
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              _buildFieldLabel('Password'),
-                              const SizedBox(height: 10),
-                              CustomTextField(
-                                key: const ValueKey('signup_password'),
-                                textStyle: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.black,
+                                filled: true,
+                                fillColor: AppColors.greyLight,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide.none,
                                 ),
-                                hintText: '••••••••',
-                                hintLetterSpacing: 7,
-                                labelLetterSpacing: 7,
-                                obscureText: obscurePassword,
-                                inputType: TextInputType.visiblePassword,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            _buildFieldLabel('Password'),
+                            const SizedBox(height: 10),
+                            TextField(
+                              key: const ValueKey('signup_password'),
+                              style: AppFonts.bodyMedium.copyWith(
+                                color: AppColors.black,
+                                letterSpacing: 0.5,
+                              ),
+                              obscureText: obscurePassword,
+                              keyboardType: TextInputType.visiblePassword,
+                              onChanged: (data) {
+                                user.password = data;
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Minimum 8 characters',
+                                hintStyle: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary.withOpacity(0.4),
+                                ),
                                 suffixIcon: IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -376,23 +536,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     color: AppColors.secondary.withOpacity(0.4),
                                   ),
                                 ),
-                                onChanged: (data) {
-                                  user.password = data;
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              _buildFieldLabel('Confirm Password'),
-                              const SizedBox(height: 10),
-                              CustomTextField(
-                                key: const ValueKey('signup_confirm_password'),
-                                textStyle: AppFonts.bodyMedium.copyWith(
-                                  color: AppColors.black,
+                                filled: true,
+                                fillColor: AppColors.greyLight,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide.none,
                                 ),
-                                hintText: '••••••••',
-                                hintLetterSpacing: 7,
-                                labelLetterSpacing: 7,
-                                obscureText: obscureConfirmPassword,
-                                inputType: TextInputType.visiblePassword,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            _buildFieldLabel('Confirm Password'),
+                            const SizedBox(height: 10),
+                            TextField(
+                              key: const ValueKey('signup_confirm_password'),
+                              style: AppFonts.bodyMedium.copyWith(
+                                color: AppColors.black,
+                                letterSpacing: 0.5,
+                              ),
+                              obscureText: obscureConfirmPassword,
+                              keyboardType: TextInputType.visiblePassword,
+                              onChanged: (data) {
+                                user.confirm_password = data;
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Retype your password',
+                                hintStyle: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary.withOpacity(0.4),
+                                ),
                                 suffixIcon: IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -407,175 +595,195 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     color: AppColors.secondary.withOpacity(0.4),
                                   ),
                                 ),
-                                onChanged: (data) {
-                                  user.confirm_password = data;
-                                },
-                              ),
-                            ],
-                            const SizedBox(height: 28),
-                            // Action button
-                            SizedBox(
-                              width: double.infinity,
-                              height: 56,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (currentStep < 2) {
-                                    setState(() {
-                                      currentStep++;
-                                    });
-                                  } else {
-                                    // Final Submit - Print user data
-                                    print("=== User Information ===");
-                                    print("Name: ${user.name}");
-                                    print("Email: ${user.email}");
-                                    print("Phone Number: ${user.phone_number}");
-                                    print("Gender: ${user.gender}");
-                                    print("Birthdate: ${user.birthdate}");
-                                    print("Address: ${user.address}");
-                                    print("ID/Passport: ${user.id_passport}");
-                                    print("Password: ${user.password}");
-                                    print(
-                                      "Confirm Password: ${user.confirm_password}",
-                                    );
-                                    print("Is Verified: ${user.Is_verified}");
-                                    print("========================");
-
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            HomeScreen(userName: user.name),
-                                      ),
-                                    );
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primary,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
+                                filled: true,
+                                fillColor: AppColors.greyLight,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                    width: 1.5,
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      currentStep == 2 ? "Verify" : "Next",
-                                      style: AppFonts.labelLarge.copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                      ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                          const SizedBox(height: 28),
+                          // Action button
+                          SizedBox(
+                            width: double.infinity,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (currentStep < 2) {
+                                  setState(() {
+                                    currentStep++;
+                                  });
+                                } else {
+                                  // Final Submit - Print user data
+                                  print("=== User Information ===");
+                                  print("Name: ${user.name}");
+                                  print("Email: ${user.email}");
+                                  print("Phone Number: ${user.phone_number}");
+                                  print("Gender: ${user.gender}");
+                                  print("Birthdate: ${user.birthdate}");
+                                  print("Address: ${user.address}");
+                                  print("ID/Passport: ${user.id_passport}");
+                                  print("Password: ${user.password}");
+                                  print(
+                                    "Confirm Password: ${user.confirm_password}",
+                                  );
+                                  print("Is Verified: ${user.Is_verified}");
+                                  print("========================");
+
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomeScreen(userName: user.name),
                                     ),
-                                    const SizedBox(width: 10),
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.2),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        currentStep == 2
-                                            ? Icons.check_rounded
-                                            : Icons.arrow_forward_rounded,
-                                        color: Colors.white,
-                                        size: 16,
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    currentStep == 2 ? "Verify" : "Next",
+                                    style: AppFonts.labelLarge.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      currentStep == 2
+                                          ? Icons.check_rounded
+                                          : Icons.arrow_forward_rounded,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          if (currentStep > 0) ...[
+                            const SizedBox(height: 12),
+                            Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    currentStep--;
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_back_rounded,
+                                      color: AppColors.secondary,
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      "Back",
+                                      style: AppFonts.labelLarge.copyWith(
+                                        color: AppColors.secondary,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
-                            if (currentStep > 0) ...[
-                              const SizedBox(height: 12),
-                              Center(
-                                child: TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      currentStep--;
-                                    });
-                                  },
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.arrow_back_rounded,
-                                        color: AppColors.secondary,
-                                        size: 16,
-                                      ),
-                                      const SizedBox(width: 6),
-                                      Text(
-                                        "Back",
-                                        style: AppFonts.labelLarge.copyWith(
-                                          color: AppColors.secondary,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
+                          ],
+                          if (currentStep == 0) ...[
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Already have an account?",
+                                  style: AppFonts.bodySmall.copyWith(
+                                    color: AppColors.secondary,
                                   ),
                                 ),
-                              ),
-                            ],
-                            if (currentStep == 0) ...[
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Already have an account?",
-                                    style: AppFonts.bodySmall.copyWith(
-                                      color: AppColors.secondary,
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LogInScreen(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Log In",
-                                      style: AppFonts.labelLarge.copyWith(
-                                        color: AppColors.primary,
-                                        fontWeight: FontWeight.bold,
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LogInScreen(),
                                       ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Log In",
+                                    style: AppFonts.labelLarge.copyWith(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
+                                ),
+                              ],
+                            ),
                           ],
-                        ),
+                        ],
                       ),
-                      const SizedBox(height: 24),
+                    ),
 
-                      // Security note
-                      const SizedBox(height: 24),
-                      // Footer
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildFooterItem(
-                              Icons.verified_user_rounded,
-                              'HIPAA COMPLIANT',
-                            ),
-                            Container(
-                              width: 1,
-                              height: 16,
-                              color: Colors.grey.shade300,
-                            ),
-                            _buildFooterItem(Icons.lock_rounded, '256-BIT AES'),
-                          ],
-                        ),
+                    // Security note
+                    const SizedBox(height: 24),
+                    // Footer
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildFooterItem(
+                            Icons.verified_user_rounded,
+                            'HIPAA COMPLIANT',
+                          ),
+                          Container(
+                            width: 1,
+                            height: 16,
+                            color: Colors.grey.shade300,
+                          ),
+                          _buildFooterItem(Icons.lock_rounded, '256-BIT AES'),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -624,7 +832,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
               color: isActive ? AppColors.primary : AppColors.secondary,
               letterSpacing: 0.5,
-              fontSize: 10,
+              fontSize: 12,
             ),
           ),
         ],
