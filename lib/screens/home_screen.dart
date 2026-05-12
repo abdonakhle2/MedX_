@@ -32,24 +32,26 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      appBar: buildAppBar(),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: currentIndex,
-        onTap: _onNavTap,
-      ),
-      body: SingleChildScrollView(
-        physics: const ScrollPhysics(),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            child: Column(
-              children: [
-                buildHeaderPage(),
-                const SizedBox(height: 20),
-                buildBodyPage(),
-              ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        extendBody: true,
+        bottomNavigationBar: BottomNavBar(
+          currentIndex: currentIndex,
+          onTap: _onNavTap,
+        ),
+        body: SingleChildScrollView(
+          physics: const ScrollPhysics(),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              child: Column(
+                children: [
+                  buildHeaderPage(),
+                  const SizedBox(height: 20),
+                  buildBodyPage(),
+                ],
+              ),
             ),
           ),
         ),
@@ -382,33 +384,6 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ],
       ),
-    );
-  }
-
-  AppBar buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      surfaceTintColor: Colors.transparent,
-      elevation: 0,
-      title: Image.asset('assets/images/logo.png', width: 120, height: 60),
-      centerTitle: true,
-      actions: [
-        Container(
-          margin: const EdgeInsets.only(right: 16),
-          decoration: BoxDecoration(
-            color: AppColors.greyLight,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: IconButton(
-            icon: Icon(
-              Icons.notifications_none_rounded,
-              color: AppColors.primary,
-              size: 22,
-            ),
-            onPressed: () {},
-          ),
-        ),
-      ],
     );
   }
 }

@@ -89,30 +89,30 @@ class _CenterDetailsScreenState extends State<CenterDetailsScreen> {
           const SizedBox(height: 28),
           Padding(
             padding: const EdgeInsets.only(left: 4),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  Icon(
                     Icons.medical_services_rounded,
                     color: AppColors.primary,
                     size: 20,
                   ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  "Clinical Departments",
-                  style: AppFonts.headlineMedium.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.3,
+                  const SizedBox(width: 12),
+                  Text(
+                    "Clinical Departments",
+                    style: AppFonts.headlineMedium.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.3,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),

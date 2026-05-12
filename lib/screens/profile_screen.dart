@@ -23,70 +23,72 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _navIndex,
-        onTap: _onNavTap,
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.transparent,
-            elevation: 0,
-            pinned: true,
-            centerTitle: true,
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    gradient: AppGradients.primaryGradient,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Symbols.person,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  'Profile',
-                  style: AppFonts.headlineMedium.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        extendBody: true,
+        bottomNavigationBar: BottomNavBar(
+          currentIndex: _navIndex,
+          onTap: _onNavTap,
+        ),
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildProfileHeader(),
-                  const SizedBox(height: 30),
-                  _buildContactCard(),
-                  const SizedBox(height: 20),
-                  _buildIdentityCard(),
-                  const SizedBox(height: 30),
-                  _buildResidentialCard(),
-                  const SizedBox(height: 20),
-                  _buildVerificationCard(),
-                  const SizedBox(height: 30),
-                  _buildLogoutItem(),
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      gradient: AppGradients.primaryGradient,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Symbols.person,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    'Profile',
+                    style: AppFonts.headlineMedium.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-        ],
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildProfileHeader(),
+                    const SizedBox(height: 30),
+                    _buildContactCard(),
+                    const SizedBox(height: 20),
+                    _buildIdentityCard(),
+                    const SizedBox(height: 30),
+                    _buildResidentialCard(),
+                    const SizedBox(height: 20),
+                    _buildVerificationCard(),
+                    const SizedBox(height: 30),
+                    _buildLogoutItem(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
