@@ -38,19 +38,19 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   @override
   void initState() {
     super.initState();
-    // عند فتح الشاشة، يكون التاريخ المختار هو اليوم
+   
     selectedDate = DateTime(today.year, today.month, today.day);
-    // الشهر المعروض يبدأ من الشهر الحالي
+  
     displayedMonth = DateTime(today.year, today.month);
   }
 
-  // دالة مساعدة للحصول على اسم اليوم المختصر
+
   String _getWeekDayName(DateTime date) {
     List<String> days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
     return days[date.weekday - 1];
   }
 
-  // دالة مساعدة للحصول على اسم الشهر
+
   String _getMonthName(int month) {
     const months = [
       "January",

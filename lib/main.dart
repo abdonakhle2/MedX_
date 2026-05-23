@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:project_1/screens/booking_screen.dart';
 import 'package:project_1/screens/home_screen.dart';
 import 'package:project_1/screens/log_in_screen.dart';
 import 'package:project_1/screens/search_screen.dart';
 import 'package:project_1/screens/profile_screen.dart';
 import 'package:project_1/screens/sign_up_screen.dart';
-import 'package:project_1/constants/constants.dart';
 import 'package:project_1/screens/splash_view.dart';
 
 void main() {

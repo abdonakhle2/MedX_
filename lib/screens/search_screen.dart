@@ -91,8 +91,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               color: AppColors.primary,
                             ),
                           ),
-                          hintText:
-                              'Search for doctors, departments, or centers',
+                          hintText: 'Search for doctors or centers',
                           hintStyle: AppFonts.bodyMedium.copyWith(
                             color: AppColors.secondary.withOpacity(0.5),
                           ),
@@ -155,18 +154,16 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ? CardClinic()
                                 : buildDoctorCard(
                                     Doctor(
-                                      id: 1,
+                                      doc_id: '1',
                                       name_en: 'ali ahmad',
                                       name_ar: 'علي احمد',
                                       birthdate: '2/3/2000',
-                                      id_passport: 123,
-                                      photo: Image.asset(
-                                        'assets/images/doctor1.png',
-                                        fit: BoxFit.cover,
-                                      ),
+                                      id_passport: '12',
+                                      photo: '',
                                       hourly_rate: 12,
                                       work_hours: '4',
                                       specialization: 'cardiology',
+                                      appointments: [],
                                     ),
                                   ),
                           );

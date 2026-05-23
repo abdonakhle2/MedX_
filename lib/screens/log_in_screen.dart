@@ -36,9 +36,9 @@ class _LogInScreenState extends State<LogInScreen>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 40),
-              // Logo
-              Image.asset('assets/images/logo.png', width: 150, height: 150),
 
+              // Logo
+              // Image.asset('assets/images/logo.png', width: 150, height: 150),
               Text(
                 'Human-Centric Authority in Healthcare.',
                 style: AppFonts.bodyMedium.copyWith(color: AppColors.secondary),
@@ -77,7 +77,9 @@ class _LogInScreenState extends State<LogInScreen>
                     child: Column(
                       children: [
                         // Welcome Header
-                        const SizedBox(height: 28),
+                        // const SizedBox(height: 20),
+                        Text('Welcome Back', style: AppFonts.headlineLarge),
+                        const SizedBox(height: 20),
                         // Phone Number
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,

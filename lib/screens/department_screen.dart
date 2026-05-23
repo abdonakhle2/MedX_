@@ -17,16 +17,17 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
   final int _navIndex = 0;
 
   Doctor myDoctor = Doctor(
-    id: 1,
+    doc_id: '1',
     name_en: "Dr. Julian Vane",
     name_ar: "د. جوليان فاين",
     specialization: "Cardiology",
     birthdate: "1980-05-15",
-    id_passport: 12345678,
+    id_passport: '12345678',
     // هنا نقوم بإنشاء ويدجت Image وتمريره
-    photo: Image.asset('assets/images/doctor1.png', fit: BoxFit.cover),
+    photo: '',
     hourly_rate: 150.0,
     work_hours: "9 AM - 5 PM",
+    appointments: []
   );
 
   @override
@@ -122,20 +123,19 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
 
           const SizedBox(height: 32),
           GridView.builder(
-            itemCount: 5,
+            itemCount: 10,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.7,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 250,
+              mainAxisExtent: 300,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
             ),
             itemBuilder: (context, index) {
-              return buildDoctorCard(myDoctor);
+              return buildDoctorCard(myDoctor, isGridView: true);
             },
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );
