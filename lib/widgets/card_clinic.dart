@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/screens/center_details_screen.dart';
+import 'package:project_1/features/home/presentation/view/center_details_screen.dart';
 
 class CardClinic extends StatefulWidget {
   const CardClinic({super.key});
@@ -11,6 +11,7 @@ class CardClinic extends StatefulWidget {
 
 class _CardClinicState extends State<CardClinic> {
   bool _isPressed = false;
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +88,42 @@ class _CardClinicState extends State<CardClinic> {
                               AppColors.cardBg.withOpacity(0.8),
                             ],
                           ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: AppShadows.softShadow,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isFavorite = !isFavorite;
+                                });
+                              },
+                              icon: Icon(
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isFavorite
+                                    ? AppColors.error
+                                    : AppColors.secondary,
+                                size: 20,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

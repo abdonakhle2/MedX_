@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/models/doctor.dart';
-import 'package:project_1/screens/appointment_screen.dart';
+import 'package:project_1/features/home/presentation/view/appointment_screen.dart';
 
 Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
   return Container(
@@ -10,6 +10,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
       borderRadius: BorderRadius.circular(20),
       color: Colors.white,
       boxShadow: AppShadows.cardShadow,
+      border: Border.all(color: AppColors.black.withOpacity(0.3), width: 1.5),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,

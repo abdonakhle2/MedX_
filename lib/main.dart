@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:project_1/screens/booking_screen.dart';
-import 'package:project_1/screens/home_screen.dart';
-import 'package:project_1/screens/log_in_screen.dart';
-import 'package:project_1/screens/search_screen.dart';
-import 'package:project_1/screens/profile_screen.dart';
-import 'package:project_1/screens/sign_up_screen.dart';
-import 'package:project_1/screens/splash_view.dart';
+import 'package:project_1/features/booking/presentation/view/booking_screen.dart';
+import 'package:project_1/features/favorites/presentation/view/favorites_screen.dart';
+import 'package:project_1/features/home/presentation/view/home_screen.dart';
+import 'package:project_1/features/auth/presentation/view/log_in_screen.dart';
+import 'package:project_1/features/search/presentation/view/search_screen.dart';
+import 'package:project_1/features/profile/presentation/view/profile_screen.dart';
+import 'package:project_1/features/auth/presentation/view/sign_up_screen.dart';
+import 'package:project_1/features/splash/presentation/view/splash_view.dart';
 
 void main() {
   runApp(const TheApp());
@@ -27,6 +28,7 @@ class TheApp extends StatelessWidget {
         '/search': (context) => const SearchScreen(),
         '/bookings': (context) => const BookingScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/favorites': (context) => const FavoritesScreen(),
       },
       // theme: ThemeData(
       //   useMaterial3: true,

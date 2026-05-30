@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Reviews {
   final String id;
   final String user_id;
@@ -22,13 +20,13 @@ class Reviews {
       comment: json['comment']?.toString() ?? '',
     );
   }
-  Map<String,dynamic>toJson(){
-    return{
-      'id':id,
-      'user_id':user_id,
-      'appointments_id':appointments_id,
-      'rating':rating,
-      'comment':comment,
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user_id': user_id,
+      'appointments_id': appointments_id,
+      'rating': rating,
+      'comment': comment,
     };
   }
 }
