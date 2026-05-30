@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/features/home/presentation/view/widgets/center_details_widget/custom_info_badge.dart';
 
 class CustomCenterDetailsHeaderImage extends StatelessWidget {
   const CustomCenterDetailsHeaderImage({super.key});
@@ -50,14 +51,17 @@ class CustomCenterDetailsHeaderImage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildInfoBadge('4.5 ⭐', 'EXPERIENCE'),
+                    const CustomInfoBadge(value: '4.5 ⭐', label: 'EXPERIENCE'),
                     VerticalDivider(
                       color: Colors.white.withOpacity(0.3),
                       thickness: 1,
                       indent: 2,
                       endIndent: 2,
                     ),
-                    _buildInfoBadge('8 AM - 8 PM', 'OPERATING HOURS'),
+                    const CustomInfoBadge(
+                      value: '8 AM - 8 PM',
+                      label: 'OPERATING HOURS',
+                    ),
                   ],
                 ),
               ),
@@ -65,30 +69,6 @@ class CustomCenterDetailsHeaderImage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildInfoBadge(String value, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          value,
-          style: AppFonts.labelLarge.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: AppFonts.labelSmall.copyWith(
-            color: Colors.white.withOpacity(0.7),
-            letterSpacing: 1,
-            fontSize: 9,
-          ),
-        ),
-      ],
     );
   }
 }

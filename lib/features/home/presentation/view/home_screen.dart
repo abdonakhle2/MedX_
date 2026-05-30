@@ -25,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        extendBody: true,
         bottomNavigationBar: BottomNavBar(
           currentIndex: currentIndex,
           onTap: _onNavTap,
         ),
-        body: const SafeArea(child: HomeBody()),
+        extendBody: true,
+        body: HomeBody(),
       ),
     );
   }

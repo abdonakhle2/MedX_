@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_divider.dart';
+import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_state_item.dart';
 
 class CustomHomeStats extends StatelessWidget {
   const CustomHomeStats({super.key});
@@ -25,59 +27,35 @@ class CustomHomeStats extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Row(
-            children: [
-              _buildStatItem(
-                '500+',
-                'SPECIALISTS',
-                Icons.medical_services_rounded,
+            children: const [
+              CustomStateItem(
+                value: '500+',
+                label: 'SPECIALISTS',
+                icon: Icons.medical_services_rounded,
               ),
-              _buildDivider(),
-              _buildStatItem('15', 'DISTRICTS', Icons.location_city_rounded),
+              CustomDivider(),
+              CustomStateItem(
+                value: '15',
+                label: 'DISTRICTS',
+                icon: Icons.location_city_rounded,
+              ),
             ],
           ),
           const SizedBox(height: 16),
           Row(
-            children: [
-              _buildStatItem('24/7', 'SUPPORT', Icons.support_agent_rounded),
-              _buildDivider(),
-              _buildStatItem('4.8', 'AVG RATING', Icons.star_rounded),
+            children: const [
+              CustomStateItem(
+                value: '24/7',
+                label: 'SUPPORT',
+                icon: Icons.support_agent_rounded,
+              ),
+              CustomDivider(),
+              CustomStateItem(
+                value: '4.8',
+                label: 'AVG RATING',
+                icon: Icons.star_rounded,
+              ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Container(
-      width: 1,
-      height: 50,
-      color: Colors.white.withOpacity(0.2),
-    );
-  }
-
-  Widget _buildStatItem(String value, String label, IconData icon) {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: Colors.white.withOpacity(0.6), size: 20),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: AppFonts.headlineSmall.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: AppFonts.labelSmall.copyWith(
-              color: Colors.white.withOpacity(0.6),
-              letterSpacing: 1.2,
-              fontSize: 10,
-            ),
           ),
         ],
       ),
