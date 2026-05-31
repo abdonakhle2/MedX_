@@ -37,9 +37,14 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: NeverScrollableScrollPhysics(),
-      children: [const CustomSignUpAppBar(), SingUpBody(context)],
+    return SafeArea(
+      child: ListView(
+        physics: BouncingScrollPhysics(),
+        children: [
+          Center(child: const CustomSignUpAppBar()),
+          SingUpBody(context),
+        ],
+      ),
     );
   }
 
@@ -54,7 +59,7 @@ class _SignUpBodyState extends State<SignUpBody> {
             const SizedBox(height: 25),
             // Step indicators
             CustomStepIndicator(),
-            SizedBox(height: MediaQuery.of(context).size.height * .2),
+            SizedBox(height: 30),
             // Form container
             SingUpForm(context),
 
@@ -115,7 +120,6 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   Container SingUpForm(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .5,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -123,6 +127,7 @@ class _SignUpBodyState extends State<SignUpBody> {
         boxShadow: AppShadows.cardShadow,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (currentStep == 0) ...[

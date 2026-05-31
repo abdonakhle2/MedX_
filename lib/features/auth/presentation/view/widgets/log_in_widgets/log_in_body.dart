@@ -9,25 +9,27 @@ class LogInBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        physics: const ScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 40),
-            // Logo
-            // Image.asset('assets/images/logo.png', width: 150, height: 150),
-            const CustomHeadText(),
-            const SizedBox(height: 8),
-            const CustomHeadLine(),
-            const SizedBox(height: 20),
-            // Main Card
-            const CustomLogInBody(),
-            const SizedBox(height: 24),
-            // Footer
-            const CustomLogInTail(),
-          ],
+    return SafeArea(
+      child: Center(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 40),
+
+              // Image.asset('assets/images/logo.png', width: 150, height: 150),
+              const CustomHeadText(),
+              const SizedBox(height: 8),
+              const CustomHeadLine(),
+              const SizedBox(height: 20),
+              // Main Card
+              const CustomLogInBody(),
+              const SizedBox(height: 24),
+              // Footer
+              const CustomLogInTail(),
+            ],
+          ),
         ),
       ),
     );

@@ -7,7 +7,7 @@ class CustomCenterDetailsAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       automaticallyImplyLeading: false,
@@ -29,7 +29,7 @@ class CustomCenterDetailsAppBar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            'MedX',
+            'Center Details',
             style: AppFonts.headlineMedium.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w800,

@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/custom_theme_mode_switch.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatefulWidget {
   const CustomAppBar({super.key});
 
   @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  bool isDarkMode = false;
+  @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
+      pinned: true,
       automaticallyImplyLeading: false,
-      centerTitle: true,
+      centerTitle: false,
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -35,6 +43,19 @@ class CustomAppBar extends StatelessWidget {
           ),
         ],
       ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: CustomThemeModeSwitch(
+            isDarkMode: isDarkMode,
+            onThemeChanged: (value) {
+              setState(() {
+                isDarkMode = value;
+              });
+            },
+          ),
+        ),
+      ],
     );
   }
 }

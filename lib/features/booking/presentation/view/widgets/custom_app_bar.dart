@@ -7,7 +7,7 @@ class CustomBookingAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: AppColors.neutral,
+      // backgroundColor: AppColors.neutral,
       automaticallyImplyLeading: false,
       centerTitle: true,
       title: Row(

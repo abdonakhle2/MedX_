@@ -7,7 +7,7 @@ class CustomSearchAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: AppColors.white,
+      // backgroundColor: AppColors.white,
       automaticallyImplyLeading: false,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
