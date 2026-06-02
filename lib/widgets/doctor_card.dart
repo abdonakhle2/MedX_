@@ -8,7 +8,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
     margin: EdgeInsets.symmetric(vertical: 20),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      // color: Colors.white,
+      color: Colors.white,
       boxShadow: AppShadows.cardShadow,
       border: Border.all(color: AppColors.black.withOpacity(0.3), width: 1.5),
     ),

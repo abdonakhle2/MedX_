@@ -5,6 +5,7 @@ import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widget
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_step_indiactor.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_sing_up_app_bar.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_tail_text_sign_up.dart';
+import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_upload_id_passport.dart';
 import 'package:project_1/features/home/presentation/view/home_screen.dart';
 import 'package:project_1/models/user.dart';
 
@@ -162,6 +163,9 @@ class _SignUpBodyState extends State<SignUpBody> {
             const BuildFieldLabel(text: 'ID / Passport Number'),
             const SizedBox(height: 10),
             CustomIdPassportTextField(),
+            const SizedBox(height: 20),
+            const CustomUploadIdPassportFile(),
+
             const SizedBox(height: 20),
             const BuildFieldLabel(text: 'Password'),
             const SizedBox(height: 10),

@@ -32,7 +32,7 @@ class _CardClinicState extends State<CardClinic> {
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            // color: AppColors.cardBg,
+            color: AppColors.cardBg,
             borderRadius: BorderRadius.circular(24),
             boxShadow: AppShadows.cardShadow,
           ),
