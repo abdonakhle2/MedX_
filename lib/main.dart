@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_1/core/theme/cubit/theme_cubit.dart';
 import 'package:project_1/features/booking/presentation/view/booking_screen.dart';
 import 'package:project_1/features/favorites/presentation/view/favorites_screen.dart';
 import 'package:project_1/features/home/presentation/view/home_screen.dart';
@@ -17,43 +19,32 @@ class TheApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/splash',
-      routes: {
-        '/splash': (context) => const SplashView(),
-        '/login': (context) => const LogInScreen(),
-        '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/search': (context) => const SearchScreen(),
-        '/bookings': (context) => const BookingScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/favorites': (context) => const FavoritesScreen(),
-      },
-      // theme: ThemeData(
-      //   useMaterial3: true,
-      //   colorScheme: ColorScheme.fromSeed(
-      //     seedColor: AppColors.primary,
-      //     primary: AppColors.primary,
-      //     secondary: AppColors.secondary,
-      //     tertiary: AppColors.tertiary,
-      //     surface: AppColors.neutral,
-      //   ),
-      //   textTheme: TextTheme(
+    return BlocProvider(
+      create: (context) => ThemeCubit(),
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, themeMode) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/splash',
+            routes: {
+              '/splash': (context) => const SplashView(),
+              '/login': (context) => const LogInScreen(),
+              '/signup': (context) => const SignUpScreen(),
+              '/home': (context) => const HomeScreen(),
+              '/search': (context) => const SearchScreen(),
+              '/bookings': (context) => const BookingScreen(),
+              '/profile': (context) => const ProfileScreen(),
+              '/favorites': (context) => const FavoritesScreen(),
+            },
+            themeMode: themeMode,
 
-      //     headlineLarge: AppFonts.headlineLarge,
-      //     headlineMedium: AppFonts.headlineMedium,
-      //     headlineSmall: AppFonts.headlineSmall,
-      //     bodyLarge: AppFonts.bodyLarge,
-      //     bodyMedium: AppFonts.bodyMedium,
-      //     bodySmall: AppFonts.bodySmall,
-      //     labelLarge: AppFonts.labelLarge,
-      //     labelMedium: AppFonts.labelMedium,
-      //     labelSmall: AppFonts.labelSmall,
-      //   ),
-      // ).copyWith(scaffoldBackgroundColor: Colors.white,textTheme
-      //),
-      theme: ThemeData.light().copyWith(scaffoldBackgroundColor: Colors.white),
+            theme: ThemeData.light(
+              useMaterial3: true,
+            ).copyWith(scaffoldBackgroundColor: Colors.white),
+            darkTheme: ThemeData.dark(useMaterial3: true),
+          );
+        },
+      ),
     );
   }
 }

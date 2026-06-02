@@ -10,6 +10,12 @@ class CustomSignUpAppBar extends StatelessWidget {
       padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
       child: Row(
         children: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back),
+            color: AppColors.primary,
+            onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+          ),
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(

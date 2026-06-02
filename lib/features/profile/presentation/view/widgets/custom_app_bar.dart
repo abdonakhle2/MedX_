@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/theme/cubit/theme_cubit.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_theme_mode_switch.dart';
 
-class CustomAppBar extends StatefulWidget {
+class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
 
   @override
-  State<CustomAppBar> createState() => _CustomAppBarState();
-}
-
-class _CustomAppBarState extends State<CustomAppBar> {
-  bool isDarkMode = false;
-  @override
   Widget build(BuildContext context) {
+    final isDarkMode = context.watch<ThemeCubit>().isDarkMod;
     return SliverAppBar(
       // backgroundColor: Colors.white,
-      surfaceTintColor: Colors.transparent,
+      // surfaceTintColor: Colors.transparent,
       elevation: 0,
       pinned: true,
       automaticallyImplyLeading: false,
@@ -36,7 +33,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           Text(
             'Profile',
             style: AppFonts.headlineMedium.copyWith(
-              color: AppColors.primary,
+              // color: AppColors.primary,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
             ),
@@ -49,9 +46,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           child: CustomThemeModeSwitch(
             isDarkMode: isDarkMode,
             onThemeChanged: (value) {
-              setState(() {
-                isDarkMode = value;
-              });
+              context.read<ThemeCubit>().toggleThemeMode(value);
             },
           ),
         ),

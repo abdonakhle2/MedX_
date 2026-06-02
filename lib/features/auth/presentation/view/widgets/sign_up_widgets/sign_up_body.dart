@@ -65,6 +65,7 @@ class _SignUpBodyState extends State<SignUpBody> {
 
             // Security note
             const SizedBox(height: 24),
+
             // Footer
             const CustomTailTextSignUp(),
           ],
