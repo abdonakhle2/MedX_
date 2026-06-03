@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/models/doctor.dart';
-import 'package:project_1/widgets/doctor_card.dart';
+import 'package:project_1/core/widgets/doctor_card.dart';
 
 class CustomDoctorGridView extends StatelessWidget {
   const CustomDoctorGridView({super.key});

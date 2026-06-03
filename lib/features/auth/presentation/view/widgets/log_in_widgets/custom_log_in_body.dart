@@ -5,9 +5,58 @@ import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_footer_text.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_password_text_field.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_phone_number_text_field.dart';
+import 'package:project_1/features/home/presentation/view/home_screen.dart';
 
-class CustomLogInBody extends StatelessWidget {
+class CustomLogInBody extends StatefulWidget {
   const CustomLogInBody({super.key});
+
+  @override
+  State<CustomLogInBody> createState() => _CustomLogInBodyState();
+}
+
+class _CustomLogInBodyState extends State<CustomLogInBody> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void submitLogin() {
+    if (formKey.currentState?.validate() ?? false) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+    }
+  }
+
+  String? validatePhone(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Phone number is required';
+    }
+
+    final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digits.length < 9 || digits.length > 9) {
+      return 'Enter a valid phone number';
+    }
+
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +73,7 @@ class CustomLogInBody extends StatelessWidget {
           24,
         ).copyWith(bottom: 24 + MediaQuery.of(context).viewInsets.bottom),
         child: Form(
+          key: formKey,
           child: Column(
             children: [
               // Welcome Header
@@ -43,7 +93,10 @@ class CustomLogInBody extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              CustomPhoneNumberTextField(),
+              CustomPhoneNumberTextField(
+                controller: phoneController,
+                validator: validatePhone,
+              ),
               const SizedBox(height: 20),
               // Password
               Row(
@@ -58,7 +111,10 @@ class CustomLogInBody extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              CustomPasswordTextField(),
+              CustomPasswordTextField(
+                controller: passwordController,
+                validator: validatePassword,
+              ),
               const SizedBox(height: 10),
               // Forgot Password
               Align(
@@ -75,7 +131,7 @@ class CustomLogInBody extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              CustomLogInButton(),
+              CustomLogInButton(onTap: submitLogin),
               const SizedBox(height: 24),
               // Divider
               CustomFooterText(),

@@ -13,7 +13,7 @@ class CustomUploadIdPassportFile extends StatelessWidget {
         backgroundColor: AppColors.white,
         foregroundColor: AppColors.primaryDark,
         padding: const EdgeInsets.all(22),
-        elevation: 0.1,
+        elevation: 1.1,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
       child: Row(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/utils/function/launch_url.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomCenterDetailsLocation extends StatelessWidget {
@@ -57,7 +58,11 @@ class CustomCenterDetailsLocation extends StatelessWidget {
             height: 48,
             child: ElevatedButton(
               onPressed: () {
-                _openGoogleMaps(latitude: 47.6062, longitude: -122.3321);
+                _openGoogleMaps(
+                  latitude: 47.6062,
+                  longitude: -122.3321,
+                  context: context,
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.white,
@@ -95,14 +100,20 @@ class CustomCenterDetailsLocation extends StatelessWidget {
   Future<void> _openGoogleMaps({
     required double latitude,
     required double longitude,
+    required BuildContext context,
   }) async {
     try {
-      final Uri webUrl = Uri.parse(
-        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
+      // final Uri webUrl = Uri.parse(
+      //   'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
+      // );
+      // if (await canLaunchUrl(webUrl)) {
+      //   await launchUrl(webUrl, mode: LaunchMode.externalApplication);
+      // }
+      launchCustomer(
+        url:
+            'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
+        context: context,
       );
-      if (await canLaunchUrl(webUrl)) {
-        await launchUrl(webUrl, mode: LaunchMode.externalApplication);
-      }
     } catch (_) {}
   }
 }

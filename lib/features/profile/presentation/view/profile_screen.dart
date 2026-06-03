@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_body.dart';
-import 'package:project_1/widgets/bottom_nav_bar.dart';
+import 'package:project_1/core/widgets/bottom_nav_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

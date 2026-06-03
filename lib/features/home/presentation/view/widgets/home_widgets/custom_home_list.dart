@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_1/widgets/card_clinic.dart';
+import 'package:project_1/core/widgets/card_clinic.dart';
 
 class CustomHomeList extends StatelessWidget {
   const CustomHomeList({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:project_1/widgets/glass_card.dart';
+import 'package:project_1/core/widgets/glass_card.dart';
 import 'package:project_1/constants/constants.dart';
 
 class BottomNavBar extends StatelessWidget {

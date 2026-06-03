@@ -165,7 +165,6 @@ class _SignUpBodyState extends State<SignUpBody> {
             CustomIdPassportTextField(),
             const SizedBox(height: 20),
             const CustomUploadIdPassportFile(),
-
             const SizedBox(height: 20),
             const BuildFieldLabel(text: 'Password'),
             const SizedBox(height: 10),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/features/favorites/presentation/view/widgets/custom_app_bar.dart';
 
-import 'package:project_1/widgets/card_clinic.dart';
+import 'package:project_1/core/widgets/card_clinic.dart';
 
 class FavoritesBody extends StatelessWidget {
   const FavoritesBody({super.key});

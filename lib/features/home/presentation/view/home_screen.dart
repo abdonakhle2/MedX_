@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/features/home/presentation/view/widgets/home_widgets/home_body.dart';
-import 'package:project_1/widgets/bottom_nav_bar.dart';
+import 'package:project_1/core/widgets/bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? userName;

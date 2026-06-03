@@ -48,7 +48,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
@@ -57,9 +57,9 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
       child: Column(
         children: [
           _buildDateSelector(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 0),
           Container(height: 1, color: AppColors.greyLight),
-          const SizedBox(height: 20),
+          const SizedBox(height: 0),
           CustomTimeGrid(),
         ],
       ),
@@ -157,7 +157,6 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
                 index + 1,
               );
 
-              // التحقق إذا كان اليوم في الماضي (قبل تاريخ اليوم)
               bool isPast = dateItem.isBefore(
                 DateTime(today.year, today.month, today.day),
               );
@@ -200,7 +199,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeInOut,
-        margin: const EdgeInsets.only(right: 10),
+        margin: const EdgeInsets.only(right: 12),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         decoration: BoxDecoration(
           gradient: isSelected ? AppGradients.primaryGradient : null,

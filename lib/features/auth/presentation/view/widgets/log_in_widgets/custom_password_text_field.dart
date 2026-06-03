@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 
 class CustomPasswordTextField extends StatefulWidget {
-  const CustomPasswordTextField({super.key});
+  const CustomPasswordTextField({super.key, this.controller, this.validator});
+
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   State<CustomPasswordTextField> createState() =>
@@ -14,7 +17,10 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      controller: widget.controller,
+      validator: widget.validator,
+
       style: AppFonts.bodyMedium.copyWith(
         color: AppColors.black,
         letterSpacing: 0.5,

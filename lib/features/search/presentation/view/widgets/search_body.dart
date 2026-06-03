@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/features/search/presentation/view/widgets/custom_app_bar.dart';
 import 'package:project_1/models/doctor.dart';
-import 'package:project_1/widgets/card_clinic.dart';
-import 'package:project_1/widgets/doctor_card.dart';
+import 'package:project_1/core/widgets/card_clinic.dart';
+import 'package:project_1/core/widgets/doctor_card.dart';
 
 class SearchBody extends StatefulWidget {
   const SearchBody({super.key});

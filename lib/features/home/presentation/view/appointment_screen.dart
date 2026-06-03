@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/appointment_body.dart';
 import 'package:project_1/models/doctor.dart';
-import 'package:project_1/widgets/bottom_nav_bar.dart';
+import 'package:project_1/core/widgets/bottom_nav_bar.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final Doctor myDoctor;
@@ -23,8 +23,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     final routes = ['/home', '/favorites', '/search', '/bookings', '/profile'];
     Navigator.pushReplacementNamed(context, routes[index]);
   }
-
-  // الشهر الذي يتصفحه المستخدم حالياً
 
   @override
   Widget build(BuildContext context) {

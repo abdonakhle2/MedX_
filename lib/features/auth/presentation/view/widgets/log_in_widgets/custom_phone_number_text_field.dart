@@ -3,14 +3,22 @@ import 'package:flutter/services.dart';
 import 'package:project_1/constants/constants.dart';
 
 class CustomPhoneNumberTextField extends StatelessWidget {
-  const CustomPhoneNumberTextField({super.key});
+  const CustomPhoneNumberTextField({
+    super.key,
+    this.controller,
+    this.validator,
+  });
+
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 64,
+          width: 54,
           padding: const EdgeInsets.symmetric(vertical: 15),
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -31,7 +39,9 @@ class CustomPhoneNumberTextField extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: TextField(
+          child: TextFormField(
+            controller: controller,
+            validator: validator,
             style: AppFonts.bodyMedium.copyWith(
               color: AppColors.black,
               letterSpacing: 1,

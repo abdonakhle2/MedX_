@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/features/favorites/presentation/view/widgets/favorites_body.dart';
-import 'package:project_1/widgets/bottom_nav_bar.dart';
+import 'package:project_1/core/widgets/bottom_nav_bar.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
