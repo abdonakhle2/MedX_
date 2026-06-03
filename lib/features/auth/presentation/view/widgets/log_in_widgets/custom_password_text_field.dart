@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 
 class CustomPasswordTextField extends StatefulWidget {
-  const CustomPasswordTextField({super.key, this.controller, this.validator});
+  const CustomPasswordTextField({super.key, this.controller});
 
   final TextEditingController? controller;
-  final String? Function(String?)? validator;
 
   @override
   State<CustomPasswordTextField> createState() =>
@@ -19,7 +18,15 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      validator: widget.validator,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Password is required';
+        }
+        if (value.length < 8) {
+          return 'Password must be at least 8 characters';
+        }
+        return null;
+      },
 
       style: AppFonts.bodyMedium.copyWith(
         color: AppColors.black,

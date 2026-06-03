@@ -35,29 +35,6 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
     }
   }
 
-  String? validatePhone(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Phone number is required';
-    }
-
-    final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digits.length < 9 || digits.length > 9) {
-      return 'Enter a valid phone number';
-    }
-
-    return null;
-  }
-
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Password is required';
-    }
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters';
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,10 +70,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                 ],
               ),
               const SizedBox(height: 10),
-              CustomPhoneNumberTextField(
-                controller: phoneController,
-                validator: validatePhone,
-              ),
+              CustomPhoneNumberTextField(controller: phoneController),
               const SizedBox(height: 20),
               // Password
               Row(
@@ -111,10 +85,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                 ],
               ),
               const SizedBox(height: 10),
-              CustomPasswordTextField(
-                controller: passwordController,
-                validator: validatePassword,
-              ),
+              CustomPasswordTextField(controller: passwordController),
               const SizedBox(height: 10),
               // Forgot Password
               Align(

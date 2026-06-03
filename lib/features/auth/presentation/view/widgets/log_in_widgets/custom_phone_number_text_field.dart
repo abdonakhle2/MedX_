@@ -3,14 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:project_1/constants/constants.dart';
 
 class CustomPhoneNumberTextField extends StatelessWidget {
-  const CustomPhoneNumberTextField({
-    super.key,
-    this.controller,
-    this.validator,
-  });
+  const CustomPhoneNumberTextField({super.key, this.controller});
 
   final TextEditingController? controller;
-  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +36,18 @@ class CustomPhoneNumberTextField extends StatelessWidget {
         Expanded(
           child: TextFormField(
             controller: controller,
-            validator: validator,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Phone number is required';
+              }
+
+              final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+              if (digits.length < 9 || digits.length > 9) {
+                return 'Enter a valid phone number';
+              }
+
+              return null;
+            },
             style: AppFonts.bodyMedium.copyWith(
               color: AppColors.black,
               letterSpacing: 1,
