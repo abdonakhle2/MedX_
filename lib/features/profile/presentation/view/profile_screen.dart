@@ -10,7 +10,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _navIndex = 4;
+  final int _navIndex = 4;
 
   void _onNavTap(int index) {
     if (index == _navIndex) return;

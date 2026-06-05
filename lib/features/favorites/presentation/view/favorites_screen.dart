@@ -10,7 +10,7 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  int _navIndex = 1;
+  final int _navIndex = 1;
   bool isPending = true;
 
   void _onNavTap(int index) {

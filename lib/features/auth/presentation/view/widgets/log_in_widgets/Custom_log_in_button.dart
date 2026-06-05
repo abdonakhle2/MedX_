@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/features/home/presentation/view/home_screen.dart';
 import 'package:project_1/core/widgets/custom_button.dart';
 
 class CustomLogInButton extends StatelessWidget {

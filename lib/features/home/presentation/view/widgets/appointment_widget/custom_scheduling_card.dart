@@ -33,15 +33,15 @@ String _getMonthName(int month) {
 
 class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
   DateTime today = DateTime.now();
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
   DateTime displayedMonth = DateTime(DateTime.now().year, DateTime.now().month);
-  String selectedTime = "02:30 PM";
+  TimeOfDay? selectedTime;
+
   @override
   void initState() {
     super.initState();
 
     selectedDate = DateTime(today.year, today.month, today.day);
-
     displayedMonth = DateTime(today.year, today.month);
   }
 
@@ -56,224 +56,251 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
       ),
       child: Column(
         children: [
-          _buildDateSelector(),
-          const SizedBox(height: 0),
+          _buildSelectedDateTimeHeader(context),
+
+          const SizedBox(height: 18),
           Container(height: 1, color: AppColors.greyLight),
-          const SizedBox(height: 0),
-          CustomTimeGrid(),
+          const SizedBox(height: 18),
         ],
       ),
     );
   }
 
-  Widget _buildDateSelector() {
-    // الحصول على عدد الأيام في الشهر المعروض حالياً
-    int daysInMonth = DateUtils.getDaysInMonth(
-      displayedMonth.year,
-      displayedMonth.month,
-    );
-
+  Widget _buildSelectedDateTimeHeader(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "${_getMonthName(displayedMonth.month)} ${displayedMonth.year}",
-              style: AppFonts.headlineSmall.copyWith(
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.3,
-              ),
+        Text(
+          'Appointment time',
+          style: AppFonts.labelLarge.copyWith(
+            color: AppColors.secondary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 12),
+        GestureDetector(
+          onTap: () => _showScheduleDialog(context),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+            decoration: BoxDecoration(
+              color: AppColors.greyLight,
+              borderRadius: BorderRadius.circular(18),
             ),
-            Row(
+            child: Row(
               children: [
                 Container(
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
-                    color: AppColors.greyLight,
-                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.primary.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        displayedMonth = DateTime(
-                          displayedMonth.year,
-                          displayedMonth.month - 1,
-                        );
-                      });
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_ios_rounded,
-                      size: 14,
-                      color: AppColors.primary,
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 36,
-                      minHeight: 36,
-                    ),
-                    padding: EdgeInsets.zero,
+                  child: Icon(
+                    Icons.calendar_month_rounded,
+                    color: AppColors.primary,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.greyLight,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        displayedMonth = DateTime(
-                          displayedMonth.year,
-                          displayedMonth.month + 1,
-                        );
-                      });
-                    },
-                    icon: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 14,
-                      color: AppColors.primary,
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 36,
-                      minHeight: 36,
-                    ),
-                    padding: EdgeInsets.zero,
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        selectedDate != null
+                            ? '${_getWeekDayName(selectedDate!)}, ${selectedDate!.day} ${_getMonthName(selectedDate!.month)} ${selectedDate!.year}'
+                            : 'No date selected',
+                        style: AppFonts.bodyLarge.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        selectedTime?.format(context) ?? 'No time selected',
+                        style: AppFonts.bodyMedium.copyWith(
+                          color: AppColors.secondary,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                Icon(Icons.edit_calendar_rounded, color: AppColors.primary),
               ],
             ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          child: Row(
-            children: List.generate(daysInMonth, (index) {
-              DateTime dateItem = DateTime(
-                displayedMonth.year,
-                displayedMonth.month,
-                index + 1,
-              );
-
-              bool isPast = dateItem.isBefore(
-                DateTime(today.year, today.month, today.day),
-              );
-              bool isSelected =
-                  selectedDate.year == dateItem.year &&
-                  selectedDate.month == dateItem.month &&
-                  selectedDate.day == dateItem.day;
-
-              return Opacity(
-                opacity: isPast ? 0.3 : 1.0,
-                child: IgnorePointer(
-                  ignoring: isPast,
-                  child: _buildDateItem(
-                    _getWeekDayName(dateItem),
-                    (index + 1).toString(),
-                    dateItem,
-                    isSelected,
-                  ),
-                ),
-              );
-            }),
           ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'Tap to change date and time',
+          style: AppFonts.bodySmall.copyWith(color: AppColors.secondary),
         ),
       ],
     );
   }
 
-  Widget _buildDateItem(
-    String day,
-    String date,
-    DateTime fullDate,
-    bool isSelected,
-  ) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedDate = fullDate;
-        });
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-        margin: const EdgeInsets.only(right: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-        decoration: BoxDecoration(
-          gradient: isSelected ? AppGradients.primaryGradient : null,
-          color: isSelected ? null : AppColors.greyLight,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: isSelected ? AppShadows.elevatedShadow : [],
-        ),
-        child: Column(
-          children: [
-            Text(
-              day,
-              style: AppFonts.labelSmall.copyWith(
-                color: isSelected
-                    ? Colors.white.withOpacity(0.7)
-                    : AppColors.secondary,
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              date,
-              style: AppFonts.headlineSmall.copyWith(
-                color: isSelected ? Colors.white : AppColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Future<void> _showScheduleDialog(BuildContext context) async {
+    DateTime tempDate = selectedDate ?? today;
+    TimeOfDay tempTime = selectedTime ?? const TimeOfDay(hour: 14, minute: 30);
 
-  Widget CustomTimeGrid() {
-    List<String> times = [
-      "09:00 AM",
-      "10:00 AM",
-      "11:00 AM",
-      "12:00 PM",
-      "01:00 PM",
-      "02:00 PM",
-    ];
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 2.4,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: times.length,
-      itemBuilder: (context, index) {
-        bool isSelected = times[index] == selectedTime;
-        return GestureDetector(
-          onTap: () => setState(() => selectedTime = times[index]),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              gradient: isSelected ? AppGradients.primaryGradient : null,
-              color: isSelected ? null : AppColors.greyLight,
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: isSelected ? AppShadows.elevatedShadow : [],
-            ),
-            child: Text(
-              times[index],
-              style: AppFonts.labelMedium.copyWith(
-                color: isSelected ? Colors.white : AppColors.secondary,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, dialogSetState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(22),
               ),
-            ),
-          ),
+              title: Text(
+                'Choose date & time',
+                style: AppFonts.headlineSmall.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 18,
+                      ),
+                      backgroundColor: AppColors.greyLight,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    onPressed: () async {
+                      final date = await showDatePicker(
+                        context: context,
+                        initialDate: tempDate,
+                        firstDate: today,
+                        lastDate: today.add(const Duration(days: 90)),
+                        helpText: 'Select appointment date',
+                      );
+                      if (date != null) {
+                        dialogSetState(() {
+                          tempDate = date;
+                        });
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(Icons.calendar_today_rounded),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Date',
+                                style: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${_getWeekDayName(tempDate)}, ${tempDate.day} ${_getMonthName(tempDate.month)} ${tempDate.year}',
+                                style: AppFonts.labelLarge.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 18,
+                      ),
+                      backgroundColor: AppColors.greyLight,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    onPressed: () async {
+                      final time = await showTimePicker(
+                        context: context,
+                        initialTime: tempTime,
+                      );
+                      if (time != null) {
+                        dialogSetState(() {
+                          tempTime = time;
+                        });
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(Icons.access_time_rounded),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Time',
+                                style: AppFonts.bodyMedium.copyWith(
+                                  color: AppColors.secondary,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                tempTime.format(context),
+                                style: AppFonts.labelLarge.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'Cancel',
+                    style: AppFonts.labelLarge.copyWith(
+                      color: AppColors.secondary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedDate = tempDate;
+                      selectedTime = tempTime;
+                    });
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  child: Text(
+                    'Confirm',
+                    style: AppFonts.labelLarge.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         );
       },
     );

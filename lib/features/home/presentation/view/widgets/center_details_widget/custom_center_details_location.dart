@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/utils/function/launch_url.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CustomCenterDetailsLocation extends StatelessWidget {
   const CustomCenterDetailsLocation({super.key});

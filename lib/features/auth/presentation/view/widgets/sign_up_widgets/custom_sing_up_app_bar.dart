@@ -6,39 +6,38 @@ class CustomSignUpAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
-      child: Row(
-        children: [
-          IconButton(
-            padding: EdgeInsets.zero,
-            icon: const Icon(Icons.arrow_back),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        IconButton(
+          padding: EdgeInsets.zero,
+          icon: const Icon(Icons.arrow_back),
+          color: AppColors.primary,
+          onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+        ),
+        SizedBox(width: 12),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            gradient: AppGradients.primaryGradient,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Icon(
+            Icons.local_hospital_rounded,
+            color: Colors.white,
+            size: 18,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          'MedX',
+          style: AppFonts.headlineMedium.copyWith(
             color: AppColors.primary,
-            onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.5,
           ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              gradient: AppGradients.primaryGradient,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.local_hospital_rounded,
-              color: Colors.white,
-              size: 18,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            'MedX',
-            style: AppFonts.headlineMedium.copyWith(
-              color: AppColors.primary,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.5,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

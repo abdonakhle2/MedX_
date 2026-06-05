@@ -11,7 +11,7 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  int _navIndex = 3;
+  final int _navIndex = 3;
 
   void _onNavTap(int index) {
     if (index == _navIndex) return;

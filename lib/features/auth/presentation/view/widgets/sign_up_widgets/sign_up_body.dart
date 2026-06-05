@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_field_label.dart';
@@ -17,13 +18,23 @@ class SignUpBody extends StatefulWidget {
 }
 
 class _SignUpBodyState extends State<SignUpBody> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormFieldState<String>> genderFieldKey =
+      GlobalKey<FormFieldState<String>>();
+  final GlobalKey<FormFieldState<PlatformFile?>> uploadFieldKey =
+      GlobalKey<FormFieldState<PlatformFile?>>();
   int currentStep = 0;
   String? selectedGender;
   late User user;
+  PlatformFile? uploadedPassportFile;
   final TextEditingController birthdateController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
   DateTime? selectedBirthdate;
+
   @override
   void initState() {
     super.initState();
@@ -33,45 +44,40 @@ class _SignUpBodyState extends State<SignUpBody> {
   @override
   void dispose() {
     birthdateController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ListView(
-        physics: BouncingScrollPhysics(),
-        children: [
-          Center(child: const CustomSignUpAppBar()),
-          SingUpBody(context),
-        ],
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        child: SingUpBody(context),
       ),
     );
   }
 
-  SingleChildScrollView SingUpBody(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 25),
-            // Step indicators
-            CustomStepIndicator(),
-            SizedBox(height: 30),
-            // Form container
-            SingUpForm(context),
+  Widget SingUpBody(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(child: const CustomSignUpAppBar()),
+        const SizedBox(height: 25),
+        // Step indicators
+        CustomStepIndicator(),
+        const SizedBox(height: 30),
+        // Form container
+        SingUpForm(context),
 
-            // Security note
-            const SizedBox(height: 24),
+        // Security note
+        const SizedBox(height: 24),
 
-            // Footer
-            const CustomTailTextSignUp(),
-          ],
-        ),
-      ),
+        // Footer
+        const CustomTailTextSignUp(),
+      ],
     );
   }
 
@@ -120,69 +126,240 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  Container SingUpForm(BuildContext context) {
+  Widget SingUpForm(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: AppShadows.cardShadow,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (currentStep == 0) ...[
-            const SizedBox(height: 10),
-            const BuildFieldLabel(text: 'Full Name'),
-            const SizedBox(height: 10),
-            CustomFullNameTextField(),
-            const SizedBox(height: 20),
-            const BuildFieldLabel(text: 'Email Address'),
-            const SizedBox(height: 10),
-            CustomEmailAddressTextField(),
-            const SizedBox(height: 20),
-            const BuildFieldLabel(text: 'Phone Number'),
-            const SizedBox(height: 10),
-            CustomPhoneNumberTextField(),
-          ] else if (currentStep == 1) ...[
-            const SizedBox(height: 10),
-            const BuildFieldLabel(text: 'Gender'),
-            const SizedBox(height: 10),
-            CustomGenderOption(),
-            const SizedBox(height: 20),
-            const BuildFieldLabel(text: 'Birthdate'),
-            const SizedBox(height: 10),
-            CustomBirthDateTextField(context),
-            const SizedBox(height: 20),
-            const BuildFieldLabel(text: 'Address'),
-            const SizedBox(height: 10),
-            CustomAddressTextField(),
-          ] else if (currentStep == 2) ...[
-            const SizedBox(height: 10),
-            const BuildFieldLabel(text: 'ID / Passport Number'),
-            const SizedBox(height: 10),
-            CustomIdPassportTextField(),
-            const SizedBox(height: 20),
-            const CustomUploadIdPassportFile(),
-            const SizedBox(height: 20),
-            const BuildFieldLabel(text: 'Password'),
-            const SizedBox(height: 10),
-            CustomPasswordTextField(),
-            const SizedBox(height: 20),
-            const BuildFieldLabel(text: 'Confirm Password'),
-            const SizedBox(height: 10),
-            CustomConfirmPasswordTextField(),
+      child: Form(
+        key: formKey,
+        child: Column(
+          // mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (currentStep == 0) ...[
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Full Name'),
+              const SizedBox(height: 10),
+              CustomFullNameTextField(),
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Email Address'),
+              const SizedBox(height: 10),
+              CustomEmailAddressTextField(),
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Phone Number'),
+              const SizedBox(height: 10),
+              CustomPhoneNumberTextField(),
+            ] else if (currentStep == 1) ...[
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Gender'),
+              const SizedBox(height: 10),
+              FormField<String>(
+                key: genderFieldKey,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please select your gender';
+                  }
+                  return null;
+                },
+                builder: (field) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedGender = 'Male';
+                                  user.gender = selectedGender!;
+                                  field.didChange(selectedGender);
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: selectedGender == 'Male'
+                                      ? AppGradients.primaryGradient
+                                      : null,
+                                  color: selectedGender == 'Male'
+                                      ? null
+                                      : AppColors.greyLight,
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: selectedGender == 'Male'
+                                        ? Colors.transparent
+                                        : Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                  boxShadow: selectedGender == 'Male'
+                                      ? AppShadows.elevatedShadow
+                                      : [],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.male_rounded,
+                                      size: 20,
+                                      color: selectedGender == 'Male'
+                                          ? Colors.white
+                                          : AppColors.secondary,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Male',
+                                      style: AppFonts.labelLarge.copyWith(
+                                        color: selectedGender == 'Male'
+                                            ? Colors.white
+                                            : AppColors.black,
+                                        fontWeight: selectedGender == 'Male'
+                                            ? FontWeight.w700
+                                            : FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedGender = 'Female';
+                                  user.gender = selectedGender!;
+                                  field.didChange(selectedGender);
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: selectedGender == 'Female'
+                                      ? AppGradients.primaryGradient
+                                      : null,
+                                  color: selectedGender == 'Female'
+                                      ? null
+                                      : AppColors.greyLight,
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: selectedGender == 'Female'
+                                        ? Colors.transparent
+                                        : Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                  boxShadow: selectedGender == 'Female'
+                                      ? AppShadows.elevatedShadow
+                                      : [],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.female_rounded,
+                                      size: 20,
+                                      color: selectedGender == 'Female'
+                                          ? Colors.white
+                                          : AppColors.secondary,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Female',
+                                      style: AppFonts.labelLarge.copyWith(
+                                        color: selectedGender == 'Female'
+                                            ? Colors.white
+                                            : AppColors.black,
+                                        fontWeight: selectedGender == 'Female'
+                                            ? FontWeight.w700
+                                            : FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (field.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0, left: 4),
+                          child: Text(
+                            field.errorText ?? '',
+                            style: AppFonts.bodySmall.copyWith(
+                              color: Colors.red.shade700,
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Birthdate'),
+              const SizedBox(height: 10),
+              CustomBirthDateTextField(context),
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Address'),
+              const SizedBox(height: 10),
+              CustomAddressTextField(),
+            ] else if (currentStep == 2) ...[
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'ID / Passport Number'),
+              const SizedBox(height: 10),
+              CustomIdPassportTextField(),
+              const SizedBox(height: 20),
+              FormField<PlatformFile?>(
+                key: uploadFieldKey,
+                initialValue: uploadedPassportFile,
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please upload your ID/passport image';
+                  }
+                  return null;
+                },
+                builder: (field) {
+                  return CustomUploadIdPassportFile(
+                    selectedFile: field.value,
+                    errorText: field.errorText,
+                    onFileSelected: (file) {
+                      setState(() {
+                        uploadedPassportFile = file;
+                      });
+                      field.didChange(file);
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Password'),
+              const SizedBox(height: 10),
+              CustomPasswordTextField(),
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Confirm Password'),
+              const SizedBox(height: 10),
+              CustomConfirmPasswordTextField(),
+            ],
+            const SizedBox(height: 28),
+            // Action button
+            CustomNextButton(context),
+            if (currentStep > 0) ...[
+              const SizedBox(height: 12),
+              CustomBackButton(),
+            ],
+            if (currentStep == 0) ...[const SizedBox(height: 12)],
           ],
-          const SizedBox(height: 28),
-          // Action button
-          CustomNextButton(context),
-          if (currentStep > 0) ...[
-            const SizedBox(height: 12),
-            CustomBackButton(),
-          ],
-          if (currentStep == 0) ...[const SizedBox(height: 12)],
-        ],
+        ),
       ),
     );
   }
@@ -245,19 +422,19 @@ class _SignUpBodyState extends State<SignUpBody> {
       height: 56,
       child: ElevatedButton(
         onPressed: () {
-          if (currentStep < 2) {
-            setState(() {
-              currentStep++;
-            });
-          } else {
-            // Final Submit - Print user data
-
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomeScreen(userName: user.name),
-              ),
-            );
+          if (formKey.currentState?.validate() ?? false) {
+            if (currentStep < 2) {
+              setState(() {
+                currentStep++;
+              });
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(userName: user.name),
+                ),
+              );
+            }
           }
         },
         style: ElevatedButton.styleFrom(
@@ -299,9 +476,10 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextField CustomConfirmPasswordTextField() {
-    return TextField(
+  TextFormField CustomConfirmPasswordTextField() {
+    return TextFormField(
       key: const ValueKey('signup_confirm_password'),
+      controller: confirmPasswordController,
       style: AppFonts.bodyMedium.copyWith(
         color: AppColors.black,
         letterSpacing: 0.5,
@@ -310,6 +488,15 @@ class _SignUpBodyState extends State<SignUpBody> {
       keyboardType: TextInputType.visiblePassword,
       onChanged: (data) {
         user.confirm_password = data;
+      },
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please confirm your password';
+        }
+        if (value != passwordController.text) {
+          return 'Passwords do not match';
+        }
+        return null;
       },
       decoration: InputDecoration(
         hintText: 'Retype your password',
@@ -351,9 +538,10 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextField CustomPasswordTextField() {
-    return TextField(
+  TextFormField CustomPasswordTextField() {
+    return TextFormField(
       key: const ValueKey('signup_password'),
+      controller: passwordController,
       style: AppFonts.bodyMedium.copyWith(
         color: AppColors.black,
         letterSpacing: 0.5,
@@ -362,6 +550,15 @@ class _SignUpBodyState extends State<SignUpBody> {
       keyboardType: TextInputType.visiblePassword,
       onChanged: (data) {
         user.password = data;
+      },
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please enter a password';
+        }
+        if (value.trim().length < 8) {
+          return 'Password must be at least 8 characters';
+        }
+        return null;
       },
       decoration: InputDecoration(
         hintText: 'Minimum 8 characters',
@@ -403,12 +600,22 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextField CustomIdPassportTextField() {
-    return TextField(
+  TextFormField CustomIdPassportTextField() {
+    return TextFormField(
       key: const ValueKey('signup_id_passport'),
       style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      keyboardType: TextInputType.number,
       onChanged: (data) {
         user.id_passport = int.tryParse(data) ?? 0;
+      },
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please enter your ID or passport number';
+        }
+        if (int.tryParse(value.trim()) == null) {
+          return 'Please enter a valid number';
+        }
+        return null;
       },
       decoration: InputDecoration(
         hintText: '0123456789',
@@ -441,12 +648,18 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextField CustomAddressTextField() {
-    return TextField(
+  TextFormField CustomAddressTextField() {
+    return TextFormField(
       key: const ValueKey('signup_address'),
       style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
       onChanged: (data) {
         user.address = data;
+      },
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please enter your address';
+        }
+        return null;
       },
       decoration: InputDecoration(
         hintText: 'Damascus, Syria',
@@ -479,14 +692,20 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextField CustomBirthDateTextField(BuildContext context) {
-    return TextField(
+  TextFormField CustomBirthDateTextField(BuildContext context) {
+    return TextFormField(
       key: const ValueKey('signup_birthdate'),
       controller: birthdateController,
       style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
       readOnly: true,
       keyboardType: TextInputType.datetime,
       onTap: () => _pickBirthdate(context),
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please select your birthdate';
+        }
+        return null;
+      },
       decoration: InputDecoration(
         hintText: '10-07-1990',
         hintStyle: AppFonts.bodyMedium.copyWith(
@@ -530,6 +749,7 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   Row CustomPhoneNumberTextField() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 64,
@@ -548,13 +768,22 @@ class _SignUpBodyState extends State<SignUpBody> {
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: TextField(
+          child: TextFormField(
             key: const ValueKey('signup_phone'),
             style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
             keyboardType: TextInputType.phone,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onChanged: (data) {
               user.phone_number = int.tryParse(data) ?? 0;
+            },
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Please enter your phone number';
+              }
+              if (value.trim().length < 7) {
+                return 'Enter a valid phone number';
+              }
+              return null;
             },
             decoration: InputDecoration(
               hintText: '094 123 456',
@@ -591,13 +820,23 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextField CustomEmailAddressTextField() {
-    return TextField(
+  TextFormField CustomEmailAddressTextField() {
+    return TextFormField(
       key: const ValueKey('signup_email'),
       style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
       keyboardType: TextInputType.emailAddress,
       onChanged: (data) {
         user.email = data;
+      },
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please enter your email';
+        }
+        final emailPattern = RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+");
+        if (!emailPattern.hasMatch(value.trim())) {
+          return 'Please enter a valid email';
+        }
+        return null;
       },
       decoration: InputDecoration(
         hintText: 'ahmad@example.com',
@@ -630,13 +869,22 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextField CustomFullNameTextField() {
-    return TextField(
+  TextFormField CustomFullNameTextField() {
+    return TextFormField(
       key: const ValueKey('signup_full_name'),
       style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
       keyboardType: TextInputType.name,
       onChanged: (data) {
         user.name = data;
+      },
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please enter your full name';
+        }
+        if (value.trim().length < 3) {
+          return 'Please enter a valid name';
+        }
+        return null;
       },
       decoration: InputDecoration(
         hintText: 'Ahmad Al-Faraj',

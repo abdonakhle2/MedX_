@@ -93,7 +93,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                doctor.name_en!,
+                doctor.name_en,
                 style: AppFonts.labelLarge.copyWith(
                   color: AppColors.black,
                   fontWeight: FontWeight.w800,
@@ -118,7 +118,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      doctor.specialization!,
+                      doctor.specialization,
                       style: AppFonts.labelSmall.copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
