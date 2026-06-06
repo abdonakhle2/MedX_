@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_add_note.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_appointment_price.dart';
@@ -6,7 +7,7 @@ import 'package:project_1/features/home/presentation/view/widgets/appointment_wi
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_option_card.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_privcy_text.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_scheduling_card.dart';
-import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_upload_file.dart';
+import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_upload_medical_file.dart';
 
 class CustomAppointmentBody extends StatefulWidget {
   const CustomAppointmentBody({super.key});
@@ -17,8 +18,11 @@ class CustomAppointmentBody extends StatefulWidget {
 
 class _CustomAppointmentBodyState extends State<CustomAppointmentBody> {
   String selectedMethod = "schedule";
+
+  Key? get uploadFieldKey => null;
   @override
   Widget build(BuildContext context) {
+    PlatformFile? uploadedPassportFile;
     return SliverToBoxAdapter(
       child: SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -36,8 +40,29 @@ class _CustomAppointmentBodyState extends State<CustomAppointmentBody> {
             if (selectedMethod == "schedule") const CustomSchedulingCard(),
             const SizedBox(height: 10),
             const CustomAddNote(),
-            const SizedBox(height: 24),
-            const CustomUploadFile(),
+            const SizedBox(height: 2),
+            FormField<PlatformFile?>(
+              key: uploadFieldKey,
+              initialValue: uploadedPassportFile,
+              validator: (value) {
+                if (value == null) {
+                  return 'Please upload your ID/passport image';
+                }
+                return null;
+              },
+              builder: (field) {
+                return CustomUploadMedicalFile(
+                  selectedFile: field.value,
+                  errorText: field.errorText,
+                  onFileSelected: (file) {
+                    setState(() {
+                      uploadedPassportFile = file;
+                    });
+                    field.didChange(file);
+                  },
+                );
+              },
+            ),
             const SizedBox(height: 10),
             const CustomAppointmentPrice(),
             const SizedBox(height: 10),

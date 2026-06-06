@@ -428,11 +428,12 @@ class _SignUpBodyState extends State<SignUpBody> {
                 currentStep++;
               });
             } else {
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => HomeScreen(userName: user.name),
                 ),
+                (route) => false,
               );
             }
           }

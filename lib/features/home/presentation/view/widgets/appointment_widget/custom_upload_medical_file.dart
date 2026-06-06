@@ -7,12 +7,12 @@ import 'package:project_1/constants/constants.dart'
     show AppFonts, AppColors, AppShadows;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class CustomUploadIdPassportFile extends StatefulWidget {
+class CustomUploadMedicalFile extends StatefulWidget {
   final PlatformFile? selectedFile;
   final ValueChanged<PlatformFile?>? onFileSelected;
   final String? errorText;
 
-  const CustomUploadIdPassportFile({
+  const CustomUploadMedicalFile({
     super.key,
     this.selectedFile,
     this.onFileSelected,
@@ -20,12 +20,11 @@ class CustomUploadIdPassportFile extends StatefulWidget {
   });
 
   @override
-  State<CustomUploadIdPassportFile> createState() =>
-      _CustomUploadIdPassportFileState();
+  State<CustomUploadMedicalFile> createState() =>
+      _CustomUploadMedicalFileState();
 }
 
-class _CustomUploadIdPassportFileState
-    extends State<CustomUploadIdPassportFile> {
+class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
   Future<void> _pickPassportImage() async {
     try {
       final result = await FilePicker.pickFiles(

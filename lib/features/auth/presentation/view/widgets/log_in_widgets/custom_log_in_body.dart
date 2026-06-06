@@ -28,9 +28,10 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
 
   void submitLogin() {
     if (formKey.currentState?.validate() ?? false) {
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (route) => false,
       );
     }
   }
