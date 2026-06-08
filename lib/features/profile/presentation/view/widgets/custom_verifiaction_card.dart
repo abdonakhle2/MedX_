@@ -10,7 +10,7 @@ class CustomVerifiactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        // color: AppColors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: AppShadows.cardShadow,
       ),

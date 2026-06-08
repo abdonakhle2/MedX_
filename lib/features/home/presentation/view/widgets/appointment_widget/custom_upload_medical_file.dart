@@ -171,6 +171,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
         file.bytes!,
         fit: BoxFit.cover,
         width: double.infinity,
+        height: 200,
       );
     } else {
       // في حال رفع صيغة أخرى غير مدعومة للعرض المباشر
@@ -185,7 +186,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
               size: 30,
             ),
             const SizedBox(width: 8),
-            Text('ملف مدعوم: ${file.name}'),
+            Text(' ${file.name}'),
           ],
         ),
       );

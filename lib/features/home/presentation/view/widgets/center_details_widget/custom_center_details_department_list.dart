@@ -7,18 +7,24 @@ class CustomCenterDetailsDepartmentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 5,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-
-      itemBuilder: (context, index) {
-        return CustomDepartmentCard(
-          icon: Symbols.dentistry,
-          title: 'Department ${index + 1}',
-          description: 'Dental Care in the MedX Institute',
-        );
-      },
+    return SizedBox(
+      height: 200,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: ListView.builder(
+          itemCount: 5,
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (context, index) {
+            return CustomDepartmentCard(
+              icon: Symbols.dentistry,
+              title: 'Department ${index + 1}',
+              description: 'Dental Care in the MedX Institute',
+            );
+          },
+        ),
+      ),
     );
   }
 }

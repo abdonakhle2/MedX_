@@ -14,10 +14,15 @@ class CustomDepartmentCard extends StatelessWidget {
   final String description;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Card(
+      margin: const EdgeInsets.only(right: 12),
+
+      elevation: 0,
+      color: Colors.transparent,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Material(
-        color: AppColors.white,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(24),
         child: InkWell(
           borderRadius: BorderRadius.circular(24),
@@ -29,15 +34,20 @@ class CustomDepartmentCard extends StatelessWidget {
           },
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
-            width: double.infinity,
+            width: 270,
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
               color: AppColors.white,
               boxShadow: AppShadows.cardShadow,
+              border: Border.all(
+                color: AppColors.black.withOpacity(0.3),
+                width: 1.5,
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +67,7 @@ class CustomDepartmentCard extends StatelessWidget {
                       ),
                       child: Icon(icon, color: AppColors.primary, size: 24),
                     ),
-                    const SizedBox(width: 14),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +98,7 @@ class CustomDepartmentCard extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
+                        horizontal: 8,
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
@@ -116,7 +126,7 @@ class CustomDepartmentCard extends StatelessWidget {
                     const SizedBox(width: 10),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
+                        horizontal: 8,
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(

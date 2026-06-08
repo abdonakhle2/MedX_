@@ -21,7 +21,7 @@ class _SearchBodyState extends State<SearchBody> {
         const CustomSearchAppBar(),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(6.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -62,48 +62,95 @@ class _SearchBodyState extends State<SearchBody> {
                 const SizedBox(height: 20),
                 buildBodyButton(),
                 const SizedBox(height: 24),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryLight.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: AppColors.primaryLight.withOpacity(0.3),
-                    ),
-                  ),
-                  child: Text(
-                    'Search Results',
-                    style: AppFonts.headlineMedium.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
 
-                ListView.builder(
-                  shrinkWrap: true,
+                // Container(
+                //   padding: EdgeInsets.symmetric(horizontal: 12),
+                //   decoration: BoxDecoration(
+                //     // color: AppColors.primaryLight.withOpacity(0.15),
+                //     borderRadius: BorderRadius.circular(20),
+                //     border: Border.all(
+                //       color: AppColors.primaryLight.withOpacity(0.3),
+                //     ),
+                //   ),
+                //   child: Text(
+                //     'Search Results',
+                //     style: AppFonts.headlineMedium.copyWith(
+                //       // color: AppColors.primary,
+                //       fontWeight: FontWeight.w800,
+                //       letterSpacing: -0.5,
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(height: 12),
+                isCenter
+                    ? ListView.builder(
+                        shrinkWrap: true,
 
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return TweenAnimationBuilder<double>(
-                      tween: Tween(begin: 0.0, end: 1.0),
-                      duration: Duration(milliseconds: 300 + (index * 100)),
-                      curve: Curves.easeOut,
-                      builder: (context, value, child) {
-                        return Opacity(
-                          opacity: value,
-                          child: Transform.translate(
-                            offset: Offset(0, 15 * (1 - value)),
-                            child: child,
-                          ),
-                        );
-                      },
-                      child: isCenter
-                          ? CardClinic()
-                          : buildDoctorCard(
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return TweenAnimationBuilder<double>(
+                            tween: Tween(begin: 0.0, end: 1.0),
+                            duration: Duration(
+                              milliseconds: 300 + (index * 100),
+                            ),
+                            curve: Curves.easeOut,
+                            builder: (context, value, child) {
+                              return Opacity(
+                                opacity: value,
+                                child: Transform.translate(
+                                  offset: Offset(0, 15 * (1 - value)),
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: isCenter
+                                ? CardClinic()
+                                : buildDoctorCard(
+                                    Doctor(
+                                      doc_id: '1',
+                                      name_en: 'ali ahmad',
+                                      name_ar: 'علي احمد',
+                                      birthdate: '2/3/2000',
+                                      id_passport: '12',
+                                      photo: '',
+                                      hourly_rate: 12,
+                                      work_hours: '4',
+                                      specialization: 'cardiology',
+                                      appointments: [],
+                                    ),
+                                  ),
+                          );
+                        },
+                      )
+                    : GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 4,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 12,
+                              crossAxisSpacing: 12,
+                              childAspectRatio: 0.72,
+                            ),
+                        itemBuilder: (context, index) {
+                          return TweenAnimationBuilder<double>(
+                            key: ValueKey('doctor_$index'),
+                            tween: Tween(begin: 0.0, end: 1.0),
+                            duration: Duration(
+                              milliseconds: 300 + (index * 100),
+                            ),
+                            curve: Curves.easeOut,
+                            builder: (context, value, child) {
+                              return Opacity(
+                                opacity: value,
+                                child: Transform.translate(
+                                  offset: Offset(0, 15 * (1 - value)),
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: buildDoctorCard(
                               Doctor(
                                 doc_id: '1',
                                 name_en: 'ali ahmad',
@@ -116,10 +163,11 @@ class _SearchBodyState extends State<SearchBody> {
                                 specialization: 'cardiology',
                                 appointments: [],
                               ),
+                              isGridView: true,
                             ),
-                    );
-                  },
-                ),
+                          );
+                        },
+                      ),
               ],
             ),
           ),

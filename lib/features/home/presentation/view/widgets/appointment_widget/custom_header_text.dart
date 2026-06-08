@@ -7,23 +7,20 @@ class CustomHeaderText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 12),
-      decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.primaryLight.withOpacity(0.3)),
-      ),
-      child: Row(
-        children: [
-          Icon(Symbols.date_range, color: AppColors.primary),
-          SizedBox(width: 8),
-          Text(
-            'Selection Method',
-            style: AppFonts.headlineSmall.copyWith(color: AppColors.primary),
+    return Row(
+      children: [
+        Icon(Symbols.date_range, color: AppColors.primary),
+        SizedBox(width: 8),
+        Text(
+          'Book with ClinicName :',
+          style: AppFonts.headlineSmall.copyWith(
+            color: AppColors.black,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1,
           ),
-        ],
-      ),
+        ),
+        // Icon(Symbols.book, color: AppColors.primary),
+      ],
     );
   }
 }

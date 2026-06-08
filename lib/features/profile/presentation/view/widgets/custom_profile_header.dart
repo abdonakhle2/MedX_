@@ -71,7 +71,7 @@ class CustomProfileHeader extends StatelessWidget {
                   Text(
                     'ID: 123456789',
                     style: AppFonts.labelLarge.copyWith(
-                      color: AppColors.primaryDark,
+                      color: AppColors.black,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.5,
                     ),
@@ -100,7 +100,7 @@ class CustomProfileHeader extends StatelessWidget {
                   Text(
                     'PREMIUM',
                     style: AppFonts.labelLarge.copyWith(
-                      color: AppColors.amber,
+                      color: AppColors.black,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,
                     ),

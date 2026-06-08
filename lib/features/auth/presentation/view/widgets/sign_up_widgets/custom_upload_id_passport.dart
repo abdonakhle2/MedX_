@@ -172,6 +172,7 @@ class _CustomUploadIdPassportFileState
         file.bytes!,
         fit: BoxFit.cover,
         width: double.infinity,
+        height: 200,
       );
     } else {
       // في حال رفع صيغة أخرى غير مدعومة للعرض المباشر

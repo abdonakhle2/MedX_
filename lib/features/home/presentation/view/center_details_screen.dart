@@ -27,7 +27,7 @@ class _CenterDetailsScreenState extends State<CenterDetailsScreen> {
         currentIndex: _navIndex,
         onTap: _onNavTap,
       ),
-      body: const SafeArea(child: CenterDetailsBody()),
+      body: CenterDetailsBody(),
     );
   }
 }
