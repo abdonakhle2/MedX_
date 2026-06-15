@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/features/home/presentation/view/custom_master_card.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_show_succes_dialog.dart';
 
 class CustomConfirmButton extends StatelessWidget {
@@ -16,12 +15,6 @@ class CustomConfirmButton extends StatelessWidget {
           return ElevatedButton(
             onPressed: () {
               CustomShowSuccessDialog(context);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CustomMasterCard(),
-                ),
-              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,

@@ -11,7 +11,6 @@ class CustomUploadMedicalFile extends StatefulWidget {
   final PlatformFile? selectedFile;
   final ValueChanged<PlatformFile?>? onFileSelected;
   final String? errorText;
-
   const CustomUploadMedicalFile({
     super.key,
     this.selectedFile,
@@ -82,19 +81,19 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Upload a clear passport photo',
+                              'Tap to Upload a photo/file medical',
                               style: AppFonts.labelLarge.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const SizedBox(height: 6),
-                            Text(
-                              'Tap to choose a passport image (JPG or PNG)',
-                              style: AppFonts.bodyMedium.copyWith(
-                                color: AppColors.secondary,
-                              ),
-                            ),
+                            // const SizedBox(height: 6),
+                            // Text(
+                            //   'Tap to choose a photo/file ',
+                            //   style: AppFonts.bodyMedium.copyWith(
+                            //     color: AppColors.secondary,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

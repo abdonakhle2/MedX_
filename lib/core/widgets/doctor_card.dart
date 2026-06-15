@@ -20,7 +20,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           SizedBox(
             height: isGridView ? 100 : 120,
@@ -94,108 +94,104 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  doctor.name_en,
-                  style: AppFonts.labelLarge.copyWith(
-                    color: AppColors.black,
-                    fontWeight: FontWeight.w800,
-                    fontSize: isGridView ? 14 : 16,
+          // make lower area flexible so button fits without overflow
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    doctor.name_en,
+                    style: AppFonts.labelLarge.copyWith(
+                      color: AppColors.black,
+                      fontWeight: FontWeight.w800,
+                      fontSize: isGridView ? 14 : 16,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                const SizedBox(height: 6),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 2,
+                  const SizedBox(height: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      doctor.specialization,
+                      style: AppFonts.labelSmall.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10,
                       ),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.08),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        doctor.specialization,
-                        style: AppFonts.labelSmall.copyWith(
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Text(
+                        '\$${doctor.hourly_rate}',
+                        style: AppFonts.labelLarge.copyWith(
                           color: AppColors.primary,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w800,
+                          fontSize: isGridView ? 14 : 16,
+                        ),
+                      ),
+                      Text(
+                        '/hr',
+                        style: AppFonts.labelSmall.copyWith(
+                          color: AppColors.secondary,
                           fontSize: 10,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Text(
-                          '\$${doctor.hourly_rate}',
-                          style: AppFonts.labelLarge.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w800,
-                            fontSize: isGridView ? 14 : 16,
-                          ),
-                        ),
-                        Text(
-                          '/hr',
-                          style: AppFonts.labelSmall.copyWith(
-                            color: AppColors.secondary,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  height: isGridView ? 28 : 32,
-                  child: Builder(
-                    builder: (context) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  AppointmentScreen(myDoctor: doctor),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.neutral,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          "Book",
-                          style: AppFonts.labelMedium.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: isGridView ? 12 : 14,
-                          ),
-                        ),
-                      );
-                    },
+                    ],
                   ),
-                ),
-              ],
+                  const Spacer(),
+                  SizedBox(
+                    width: double.infinity,
+                    height: isGridView ? 32 : 38,
+                    child: Builder(
+                      builder: (context) {
+                        return ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AppointmentScreen(myDoctor: doctor),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.neutral,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text(
+                            "Book",
+                            style: AppFonts.labelMedium.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: isGridView ? 12 : 14,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

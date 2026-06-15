@@ -34,22 +34,16 @@ class _CustomAppointmentBodyState extends State<CustomAppointmentBody> {
             const CustomHeaderText(),
             const SizedBox(height: 20),
             CustomMethodSelection(),
-            const SizedBox(height: 25),
+            // const SizedBox(height: 25),
 
             // تظهر خيارات الجدولة فقط عند اختيار "Doctor's Schedule"
             if (selectedMethod == "schedule") const CustomSchedulingCard(),
-            const SizedBox(height: 10),
+            // const SizedBox(height: 10),
             const CustomAddNote(),
             const SizedBox(height: 2),
             FormField<PlatformFile?>(
               key: uploadFieldKey,
               initialValue: uploadedPassportFile,
-              validator: (value) {
-                if (value == null) {
-                  return 'Please upload your ID/passport image';
-                }
-                return null;
-              },
               builder: (field) {
                 return CustomUploadMedicalFile(
                   selectedFile: field.value,

@@ -8,41 +8,55 @@ class CustomDepartmentCard extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.description,
+    this.isSelected = false,
+    this.onTap,
   });
   final IconData icon;
   final String title;
   final String description;
+  final bool isSelected;
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
+    final borderColor = isSelected
+        ? AppColors.primary
+        : AppColors.black.withOpacity(0.18);
+    final bgColor = isSelected
+        ? AppColors.primary.withOpacity(0.06)
+        : AppColors.white;
     return Card(
       margin: const EdgeInsets.only(right: 12),
-
       elevation: 0,
       color: Colors.transparent,
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(18),
         child: InkWell(
-          borderRadius: BorderRadius.circular(24),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const DepartmentScreen()),
-            );
-          },
+          borderRadius: BorderRadius.circular(18),
+          onTap:
+              onTap ??
+              () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const DepartmentScreen(),
+                //   ),
+                // );
+              },
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
-            width: 270,
-            padding: const EdgeInsets.all(18),
+            width: 250,
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              color: AppColors.white,
+              borderRadius: BorderRadius.circular(18),
+              color: bgColor,
               boxShadow: AppShadows.cardShadow,
               border: Border.all(
-                color: AppColors.black.withOpacity(0.3),
-                width: 1.5,
+                color: borderColor,
+                width: isSelected ? 2.0 : 1.0,
               ),
             ),
             child: Column(
@@ -53,19 +67,19 @@ class CustomDepartmentCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(14),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(14),
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            AppColors.primary.withOpacity(0.18),
-                            AppColors.primary.withOpacity(0.04),
+                            AppColors.primary.withOpacity(0.16),
+                            AppColors.primary.withOpacity(0.02),
                           ],
                         ),
                       ),
-                      child: Icon(icon, color: AppColors.primary, size: 24),
+                      child: Icon(icon, color: AppColors.primary, size: 22),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -75,7 +89,9 @@ class CustomDepartmentCard extends StatelessWidget {
                           Text(
                             title,
                             style: AppFonts.headlineSmall.copyWith(
-                              color: AppColors.black,
+                              color: isSelected
+                                  ? AppColors.primaryDark
+                                  : AppColors.black,
                               fontWeight: FontWeight.w800,
                               letterSpacing: -0.4,
                             ),
@@ -83,9 +99,11 @@ class CustomDepartmentCard extends StatelessWidget {
                           const SizedBox(height: 6),
                           Text(
                             description,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             style: AppFonts.bodyMedium.copyWith(
                               color: AppColors.secondary,
-                              height: 1.4,
+                              height: 1.3,
                             ),
                           ),
                         ],
@@ -93,7 +111,7 @@ class CustomDepartmentCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 12),
                 Row(
                   children: [
                     Container(

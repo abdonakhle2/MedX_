@@ -12,14 +12,13 @@ class CustomHeaderText extends StatelessWidget {
         Icon(Symbols.date_range, color: AppColors.primary),
         SizedBox(width: 8),
         Text(
-          'Book with ClinicName :',
+          'Book with ClinicName clinic :',
           style: AppFonts.headlineSmall.copyWith(
             color: AppColors.black,
             fontWeight: FontWeight.w700,
-            letterSpacing: 1,
+            letterSpacing: 1.5,
           ),
         ),
-        // Icon(Symbols.book, color: AppColors.primary),
       ],
     );
   }

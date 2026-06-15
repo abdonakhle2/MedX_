@@ -37,7 +37,7 @@ class CustomAppointmentPrice extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Total Payable',
+                'Total cash',
                 style: AppFonts.headlineSmall.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
