@@ -8,9 +8,13 @@ import 'package:project_1/features/home/presentation/view/widgets/appointment_wi
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_privcy_text.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_scheduling_card.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_upload_medical_file.dart';
+import 'package:project_1/models/doctor.dart';
+import 'package:project_1/constants/constants.dart';
 
 class CustomAppointmentBody extends StatefulWidget {
-  const CustomAppointmentBody({super.key});
+  final Doctor myDoctor;
+
+  const CustomAppointmentBody({super.key, required this.myDoctor});
 
   @override
   State<CustomAppointmentBody> createState() => _CustomAppointmentBodyState();
@@ -25,7 +29,7 @@ class _CustomAppointmentBodyState extends State<CustomAppointmentBody> {
     PlatformFile? uploadedPassportFile;
     return SliverToBoxAdapter(
       child: SingleChildScrollView(
-        physics: ScrollPhysics(),
+        physics: const ScrollPhysics(),
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

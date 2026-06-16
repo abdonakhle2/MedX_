@@ -147,8 +147,8 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                       Text(
                         '/hr',
                         style: AppFonts.labelSmall.copyWith(
-                          color: AppColors.secondary,
-                          fontSize: 10,
+                          color: AppColors.black,
+                          fontSize: 12,
                         ),
                       ),
                     ],

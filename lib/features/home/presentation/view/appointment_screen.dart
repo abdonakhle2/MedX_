@@ -33,7 +33,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         onTap: _onNavTap,
       ),
 
-      body: const AppointmentBody(),
+      body: AppointmentBody(myDoctor: widget.myDoctor),
     );
   }
 }

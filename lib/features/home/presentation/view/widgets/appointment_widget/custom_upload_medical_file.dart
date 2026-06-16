@@ -116,7 +116,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Passport image selected. Tap to change.',
+                        'The file selected. Tap to change.',
                         style: AppFonts.bodyMedium.copyWith(
                           color: AppColors.secondary,
                         ),

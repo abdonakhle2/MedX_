@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/features/home/presentation/view/home_screen.dart';
 
 void CustomShowSuccessDialog(BuildContext context) {
   showDialog(
@@ -44,7 +45,10 @@ void CustomShowSuccessDialog(BuildContext context) {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: () => Navigator.pop(context), // إغلاق المربع
+                onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                ), // إغلاق المربع
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   elevation: 0,

@@ -7,19 +7,39 @@ class CustomHeaderText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(Symbols.date_range, color: AppColors.primary),
-        SizedBox(width: 8),
-        Text(
-          'Book with ClinicName clinic :',
-          style: AppFonts.headlineSmall.copyWith(
-            color: AppColors.black,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.5,
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.neutral,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: AppShadows.cardShadow,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Book with Elite Medical Clinic',
+            style: AppFonts.headlineSmall.copyWith(
+              fontWeight: FontWeight.w800,
+              color: AppColors.primary,
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            'Ahmad ali',
+            style: AppFonts.bodyMedium.copyWith(fontWeight: FontWeight.w800),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Cardiology',
+            style: AppFonts.bodyMedium.copyWith(
+              color: AppColors.primary.withOpacity(0.7),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

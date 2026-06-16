@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/features/home/presentation/view/department_screen.dart';
 
 class CustomDepartmentCard extends StatelessWidget {
   const CustomDepartmentCard({
