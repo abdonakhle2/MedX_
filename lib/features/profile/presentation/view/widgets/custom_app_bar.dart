@@ -10,7 +10,7 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.watch<ThemeCubit>().isDarkMod;
+    final isDarkMode = context.watch<ThemeCubit>().isDarkMode;
     return SliverAppBar(
       // backgroundColor: Colors.white,
       // surfaceTintColor: Colors.transparent,

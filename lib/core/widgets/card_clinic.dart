@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/features/home/presentation/view/center_details_screen.dart';
+import 'package:project_1/models/clinic.dart';
+import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
+import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_state.dart';
 
 class CardClinic extends StatefulWidget {
-  const CardClinic({super.key});
+  final ClinicModel clinic;
+  const CardClinic({super.key, required this.clinic});
 
   @override
   State<CardClinic> createState() => _CardClinicState();
@@ -11,7 +16,6 @@ class CardClinic extends StatefulWidget {
 
 class _CardClinicState extends State<CardClinic> {
   bool _isPressed = false;
-  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,21 +117,24 @@ class _CardClinicState extends State<CardClinic> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isFavorite = !isFavorite;
-                                  });
+                              BlocBuilder<FavoritesCubit, FavoritesState>(
+                                builder: (context, state) {
+                                  final isFavorite = context.read<FavoritesCubit>().isFavorite(widget.clinic.clinic_id);
+                                  return IconButton(
+                                    onPressed: () {
+                                      context.read<FavoritesCubit>().toggleFavorite(widget.clinic);
+                                    },
+                                    icon: Icon(
+                                      isFavorite
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: isFavorite
+                                          ? AppColors.error
+                                          : AppColors.secondary,
+                                      size: 20,
+                                    ),
+                                  );
                                 },
-                                icon: Icon(
-                                  isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFavorite
-                                      ? AppColors.error
-                                      : AppColors.secondary,
-                                  size: 20,
-                                ),
                               ),
                             ],
                           ),
@@ -205,7 +212,7 @@ class _CardClinicState extends State<CardClinic> {
 
                         // Hospital name
                         Text(
-                          "City General Hospital",
+                          widget.clinic.name_en,
                           style: TextStyle(
                             color: AppColors.black,
                             fontWeight: FontWeight.bold,
@@ -218,7 +225,7 @@ class _CardClinicState extends State<CardClinic> {
 
                         // Description
                         Text(
-                          "A cornerstone of regional health, providing comprehensive emergency care, surgery, and advanced diagnostics.",
+                          widget.clinic.description,
                           style: AppFonts.bodySmall.copyWith(
                             color: AppColors.secondary,
                             height: 1.5,
@@ -246,7 +253,7 @@ class _CardClinicState extends State<CardClinic> {
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              "1.2 miles away",
+                              widget.clinic.location,
                               style: AppFonts.bodySmall.copyWith(
                                 color: AppColors.secondary,
                                 fontWeight: FontWeight.w500,

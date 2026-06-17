@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/features/search/presentation/view/widgets/custom_app_bar.dart';
 import 'package:project_1/models/doctor.dart';
+import 'package:project_1/models/clinic.dart';
 import 'package:project_1/core/widgets/card_clinic.dart';
 import 'package:project_1/core/widgets/doctor_card.dart';
 
@@ -88,6 +89,22 @@ class _SearchBodyState extends State<SearchBody> {
 
                         itemCount: 4,
                         itemBuilder: (context, index) {
+                          final dummyClinic = ClinicModel(
+                            clinic_id: 'search_clinic_$index',
+                            name_en: 'Search Clinic Center ${index + 1}',
+                            name_ar: 'مركز عيادات البحث ${index + 1}',
+                            description: 'A cornerstone of regional health, providing comprehensive emergency care, surgery, and advanced diagnostics.',
+                            location: '${0.5 + index * 0.4} miles away',
+                            work_hours: 8,
+                            phone_number: '987654321',
+                            logo: '',
+                            lat: 0.0,
+                            log: 0.0,
+                            is_24h: false,
+                            pictures: [],
+                            Departments: [],
+                          );
+
                           return TweenAnimationBuilder<double>(
                             tween: Tween(begin: 0.0, end: 1.0),
                             duration: Duration(
@@ -104,7 +121,7 @@ class _SearchBodyState extends State<SearchBody> {
                               );
                             },
                             child: isCenter
-                                ? CardClinic()
+                                ? CardClinic(clinic: dummyClinic)
                                 : buildDoctorCard(
                                     Doctor(
                                       doc_id: '1',

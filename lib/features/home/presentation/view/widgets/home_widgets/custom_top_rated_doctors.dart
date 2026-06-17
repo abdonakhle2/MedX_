@@ -180,6 +180,15 @@ class CustomTopRatedDoctors extends StatelessWidget {
                                 color: Colors.white70,
                               ),
                             ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'clinicName',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppFonts.bodySmall.copyWith(
+                                color: Colors.white70,
+                              ),
+                            ),
                           ],
                         ),
                       ),

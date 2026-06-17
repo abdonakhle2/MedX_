@@ -8,7 +8,7 @@ class ThemeCubit extends Cubit<ThemeMode> {
     emit(isDarkMode ? ThemeMode.dark : ThemeMode.light);
   }
 
-  bool get isDarkMod {
+  bool get isDarkMode {
     if (state == ThemeMode.dark) {
       return true;
     } else {

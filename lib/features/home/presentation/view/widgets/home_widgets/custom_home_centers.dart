@@ -21,6 +21,7 @@ class CustomHomeCenters extends StatelessWidget {
           const CustomHomeList(),
           const SizedBox(height: 10),
           const CustomHomeStats(),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.1),
         ],
       ),
     );

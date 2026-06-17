@@ -10,6 +10,8 @@ import 'package:project_1/features/profile/presentation/view/profile_screen.dart
 import 'package:project_1/features/auth/presentation/view/sign_up_screen.dart';
 import 'package:project_1/features/splash/presentation/view/splash_view.dart';
 
+import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
+
 void main() {
   runApp(const TheApp());
 }
@@ -19,8 +21,11 @@ class TheApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ThemeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ThemeCubit()),
+        BlocProvider(create: (context) => FavoritesCubit()..loadFavorites()),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
           return MaterialApp(

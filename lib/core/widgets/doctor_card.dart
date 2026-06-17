@@ -23,7 +23,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
         mainAxisSize: MainAxisSize.max,
         children: [
           SizedBox(
-            height: isGridView ? 100 : 120,
+            height: isGridView ? 160 : 160,
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(20),
