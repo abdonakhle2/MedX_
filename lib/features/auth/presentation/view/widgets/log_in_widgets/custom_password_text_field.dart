@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 
 class CustomPasswordTextField extends StatefulWidget {
-  const CustomPasswordTextField({super.key, this.controller});
+  const CustomPasswordTextField({
+    super.key,
+    this.controller,
+    required this.onChanged,
+  });
 
   final TextEditingController? controller;
-
+  final ValueChanged<String> onChanged;
   @override
   State<CustomPasswordTextField> createState() =>
       _CustomPasswordTextFieldState();
@@ -34,7 +38,7 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
       ),
       obscureText: obscureText,
       keyboardType: TextInputType.visiblePassword,
-      onChanged: (data) {},
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         hintText: '*****',
         hintStyle: AppFonts.bodyMedium.copyWith(

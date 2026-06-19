@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_body.dart';
 import 'package:project_1/core/widgets/bottom_nav_bar.dart';
+import 'package:project_1/features/profile/presentation/view/edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -29,7 +30,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
           currentIndex: _navIndex,
           onTap: _onNavTap,
         ),
-        body: const ProfileBody(),
+        body: ProfileBody(
+          onEditPressed: () async {
+            final updated = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const EditProfileScreen(),
+              ),
+            );
+            if (updated == true) {
+              setState(() {});
+            }
+          },
+        ),
       ),
     );
   }

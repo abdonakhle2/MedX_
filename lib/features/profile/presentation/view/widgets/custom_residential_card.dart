@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/models/user.dart';
 
 class CustomResidentialCard extends StatelessWidget {
   const CustomResidentialCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = User.currentUser;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -46,7 +48,7 @@ class CustomResidentialCard extends StatelessWidget {
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
-                  "722 Marble Arch, West District, London, UK",
+                  user.address ?? '',
                   style: AppFonts.bodyLarge.copyWith(
                     color: AppColors.white,
                     fontWeight: FontWeight.w700,

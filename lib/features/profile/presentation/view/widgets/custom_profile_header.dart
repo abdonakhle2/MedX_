@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/models/user.dart';
 
 class CustomProfileHeader extends StatelessWidget {
   const CustomProfileHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = User.currentUser;
     return Column(
       children: [
         Stack(
@@ -40,7 +42,7 @@ class CustomProfileHeader extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          'John Doe',
+          user.name ?? '',
           style: AppFonts.headlineLarge.copyWith(
             color: AppColors.black,
             fontWeight: FontWeight.w800,
@@ -69,7 +71,7 @@ class CustomProfileHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'ID: 123456789',
+                    'ID: ${user.id_passport ?? ''}',
                     style: AppFonts.labelLarge.copyWith(
                       color: AppColors.black,
                       fontWeight: FontWeight.w700,

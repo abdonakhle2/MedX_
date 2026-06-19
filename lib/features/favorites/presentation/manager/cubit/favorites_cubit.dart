@@ -5,12 +5,12 @@ import 'favorites_state.dart';
 class FavoritesCubit extends Cubit<FavoritesState> {
   FavoritesCubit() : super(FavoritesInitial());
 
-  final List<ClinicModel> _favoriteClinics = [];
+  final List<ClinicModel> favoriteClinics = [];
 
   void loadFavorites() {
     emit(FavoritesLoading());
     try {
-      emit(FavoritesLoaded(List.from(_favoriteClinics)));
+      emit(FavoritesLoaded(List.from(favoriteClinics)));
     } catch (e) {
       emit(FavoritesError("Failed to load favorites"));
     }
@@ -19,21 +19,23 @@ class FavoritesCubit extends Cubit<FavoritesState> {
   void toggleFavorite(ClinicModel clinic) {
     emit(FavoritesLoading());
     try {
-      final isExist = _favoriteClinics.any((c) => c.clinic_id == clinic.clinic_id);
-      
+      final isExist = favoriteClinics.any(
+        (c) => c.clinic_id == clinic.clinic_id,
+      );
+
       if (isExist) {
-        _favoriteClinics.removeWhere((c) => c.clinic_id == clinic.clinic_id);
+        favoriteClinics.removeWhere((c) => c.clinic_id == clinic.clinic_id);
       } else {
-        _favoriteClinics.add(clinic);
+        favoriteClinics.add(clinic);
       }
-      
-      emit(FavoritesLoaded(List.from(_favoriteClinics)));
+
+      emit(FavoritesLoaded(List.from(favoriteClinics)));
     } catch (e) {
       emit(FavoritesError("Failed to update favorite status"));
     }
   }
 
   bool isFavorite(String clinicId) {
-    return _favoriteClinics.any((c) => c.clinic_id == clinicId);
+    return favoriteClinics.any((c) => c.clinic_id == clinicId);
   }
 }

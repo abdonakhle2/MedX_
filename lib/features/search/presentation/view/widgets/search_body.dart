@@ -86,6 +86,7 @@ class _SearchBodyState extends State<SearchBody> {
                 isCenter
                     ? ListView.builder(
                         shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
 
                         itemCount: 4,
                         itemBuilder: (context, index) {
@@ -93,7 +94,8 @@ class _SearchBodyState extends State<SearchBody> {
                             clinic_id: 'search_clinic_$index',
                             name_en: 'Search Clinic Center ${index + 1}',
                             name_ar: 'مركز عيادات البحث ${index + 1}',
-                            description: 'A cornerstone of regional health, providing comprehensive emergency care, surgery, and advanced diagnostics.',
+                            description:
+                                'A cornerstone of regional health, providing comprehensive emergency care, surgery, and advanced diagnostics.',
                             location: '${0.5 + index * 0.4} miles away',
                             work_hours: 8,
                             phone_number: '987654321',
@@ -141,7 +143,7 @@ class _SearchBodyState extends State<SearchBody> {
                       )
                     : GridView.builder(
                         shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         itemCount: 4,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(

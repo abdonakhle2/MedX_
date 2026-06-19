@@ -22,6 +22,36 @@ class User {
     this.confirm_password,
     this.Is_verified = false,
   });
+
+  static User currentUser = User(
+    name: 'John Doe',
+    phone_number: 999999999,
+    email: 'JohnDoe@gmail.com',
+    gender: 'Female',
+    birthdate: DateTime(1992, 10, 24),
+    address: '722 Marble Arch, West District, London, UK',
+    id_passport: 123456789,
+    Is_verified: true,
+  );
+
+  int get age {
+    if (birthdate == null) return 0;
+    final now = DateTime.now();
+    int age = now.year - birthdate!.year;
+    if (now.month < birthdate!.month || (now.month == birthdate!.month && now.day < birthdate!.day)) {
+      age--;
+    }
+    return age;
+  }
+
+  String get formattedBirthdate {
+    if (birthdate == null) return '';
+    final months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return "${months[birthdate!.month - 1]} ${birthdate!.day}, ${birthdate!.year}";
+  }
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       name: json['name']?.toString(),

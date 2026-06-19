@@ -4,8 +4,9 @@ import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_create_account_button.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_footer_text.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_password_text_field.dart';
-import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_phone_number_text_field.dart';
+import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_email_text_field.dart';
 import 'package:project_1/features/home/presentation/view/home_screen.dart';
+import 'package:project_1/models/user.dart';
 
 class CustomLogInBody extends StatefulWidget {
   const CustomLogInBody({super.key});
@@ -16,12 +17,12 @@ class CustomLogInBody extends StatefulWidget {
 
 class _CustomLogInBodyState extends State<CustomLogInBody> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  User? user;
   @override
   void dispose() {
-    phoneController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -63,7 +64,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Phone Number',
+                    'Email',
                     style: AppFonts.bodyLarge.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -71,7 +72,12 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                 ],
               ),
               const SizedBox(height: 10),
-              CustomPhoneNumberTextField(controller: phoneController),
+              CustomEmailTextField(
+                controller: emailController,
+                onChanged: (value) {
+                  user?.email = value;
+                },
+              ),
               const SizedBox(height: 20),
               // Password
               Row(
@@ -86,7 +92,12 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                 ],
               ),
               const SizedBox(height: 10),
-              CustomPasswordTextField(controller: passwordController),
+              CustomPasswordTextField(
+                controller: passwordController,
+                onChanged: (value) {
+                  user?.password = value;
+                },
+              ),
               const SizedBox(height: 10),
               // Forgot Password
               Align(

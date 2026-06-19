@@ -3,12 +3,14 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_identity_item.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_section_header.dart';
+import 'package:project_1/models/user.dart';
 
 class CustomIdentityCard extends StatelessWidget {
   const CustomIdentityCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = User.currentUser;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -27,17 +29,17 @@ class CustomIdentityCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: const CustomIdentityItem(
+                child: CustomIdentityItem(
                   label: 'Gender',
-                  value: 'Female',
+                  value: user.gender ?? '',
                   icon: Symbols.wc,
                 ),
               ),
               Container(height: 40, width: 1, color: AppColors.greyLight),
               Expanded(
-                child: const CustomIdentityItem(
+                child: CustomIdentityItem(
                   label: 'Age',
-                  value: '31',
+                  value: user.age.toString(),
                   icon: Symbols.cake,
                   isHighlighted: true,
                   highlightColor: AppColors.primary,
@@ -49,9 +51,9 @@ class CustomIdentityCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 20),
             child: Divider(color: AppColors.greyLight, height: 1),
           ),
-          const CustomIdentityItem(
+          CustomIdentityItem(
             label: 'Birthdate',
-            value: 'Oct 24, 1992',
+            value: user.formattedBirthdate,
             icon: Symbols.calendar_month,
           ),
         ],

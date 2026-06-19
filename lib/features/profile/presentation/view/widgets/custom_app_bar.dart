@@ -6,7 +6,9 @@ import 'package:project_1/core/theme/cubit/theme_cubit.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_theme_mode_switch.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+  const CustomAppBar({super.key, this.onEditPressed});
+
+  final VoidCallback? onEditPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,12 @@ class CustomAppBar extends StatelessWidget {
         ],
       ),
       actions: [
+        if (onEditPressed != null)
+          IconButton(
+            icon: const Icon(Symbols.edit_square, color: AppColors.primary, size: 24),
+            onPressed: onEditPressed,
+            tooltip: 'Edit Profile',
+          ),
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
           child: CustomThemeModeSwitch(

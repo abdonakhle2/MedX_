@@ -8,13 +8,15 @@ import 'package:project_1/features/profile/presentation/view/widgets/custom_resi
 import 'package:project_1/features/profile/presentation/view/widgets/custom_verifiaction_card.dart';
 
 class ProfileBody extends StatelessWidget {
-  const ProfileBody({super.key});
+  const ProfileBody({super.key, this.onEditPressed});
+
+  final VoidCallback? onEditPressed;
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const CustomAppBar(),
+        CustomAppBar(onEditPressed: onEditPressed),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
