@@ -4,11 +4,12 @@ import 'package:project_1/constants/constants.dart';
 import 'package:project_1/models/user.dart';
 
 class CustomResidentialCard extends StatelessWidget {
-  const CustomResidentialCard({super.key});
+  const CustomResidentialCard({super.key, required this.user});
+
+  final User user;
 
   @override
   Widget build(BuildContext context) {
-    final user = User.currentUser;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),

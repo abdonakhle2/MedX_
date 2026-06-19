@@ -7,9 +7,12 @@ import 'package:project_1/features/profile/presentation/view/widgets/custom_prof
 import 'package:project_1/features/profile/presentation/view/widgets/custom_residential_card.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_verifiaction_card.dart';
 
-class ProfileBody extends StatelessWidget {
-  const ProfileBody({super.key, this.onEditPressed});
+import 'package:project_1/models/user.dart';
 
+class ProfileBody extends StatelessWidget {
+  const ProfileBody({super.key, required this.user, this.onEditPressed});
+
+  final User user;
   final VoidCallback? onEditPressed;
 
   @override
@@ -23,13 +26,13 @@ class ProfileBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CustomProfileHeader(),
+                CustomProfileHeader(user: user),
                 const SizedBox(height: 30),
-                const CustomContactCard(),
+                CustomContactCard(user: user),
                 const SizedBox(height: 20),
-                const CustomIdentityCard(),
+                CustomIdentityCard(user: user),
                 const SizedBox(height: 30),
-                const CustomResidentialCard(),
+                CustomResidentialCard(user: user),
                 const SizedBox(height: 20),
                 const CustomVerifiactionCard(),
                 const SizedBox(height: 30),

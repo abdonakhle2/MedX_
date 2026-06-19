@@ -11,6 +11,7 @@ import 'package:project_1/features/auth/presentation/view/sign_up_screen.dart';
 import 'package:project_1/features/splash/presentation/view/splash_view.dart';
 
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
 
 void main() {
   runApp(const TheApp());
@@ -25,6 +26,7 @@ class TheApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => ThemeCubit()),
         BlocProvider(create: (context) => FavoritesCubit()..loadFavorites()),
+        BlocProvider(create: (context) => ProfileCubit()..loadProfile()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {

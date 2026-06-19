@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/models/user.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_state.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -73,30 +76,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _saveChanges() {
     if (_formKey.currentState?.validate() ?? false) {
-      setState(() {
-        User.currentUser.name = _nameController.text.trim();
-        User.currentUser.phone_number = int.tryParse(_phoneController.text.trim());
-        User.currentUser.email = _emailController.text.trim();
-        User.currentUser.birthdate = _selectedBirthdate;
-        User.currentUser.address = _addressController.text.trim();
-        User.currentUser.id_passport = int.tryParse(_idPassportController.text.trim());
-      });
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Profile updated successfully!',
-            style: AppFonts.bodyMedium.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: AppColors.success,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          margin: const EdgeInsets.all(16),
-        ),
-      );
-
-      Navigator.pop(context, true);
+      context.read<ProfileCubit>().updateProfile(
+            name: _nameController.text.trim(),
+            email: _emailController.text.trim(),
+            phone: int.tryParse(_phoneController.text.trim()),
+            birthdate: _selectedBirthdate,
+            address: _addressController.text.trim(),
+            idPassport: int.tryParse(_idPassportController.text.trim()),
+          );
     }
   }
 
@@ -120,237 +107,274 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         centerTitle: false,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: AppGradients.primaryGradient,
-                          boxShadow: AppShadows.softShadow,
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Symbols.person_rounded,
-                            color: Colors.white,
-                            size: 50,
-                            fill: 1.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+      body: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileUpdateSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Profile updated successfully!',
+                  style: AppFonts.bodyMedium.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 32),
-                
-                // Full Name
-                _buildFieldLabel('Full Name'),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _nameController,
-                  style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your full name';
-                    }
-                    return null;
-                  },
-                  decoration: _buildInputDecoration(
-                    hintText: 'John Doe',
-                    icon: Symbols.person,
-                  ),
+                backgroundColor: AppColors.success,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                margin: const EdgeInsets.all(16),
+              ),
+            );
+            Navigator.pop(context);
+          } else if (state is ProfileError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  state.errorMessage,
+                  style: AppFonts.bodyMedium.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 20),
-
-                // Email Address
-                _buildFieldLabel('Email Address'),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                    if (!emailRegex.hasMatch(value.trim())) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                  decoration: _buildInputDecoration(
-                    hintText: 'JohnDoe@gmail.com',
-                    icon: Symbols.mail,
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // Phone Number
-                _buildFieldLabel('Phone Number'),
-                const SizedBox(height: 8),
-                Row(
+                backgroundColor: AppColors.error,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                margin: const EdgeInsets.all(16),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          final isUpdating = state is ProfileUpdating;
+          return SafeArea(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(24),
+              child: Form(
+                key: _formKey,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 56,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: AppColors.greyLight,
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: Colors.grey.shade200, width: 1),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "+963",
-                          style: AppFonts.labelLarge.copyWith(fontWeight: FontWeight.bold, color: AppColors.black),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: TextFormField(
-                        controller: _phoneController,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          if (value.trim().length < 7) {
-                            return 'Enter a valid phone number';
-                          }
-                          return null;
-                        },
-                        decoration: _buildInputDecoration(
-                          hintText: '999999999',
-                          icon: Symbols.call,
-                        ),
+                    Center(
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: AppGradients.primaryGradient,
+                              boxShadow: AppShadows.softShadow,
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Symbols.person_rounded,
+                                color: Colors.white,
+                                size: 50,
+                                fill: 1.0,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-
-                // Birthdate
-                _buildFieldLabel('Birthdate'),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _birthdateController,
-                  readOnly: true,
-                  onTap: () => _pickBirthdate(context),
-                  style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please select your birthdate';
-                    }
-                    return null;
-                  },
-                  decoration: _buildInputDecoration(
-                    hintText: 'Oct 24, 1992',
-                    icon: Symbols.calendar_month,
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // ID / Passport Number
-                _buildFieldLabel('ID / Passport Number'),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _idPassportController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your ID/Passport number';
-                    }
-                    return null;
-                  },
-                  decoration: _buildInputDecoration(
-                    hintText: '123456789',
-                    icon: Symbols.badge,
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // Address
-                _buildFieldLabel('Address'),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _addressController,
-                  style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your residential address';
-                    }
-                    return null;
-                  },
-                  decoration: _buildInputDecoration(
-                    hintText: '722 Marble Arch, West District, London, UK',
-                    icon: Symbols.location_on,
-                  ),
-                ),
-                const SizedBox(height: 40),
-
-                // Save button
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: _saveChanges,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                    const SizedBox(height: 32),
+                    
+                    // Full Name
+                    _buildFieldLabel('Full Name'),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _nameController,
+                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your full name';
+                        }
+                        return null;
+                      },
+                      decoration: _buildInputDecoration(
+                        hintText: 'John Doe',
+                        icon: Symbols.person,
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    const SizedBox(height: 20),
+
+                    // Email Address
+                    _buildFieldLabel('Email Address'),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                        if (!emailRegex.hasMatch(value.trim())) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                      decoration: _buildInputDecoration(
+                        hintText: 'JohnDoe@gmail.com',
+                        icon: Symbols.mail,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Phone Number
+                    _buildFieldLabel('Phone Number'),
+                    const SizedBox(height: 8),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Save Changes",
-                          style: AppFonts.labelLarge.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
+                        Container(
+                          height: 56,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: AppColors.greyLight,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: Colors.grey.shade200, width: 1),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "+963",
+                              style: AppFonts.labelLarge.copyWith(fontWeight: FontWeight.bold, color: AppColors.black),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.check_rounded,
-                            color: Colors.white,
-                            size: 16,
+                        Expanded(
+                          child: TextFormField(
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              if (value.trim().length < 7) {
+                                return 'Enter a valid phone number';
+                              }
+                              return null;
+                            },
+                            decoration: _buildInputDecoration(
+                              hintText: '999999999',
+                              icon: Symbols.call,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 20),
+
+                    // Birthdate
+                    _buildFieldLabel('Birthdate'),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _birthdateController,
+                      readOnly: true,
+                      onTap: () => _pickBirthdate(context),
+                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please select your birthdate';
+                        }
+                        return null;
+                      },
+                      decoration: _buildInputDecoration(
+                        hintText: 'Oct 24, 1992',
+                        icon: Symbols.calendar_month,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // ID / Passport Number
+                    _buildFieldLabel('ID / Passport Number'),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _idPassportController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your ID/Passport number';
+                        }
+                        return null;
+                      },
+                      decoration: _buildInputDecoration(
+                        hintText: '123456789',
+                        icon: Symbols.badge,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Address
+                    _buildFieldLabel('Address'),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _addressController,
+                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your residential address';
+                        }
+                        return null;
+                      },
+                      decoration: _buildInputDecoration(
+                        hintText: '722 Marble Arch, West District, London, UK',
+                        icon: Symbols.location_on,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+
+                    // Save button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: isUpdating ? null : _saveChanges,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: isUpdating
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Save Changes",
+                                    style: AppFonts.labelLarge.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.check_rounded,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
                 ),
-                const SizedBox(height: 24),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

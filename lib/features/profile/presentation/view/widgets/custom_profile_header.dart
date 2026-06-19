@@ -4,11 +4,12 @@ import 'package:project_1/constants/constants.dart';
 import 'package:project_1/models/user.dart';
 
 class CustomProfileHeader extends StatelessWidget {
-  const CustomProfileHeader({super.key});
+  const CustomProfileHeader({super.key, required this.user});
+
+  final User user;
 
   @override
   Widget build(BuildContext context) {
-    final user = User.currentUser;
     return Column(
       children: [
         Stack(

@@ -6,11 +6,12 @@ import 'package:project_1/features/profile/presentation/view/widgets/custom_sect
 import 'package:project_1/models/user.dart';
 
 class CustomContactCard extends StatelessWidget {
-  const CustomContactCard({super.key});
+  const CustomContactCard({super.key, required this.user});
+
+  final User user;
 
   @override
   Widget build(BuildContext context) {
-    final user = User.currentUser;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
