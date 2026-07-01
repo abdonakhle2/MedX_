@@ -15,7 +15,8 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   void updateProfile({
-    required String name,
+    required String firstName,
+    required String lastName,
     required String email,
     required int? phone,
     required DateTime? birthdate,
@@ -25,7 +26,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileUpdating());
     try {
       // Simulate network request or perform update locally
-      User.currentUser.name = name;
+      User.currentUser.firstName = firstName;
+      User.currentUser.lastName = lastName;
       User.currentUser.email = email;
       User.currentUser.phone_number = phone;
       User.currentUser.birthdate = birthdate;

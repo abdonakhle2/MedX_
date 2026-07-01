@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/features/auth/presentation/view/log_in_screen.dart';
+import 'package:project_1/core/utils/app_router.dart';
 
 class CustomLogOutButton extends StatelessWidget {
   const CustomLogOutButton({super.key});
@@ -25,11 +26,12 @@ class CustomLogOutButton extends StatelessWidget {
           highlightColor: AppColors.error.withOpacity(0.1),
           splashColor: AppColors.error.withOpacity(0.1),
           onTap: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const LogInScreen()),
-              (route) => false,
-            );
+            // Navigator.pushAndRemoveUntil(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const LogInScreen()),
+            //   (route) => false,
+            // );
+            GoRouter.of(context).go(AppRouter.kLogInScreen);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),

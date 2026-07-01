@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/models/doctor.dart';
-import 'package:project_1/features/home/presentation/view/appointment_screen.dart';
 
 Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
   return Card(
@@ -161,13 +162,16 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                       builder: (context) {
                         return ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         AppointmentScreen(myDoctor: doctor),
+                            //   ),
+                            // );
+                            GoRouter.of(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    AppointmentScreen(myDoctor: doctor),
-                              ),
-                            );
+                            ).push(AppRouter.kAppointmentScreen, extra: doctor);
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,

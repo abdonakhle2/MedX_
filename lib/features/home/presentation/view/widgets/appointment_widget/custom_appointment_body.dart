@@ -9,7 +9,6 @@ import 'package:project_1/features/home/presentation/view/widgets/appointment_wi
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_scheduling_card.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_upload_medical_file.dart';
 import 'package:project_1/models/doctor.dart';
-import 'package:project_1/constants/constants.dart';
 
 class CustomAppointmentBody extends StatefulWidget {
   final Doctor myDoctor;

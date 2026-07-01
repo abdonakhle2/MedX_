@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_field_label.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_step_indiactor.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_sing_up_app_bar.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_tail_text_sign_up.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_upload_id_passport.dart';
-import 'package:project_1/features/home/presentation/view/home_screen.dart';
+
 import 'package:project_1/models/user.dart';
 
 class SignUpBody extends StatefulWidget {
@@ -31,6 +33,8 @@ class _SignUpBodyState extends State<SignUpBody> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
   DateTime? selectedBirthdate;
@@ -46,6 +50,8 @@ class _SignUpBodyState extends State<SignUpBody> {
     birthdateController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
     super.dispose();
   }
 
@@ -143,9 +149,13 @@ class _SignUpBodyState extends State<SignUpBody> {
           children: [
             if (currentStep == 0) ...[
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Full Name'),
+              const BuildFieldLabel(text: 'First Name'),
               const SizedBox(height: 10),
-              CustomFullNameTextField(),
+              CustomFirstNameTextField(),
+              const SizedBox(height: 20),
+              const BuildFieldLabel(text: 'Last Name'),
+              const SizedBox(height: 10),
+              CustomLastNameTextField(),
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'Email Address'),
               const SizedBox(height: 10),
@@ -428,13 +438,16 @@ class _SignUpBodyState extends State<SignUpBody> {
                 currentStep++;
               });
             } else {
-              Navigator.pushAndRemoveUntil(
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => HomeScreen(userName: user.name),
+              //   ),
+              //   (route) => false,
+              // );
+              GoRouter.of(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(userName: user.name),
-                ),
-                (route) => false,
-              );
+              ).pushReplacement(AppRouter.kHomeScreen, extra: user.name);
             }
           }
         },
@@ -870,30 +883,82 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextFormField CustomFullNameTextField() {
+  TextFormField CustomFirstNameTextField() {
     return TextFormField(
-      key: const ValueKey('signup_full_name'),
+      key: const ValueKey('signup_first_name'),
+      controller: firstNameController,
       style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
       keyboardType: TextInputType.name,
+      textCapitalization: TextCapitalization.words,
       onChanged: (data) {
-        user.name = data;
+        user.firstName = data;
       },
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your full name';
+          return 'Please enter your first name';
         }
-        if (value.trim().length < 3) {
-          return 'Please enter a valid name';
+        if (value.trim().length < 2) {
+          return 'Please enter a valid first name';
         }
         return null;
       },
       decoration: InputDecoration(
-        hintText: 'Ahmad Al-Faraj',
+        hintText: 'Ahmad',
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: AppColors.secondary.withOpacity(0.4),
         ),
         suffixIcon: Icon(
           Icons.person_rounded,
+          color: AppColors.secondary.withOpacity(0.4),
+        ),
+        filled: true,
+        fillColor: AppColors.greyLight,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 16,
+        ),
+      ),
+    );
+  }
+
+  TextFormField CustomLastNameTextField() {
+    return TextFormField(
+      key: const ValueKey('signup_last_name'),
+      controller: lastNameController,
+      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      keyboardType: TextInputType.name,
+      textCapitalization: TextCapitalization.words,
+      onChanged: (data) {
+        user.lastName = data;
+      },
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please enter your last name';
+        }
+        if (value.trim().length < 2) {
+          return 'Please enter a valid last name';
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        hintText: 'Al-Faraj',
+        hintStyle: AppFonts.bodyMedium.copyWith(
+          color: AppColors.secondary.withOpacity(0.4),
+        ),
+        suffixIcon: Icon(
+          Icons.person_outline_rounded,
           color: AppColors.secondary.withOpacity(0.4),
         ),
         filled: true,

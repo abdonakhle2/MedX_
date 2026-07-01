@@ -16,29 +16,38 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
   late TextEditingController _phoneController;
   late TextEditingController _emailController;
   late TextEditingController _birthdateController;
   late TextEditingController _addressController;
   late TextEditingController _idPassportController;
-  
+  late TextEditingController _passwordController;
+
   DateTime? _selectedBirthdate;
 
   @override
   void initState() {
     super.initState();
     final user = User.currentUser;
-    _nameController = TextEditingController(text: user.name);
-    _phoneController = TextEditingController(text: user.phone_number?.toString());
+    _firstNameController = TextEditingController(text: user.firstName);
+    _lastNameController = TextEditingController(text: user.lastName);
+    _phoneController = TextEditingController(
+      text: user.phone_number?.toString(),
+    );
     _emailController = TextEditingController(text: user.email);
     _addressController = TextEditingController(text: user.address);
-    _idPassportController = TextEditingController(text: user.id_passport?.toString());
-    
+    _idPassportController = TextEditingController(
+      text: user.id_passport?.toString(),
+    );
+    _passwordController = TextEditingController(text: user.password);
+
     _selectedBirthdate = user.birthdate;
     if (_selectedBirthdate != null) {
       _birthdateController = TextEditingController(
-        text: '${_selectedBirthdate!.year}-${_selectedBirthdate!.month.toString().padLeft(2, '0')}-${_selectedBirthdate!.day.toString().padLeft(2, '0')}',
+        text:
+            '${_selectedBirthdate!.year}-${_selectedBirthdate!.month.toString().padLeft(2, '0')}-${_selectedBirthdate!.day.toString().padLeft(2, '0')}',
       );
     } else {
       _birthdateController = TextEditingController();
@@ -47,12 +56,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
     _birthdateController.dispose();
     _addressController.dispose();
     _idPassportController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -77,13 +88,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _saveChanges() {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<ProfileCubit>().updateProfile(
-            name: _nameController.text.trim(),
-            email: _emailController.text.trim(),
-            phone: int.tryParse(_phoneController.text.trim()),
-            birthdate: _selectedBirthdate,
-            address: _addressController.text.trim(),
-            idPassport: int.tryParse(_idPassportController.text.trim()),
-          );
+        // name: _nameController.text.trim(),
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        email: _emailController.text.trim(),
+        phone: int.tryParse(_phoneController.text.trim()),
+        birthdate: _selectedBirthdate,
+        address: _addressController.text.trim(),
+        idPassport: int.tryParse(_idPassportController.text.trim()),
+      );
     }
   }
 
@@ -95,7 +108,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.black),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: AppColors.black,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -114,11 +130,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               SnackBar(
                 content: Text(
                   'Profile updated successfully!',
-                  style: AppFonts.bodyMedium.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: AppFonts.bodyMedium.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 backgroundColor: AppColors.success,
                 behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 margin: const EdgeInsets.all(16),
               ),
             );
@@ -128,11 +149,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               SnackBar(
                 content: Text(
                   state.errorMessage,
-                  style: AppFonts.bodyMedium.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: AppFonts.bodyMedium.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 backgroundColor: AppColors.error,
                 behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 margin: const EdgeInsets.all(16),
               ),
             );
@@ -173,21 +199,44 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 32),
-                    
+
                     // Full Name
                     _buildFieldLabel('Full Name'),
                     const SizedBox(height: 8),
                     TextFormField(
-                      controller: _nameController,
-                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      controller: _firstNameController,
+                      style: AppFonts.bodyMedium.copyWith(
+                        color: AppColors.black,
+                      ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your full name';
+                          return 'Please enter your first name';
                         }
                         return null;
                       },
                       decoration: _buildInputDecoration(
-                        hintText: 'John Doe',
+                        hintText: 'John',
+                        icon: Symbols.person,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Last Name
+                    _buildFieldLabel('Last Name'),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _lastNameController,
+                      style: AppFonts.bodyMedium.copyWith(
+                        color: AppColors.black,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your last name';
+                        }
+                        return null;
+                      },
+                      decoration: _buildInputDecoration(
+                        hintText: 'Doe',
                         icon: Symbols.person,
                       ),
                     ),
@@ -199,12 +248,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      style: AppFonts.bodyMedium.copyWith(
+                        color: AppColors.black,
+                      ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please enter your email';
                         }
-                        final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                        final emailRegex = RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                        );
                         if (!emailRegex.hasMatch(value.trim())) {
                           return 'Please enter a valid email address';
                         }
@@ -229,12 +282,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           decoration: BoxDecoration(
                             color: AppColors.greyLight,
                             borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: Colors.grey.shade200, width: 1),
+                            border: Border.all(
+                              color: Colors.grey.shade200,
+                              width: 1,
+                            ),
                           ),
                           child: Center(
                             child: Text(
                               "+963",
-                              style: AppFonts.labelLarge.copyWith(fontWeight: FontWeight.bold, color: AppColors.black),
+                              style: AppFonts.labelLarge.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.black,
+                              ),
                             ),
                           ),
                         ),
@@ -243,8 +302,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: TextFormField(
                             controller: _phoneController,
                             keyboardType: TextInputType.phone,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                            style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            style: AppFonts.bodyMedium.copyWith(
+                              color: AppColors.black,
+                            ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Please enter your phone number';
@@ -271,7 +334,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       controller: _birthdateController,
                       readOnly: true,
                       onTap: () => _pickBirthdate(context),
-                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      style: AppFonts.bodyMedium.copyWith(
+                        color: AppColors.black,
+                      ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please select your birthdate';
@@ -292,7 +357,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       controller: _idPassportController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      style: AppFonts.bodyMedium.copyWith(
+                        color: AppColors.black,
+                      ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please enter your ID/Passport number';
@@ -311,7 +378,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _addressController,
-                      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+                      style: AppFonts.bodyMedium.copyWith(
+                        color: AppColors.black,
+                      ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please enter your residential address';
@@ -323,6 +392,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         icon: Symbols.location_on,
                       ),
                     ),
+                    const SizedBox(height: 20),
+                    _buildFieldLabel('password'),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _passwordController,
+                      style: AppFonts.bodyMedium.copyWith(
+                        color: AppColors.black,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters';
+                        }
+                        return null;
+                      },
+                      decoration: _buildInputDecoration(
+                        hintText: '**********',
+                        icon: Icons.visibility_off_rounded,
+                      ),
+                    ),
+
                     const SizedBox(height: 40),
 
                     // Save button
@@ -339,7 +431,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                         child: isUpdating
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -389,7 +483,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  InputDecoration _buildInputDecoration({required String hintText, required IconData icon}) {
+  InputDecoration _buildInputDecoration({
+    required String hintText,
+    required IconData icon,
+  }) {
     return InputDecoration(
       hintText: hintText,
       hintStyle: AppFonts.bodyMedium.copyWith(
@@ -414,10 +511,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
       ),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 18,
-        vertical: 16,
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
     );
   }
 }

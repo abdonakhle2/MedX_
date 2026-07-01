@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_body.dart';
 import 'package:project_1/core/widgets/bottom_nav_bar.dart';
 import 'package:project_1/features/profile/presentation/view/edit_profile_screen.dart';
@@ -25,8 +27,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _onNavTap(int index) {
     if (index == _navIndex) return;
 
-    final routes = ['/home', '/favorites', '/search', '/bookings', '/profile'];
-    Navigator.pushReplacementNamed(context, routes[index]);
+    final routes = [
+      AppRouter.kHomeScreen,
+      AppRouter.kFavoritesScreen,
+      AppRouter.kSearchScreen,
+      AppRouter.kBookingScreen,
+      AppRouter.kProfileScreen,
+    ];
+    // Navigator.pushReplacementNamed(context, routes[index]);
+    GoRouter.of(context).pushReplacement(routes[index]);
   }
 
   @override

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/features/home/presentation/view/appointment_screen.dart';
+import 'package:project_1/core/utils/app_router.dart';
+
 import 'package:project_1/models/doctor.dart';
 
 class CustomTopRatedDoctors extends StatelessWidget {
@@ -91,12 +93,15 @@ class CustomTopRatedDoctors extends StatelessWidget {
               return InkWell(
                 borderRadius: BorderRadius.circular(24),
                 onTap: () {
-                  Navigator.push(
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => AppointmentScreen(myDoctor: doctor),
+                  //   ),
+                  // );
+                  GoRouter.of(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => AppointmentScreen(myDoctor: doctor),
-                    ),
-                  );
+                  ).push(AppRouter.kAppointmentScreen, extra: doctor);
                 },
                 child: Container(
                   width: 150,

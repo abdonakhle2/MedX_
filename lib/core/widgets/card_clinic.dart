@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/features/home/presentation/view/center_details_screen.dart';
+import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/models/clinic.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_state.dart';
@@ -30,10 +31,13 @@ class _CardClinicState extends State<CardClinic> {
         onTapUp: (_) => setState(() => _isPressed = false),
         onTapCancel: () => setState(() => _isPressed = false),
         onTap: () {
-          Navigator.push(
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => CenterDetailsScreen()),
+          // );
+          GoRouter.of(
             context,
-            MaterialPageRoute(builder: (context) => CenterDetailsScreen()),
-          );
+          ).push(AppRouter.kCenterDetailsScreen, extra: widget.clinic);
         },
         child: AnimatedScale(
           scale: _isPressed ? 0.97 : 1.0,
@@ -119,10 +123,14 @@ class _CardClinicState extends State<CardClinic> {
                             children: [
                               BlocBuilder<FavoritesCubit, FavoritesState>(
                                 builder: (context, state) {
-                                  final isFavorite = context.read<FavoritesCubit>().isFavorite(widget.clinic.clinic_id);
+                                  final isFavorite = context
+                                      .read<FavoritesCubit>()
+                                      .isFavorite(widget.clinic.clinic_id);
                                   return IconButton(
                                     onPressed: () {
-                                      context.read<FavoritesCubit>().toggleFavorite(widget.clinic);
+                                      context
+                                          .read<FavoritesCubit>()
+                                          .toggleFavorite(widget.clinic);
                                     },
                                     icon: Icon(
                                       isFavorite

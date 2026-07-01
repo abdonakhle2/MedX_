@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/features/auth/presentation/view/sign_up_screen.dart';
+import 'package:project_1/core/utils/app_router.dart';
 
 class CustomCreateAccountButton extends StatelessWidget {
   const CustomCreateAccountButton({super.key});
@@ -16,10 +17,11 @@ class CustomCreateAccountButton extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => SignUpScreen()),
-            );
+            // Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => SignUpScreen()),
+            // );
+            GoRouter.of(context).push(AppRouter.kSignUpScreen);
           },
           child: Text(
             'Create Account',

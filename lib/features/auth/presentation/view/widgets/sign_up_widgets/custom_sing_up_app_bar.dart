@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
 
 class CustomSignUpAppBar extends StatelessWidget {
@@ -13,7 +14,8 @@ class CustomSignUpAppBar extends StatelessWidget {
           padding: EdgeInsets.zero,
           icon: const Icon(Icons.arrow_back),
           color: AppColors.primary,
-          onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+          onPressed: () => GoRouter.of(context).pop(),
+          // onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
         ),
         SizedBox(width: 12),
         Container(

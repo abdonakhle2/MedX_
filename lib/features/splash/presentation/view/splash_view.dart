@@ -88,16 +88,17 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_1/constants/constants.dart';
-import 'package:project_1/features/auth/presentation/view/log_in_screen.dart';
+import 'package:project_1/core/utils/app_router.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SplashViewBody());
+    return Scaffold(backgroundColor: Colors.white, body: SplashViewBody());
   }
 }
 
@@ -154,10 +155,14 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   void navigateToHome() {
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LogInScreen()),
-      );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => LogInScreen()),
+      // );
+      if (!mounted) return;
+      GoRouter.of(context).go(AppRouter.kLogInScreen);
+
+      // GoRouter.of(context).go(ApprRouter.kLogInScreen);
     });
   }
 }

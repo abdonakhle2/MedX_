@@ -1,5 +1,6 @@
 class User {
-  String? name;
+  String? firstName;
+  String? lastName;
   int? phone_number;
   String? email;
   String? gender;
@@ -11,7 +12,8 @@ class User {
   bool Is_verified;
 
   User({
-    this.name,
+    this.firstName,
+    this.lastName,
     this.phone_number,
     this.email,
     this.gender,
@@ -23,8 +25,29 @@ class User {
     this.Is_verified = false,
   });
 
+  /// Full name getter for backwards compatibility
+  String? get name {
+    final parts = [
+      firstName,
+      lastName,
+    ].where((p) => p != null && p.isNotEmpty).toList();
+    return parts.isEmpty ? null : parts.join(' ');
+  }
+
+  set name(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      firstName = null;
+      lastName = null;
+      return;
+    }
+    final parts = value.trim().split(' ');
+    firstName = parts.first;
+    lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+  }
+
   static User currentUser = User(
-    name: 'John Doe',
+    firstName: 'John',
+    lastName: 'Doe',
     phone_number: 999999999,
     email: 'JohnDoe@gmail.com',
     gender: 'Female',
@@ -38,7 +61,8 @@ class User {
     if (birthdate == null) return 0;
     final now = DateTime.now();
     int age = now.year - birthdate!.year;
-    if (now.month < birthdate!.month || (now.month == birthdate!.month && now.day < birthdate!.day)) {
+    if (now.month < birthdate!.month ||
+        (now.month == birthdate!.month && now.day < birthdate!.day)) {
       age--;
     }
     return age;
@@ -47,14 +71,26 @@ class User {
   String get formattedBirthdate {
     if (birthdate == null) return '';
     final months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return "${months[birthdate!.month - 1]} ${birthdate!.day}, ${birthdate!.year}";
   }
+
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      name: json['name']?.toString(),
+      firstName: json['firstName']?.toString(),
+      lastName: json['lastName']?.toString(),
       phone_number: int.tryParse(json['phone_number'].toString()),
       email: json['email']?.toString(),
       gender: json['gender']?.toString(),
@@ -68,9 +104,11 @@ class User {
       Is_verified: json['Is_verified'] == true,
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
+      'firstName': firstName,
+      'lastName': lastName,
       'phone_number': phone_number,
       'email': email,
       'gender': gender,

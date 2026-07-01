@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/theme/cubit/theme_cubit.dart';
-import 'package:project_1/features/booking/presentation/view/booking_screen.dart';
-import 'package:project_1/features/favorites/presentation/view/favorites_screen.dart';
-import 'package:project_1/features/home/presentation/view/home_screen.dart';
-import 'package:project_1/features/auth/presentation/view/log_in_screen.dart';
-import 'package:project_1/features/search/presentation/view/search_screen.dart';
-import 'package:project_1/features/profile/presentation/view/profile_screen.dart';
-import 'package:project_1/features/auth/presentation/view/sign_up_screen.dart';
-import 'package:project_1/features/splash/presentation/view/splash_view.dart';
-
+import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
 import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
 
@@ -30,25 +23,109 @@ class TheApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
-          return MaterialApp(
+          return MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            initialRoute: '/splash',
-            routes: {
-              '/splash': (context) => const SplashView(),
-              '/login': (context) => const LogInScreen(),
-              '/signup': (context) => const SignUpScreen(),
-              '/home': (context) => const HomeScreen(),
-              '/search': (context) => const SearchScreen(),
-              '/bookings': (context) => const BookingScreen(),
-              '/profile': (context) => const ProfileScreen(),
-              '/favorites': (context) => const FavoritesScreen(),
-            },
-            themeMode: themeMode,
+            routerConfig: AppRouter.router,
 
-            theme: ThemeData.light(
+            themeMode: themeMode,
+            theme: ThemeData(
               useMaterial3: true,
-            ).copyWith(scaffoldBackgroundColor: Colors.white),
-            darkTheme: ThemeData.dark(useMaterial3: true),
+              brightness: Brightness.light,
+              scaffoldBackgroundColor:
+                  AppColors.neutral, // استخدام لونك الخاص بالخلفية
+
+              colorScheme: const ColorScheme.light(
+                primary: AppColors.primary,
+                secondary: AppColors.secondary,
+                surface: AppColors.cardBg,
+                error: AppColors.error,
+              ),
+
+              // تطبيق الخطوط الخاصة بك للوضع الفاتح
+              textTheme: TextTheme(
+                headlineLarge: AppFonts.headlineLarge.copyWith(
+                  color: AppColors.black,
+                ),
+                headlineMedium: AppFonts.headlineMedium.copyWith(
+                  color: AppColors.black,
+                ),
+                headlineSmall: AppFonts.headlineSmall.copyWith(
+                  color: AppColors.black,
+                ),
+                bodyLarge: AppFonts.bodyLarge.copyWith(color: AppColors.black),
+                bodyMedium: AppFonts.bodyMedium.copyWith(
+                  color: AppColors.greyMedium,
+                ),
+                bodySmall: AppFonts.bodySmall.copyWith(color: AppColors.grey),
+              ),
+
+              // تطبيق ثيم الكارد الفاتح مع ظلالك الخاصة
+              cardTheme: CardThemeData(
+                color: AppColors.cardBg,
+                elevation:
+                    0, // نعتمد على الـ BoxShadow الخاص بك يدويًا أو هنا كـ الارتفاع الأساسي
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+
+              appBarTheme: const AppBarTheme(
+                backgroundColor: AppColors.white,
+                foregroundColor: AppColors.black,
+                elevation: 0,
+              ),
+            ),
+
+            // ==================== 2. الوضع الداكن (Dark Theme) ====================
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              brightness: Brightness.dark,
+              scaffoldBackgroundColor: const Color(
+                0xFF0F172A,
+              ), // خلفية داكنة متناسقة مع درجات الأزرق والرمادي لديك
+
+              colorScheme: const ColorScheme.dark(
+                primary: AppColors
+                    .primaryLight, // نستخدم الدرجة الفاتحة كعنصر مضيء في الداكن
+                secondary: AppColors.secondary,
+                surface: const Color(0xFF1E293B), // كارد داكن متناسق
+                error: AppColors.error,
+              ),
+
+              // تطبيق الخطوط للوضع الداكن (مع تحويل النصوص للأبيض)
+              textTheme: TextTheme(
+                headlineLarge: AppFonts.headlineLarge.copyWith(
+                  color: AppColors.white,
+                ),
+                headlineMedium: AppFonts.headlineMedium.copyWith(
+                  color: AppColors.white,
+                ),
+                headlineSmall: AppFonts.headlineSmall.copyWith(
+                  color: AppColors.white,
+                ),
+                bodyLarge: AppFonts.bodyLarge.copyWith(color: AppColors.white),
+                bodyMedium: AppFonts.bodyMedium.copyWith(
+                  color: const Color(0xFF94A3B8),
+                ),
+                bodySmall: AppFonts.bodySmall.copyWith(
+                  color: const Color(0xFF64748B),
+                ),
+              ),
+
+              cardTheme: CardThemeData(
+                color: const Color(0xFF1E293B),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Color(0xFF0F172A),
+                foregroundColor: AppColors.white,
+                elevation: 0,
+              ),
+            ),
           );
         },
       ),

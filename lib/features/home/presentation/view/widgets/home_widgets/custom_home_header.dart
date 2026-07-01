@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/utils/app_router.dart';
 
 class CustomHomeHeader extends StatelessWidget {
   const CustomHomeHeader({super.key});
@@ -64,11 +66,14 @@ class CustomHomeHeader extends StatelessWidget {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(
+                      // Navigator.pushNamedAndRemoveUntil(
+                      //   context,
+                      //   '/search',
+                      //   (route) => false,
+                      // );
+                      GoRouter.of(
                         context,
-                        '/search',
-                        (route) => false,
-                      );
+                      ).pushReplacement(AppRouter.kSearchScreen);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

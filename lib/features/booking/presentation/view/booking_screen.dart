@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/booking/presentation/view/widgets/booking_body.dart';
 
 import 'package:project_1/core/widgets/bottom_nav_bar.dart';
@@ -16,8 +18,15 @@ class _BookingScreenState extends State<BookingScreen> {
   void _onNavTap(int index) {
     if (index == _navIndex) return;
 
-    final routes = ['/home', '/favorites', '/search', '/bookings', '/profile'];
-    Navigator.pushReplacementNamed(context, routes[index]);
+    final routes = [
+      AppRouter.kHomeScreen,
+      AppRouter.kFavoritesScreen,
+      AppRouter.kSearchScreen,
+      AppRouter.kBookingScreen,
+      AppRouter.kProfileScreen,
+    ];
+    // Navigator.pushReplacementNamed(context, routes[index]);
+    GoRouter.of(context).pushReplacement(routes[index]);
   }
 
   @override

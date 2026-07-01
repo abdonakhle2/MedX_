@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/Custom_log_in_button.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_create_account_button.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_footer_text.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_password_text_field.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_email_text_field.dart';
-import 'package:project_1/features/home/presentation/view/home_screen.dart';
+
 import 'package:project_1/models/user.dart';
 
 class CustomLogInBody extends StatefulWidget {
@@ -29,11 +31,12 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
 
   void submitLogin() {
     if (formKey.currentState?.validate() ?? false) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-        (route) => false,
-      );
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const HomeScreen()),
+      //   (route) => false,
+      // );
+      GoRouter.of(context).pushReplacement(AppRouter.kHomeScreen);
     }
   }
 
