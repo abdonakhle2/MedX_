@@ -38,13 +38,15 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return TextField(
       controller: controller,
-      cursorColor: AppColors.primary,
+      cursorColor: colorScheme.primary,
       cursorRadius: const Radius.circular(2),
 
       style: AppFonts.bodyMedium.copyWith(
-        color: AppColors.black,
+        color: colorScheme.onSurface,
         letterSpacing: hintLetterSpacing,
         fontSize: 16,
       ),
@@ -60,12 +62,12 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
 
         labelText: labelText,
         labelStyle: TextStyle(
-          color: AppColors.primary,
+          color: colorScheme.primary,
           letterSpacing: labelLetterSpacing,
         ),
 
@@ -80,7 +82,7 @@ class CustomTextField extends StatelessWidget {
                 child: Text(
                   prefixText!,
                   style: AppFonts.labelLarge.copyWith(
-                    color: Colors.black87,
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -90,7 +92,7 @@ class CustomTextField extends StatelessWidget {
         prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
 
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: isDarkMode ? colorScheme.surface : AppColors.greyLight,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
@@ -98,12 +100,17 @@ class CustomTextField extends StatelessWidget {
 
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
 
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: isDarkMode 
+              ? colorScheme.onSurface.withOpacity(0.2)
+              : colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
         ),
 
         contentPadding: const EdgeInsets.symmetric(

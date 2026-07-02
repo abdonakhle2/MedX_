@@ -12,17 +12,24 @@ class CustomIdentityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: AppShadows.cardShadow,
+        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        border: Border.all(
+          color: colorScheme.onSurface.withOpacity(0.06),
+          width: 1,
+        ),
       ),
       padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomSectionHeader(
+          const CustomSectionHeader(
             title: 'Personal Identity',
             icon: Symbols.manage_accounts,
           ),
@@ -36,21 +43,28 @@ class CustomIdentityCard extends StatelessWidget {
                   icon: Symbols.wc,
                 ),
               ),
-              Container(height: 40, width: 1, color: AppColors.greyLight),
+              Container(
+                height: 40,
+                width: 1,
+                color: colorScheme.onSurface.withOpacity(0.08),
+              ),
               Expanded(
                 child: CustomIdentityItem(
                   label: 'Age',
                   value: user.age.toString(),
                   icon: Symbols.cake,
                   isHighlighted: true,
-                  highlightColor: AppColors.primary,
+                  highlightColor: colorScheme.primary,
                 ),
               ),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Divider(color: AppColors.greyLight, height: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Divider(
+              color: colorScheme.onSurface.withOpacity(0.08),
+              height: 1,
+            ),
           ),
           CustomIdentityItem(
             label: 'Birthdate',

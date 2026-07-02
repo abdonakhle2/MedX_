@@ -14,7 +14,7 @@ class CustomInfoBadge extends StatelessWidget {
         Text(
           value,
           style: AppFonts.labelLarge.copyWith(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -22,7 +22,7 @@ class CustomInfoBadge extends StatelessWidget {
         Text(
           label,
           style: AppFonts.labelSmall.copyWith(
-            color: Colors.white.withOpacity(0.7),
+            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
             letterSpacing: 1,
             fontSize: 9,
           ),

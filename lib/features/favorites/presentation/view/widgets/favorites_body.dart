@@ -10,6 +10,8 @@ class FavoritesBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<FavoritesCubit, FavoritesState>(
@@ -34,14 +36,14 @@ class FavoritesBody extends StatelessWidget {
                             Icon(
                               Icons.favorite_border_rounded,
                               size: 64,
-                              color: Colors.grey.shade400,
+                              color: colorScheme.onSurface.withOpacity(0.3),
                             ),
                             const SizedBox(height: 16),
                             Text(
                               "No favorites added yet",
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.grey.shade600,
+                                color: colorScheme.onSurface.withOpacity(0.5),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -59,13 +61,21 @@ class FavoritesBody extends StatelessWidget {
                 const CustomAppBar(),
                 SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
-                    return CardClinic(clinic: favoriteClinics[index]);
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: CardClinic(clinic: favoriteClinics[index]),
+                    );
                   }, childCount: favoriteClinics.length),
                 ),
               ],
             );
           } else if (state is FavoritesError) {
-            return Center(child: Text(state.message));
+            return Center(
+              child: Text(
+                state.message,
+                style: TextStyle(color: colorScheme.error),
+              ),
+            );
           }
 
           return const SizedBox.shrink();

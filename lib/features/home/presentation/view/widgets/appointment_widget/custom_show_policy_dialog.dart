@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 
 void CustomShowPolicyDialog(BuildContext context, String title, String rules) {
+  final colorScheme = Theme.of(context).colorScheme;
+
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
+        backgroundColor: colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         title: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: colorScheme.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 title.contains("Terms")
                     ? Icons.description_rounded
                     : Icons.shield_rounded,
-                color: AppColors.primary,
+                color: colorScheme.primary,
                 size: 20,
               ),
             ),
@@ -28,7 +31,7 @@ void CustomShowPolicyDialog(BuildContext context, String title, String rules) {
               title,
               style: AppFonts.headlineSmall.copyWith(
                 fontWeight: FontWeight.w800,
-                color: AppColors.primary,
+                color: colorScheme.primary,
               ),
             ),
           ],
@@ -38,7 +41,7 @@ void CustomShowPolicyDialog(BuildContext context, String title, String rules) {
             rules,
             style: AppFonts.bodyMedium.copyWith(
               height: 1.6,
-              color: AppColors.secondary,
+              color: colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
         ),
@@ -48,7 +51,8 @@ void CustomShowPolicyDialog(BuildContext context, String title, String rules) {
             child: ElevatedButton(
               onPressed: () => Navigator.pop(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -58,7 +62,7 @@ void CustomShowPolicyDialog(BuildContext context, String title, String rules) {
               child: Text(
                 "I Understand",
                 style: AppFonts.labelLarge.copyWith(
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),

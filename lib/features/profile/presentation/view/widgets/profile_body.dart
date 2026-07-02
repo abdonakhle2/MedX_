@@ -6,7 +6,6 @@ import 'package:project_1/features/profile/presentation/view/widgets/custom_log_
 import 'package:project_1/features/profile/presentation/view/widgets/custom_profile_header.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_residential_card.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_verifiaction_card.dart';
-
 import 'package:project_1/models/user.dart';
 
 class ProfileBody extends StatelessWidget {
@@ -34,7 +33,7 @@ class ProfileBody extends StatelessWidget {
                 const SizedBox(height: 30),
                 CustomResidentialCard(user: user),
                 const SizedBox(height: 20),
-                const CustomVerifiactionCard(),
+                const CustomVerificationCard(), // تم تعديل الاسم هنا تزامناً مع تصحيحه
                 const SizedBox(height: 30),
                 const CustomLogOutButton(),
               ],

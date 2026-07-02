@@ -17,21 +17,21 @@ class CustomThemeModeSwitch extends StatefulWidget {
 class _CustomThemeModeSwitchState extends State<CustomThemeModeSwitch> {
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = widget.isDarkMode
-        ? const Color(0xff1d2337)
-        : const Color(0xffe2e5ec);
-    final toggleColor = widget.isDarkMode
-        ? const Color(0xffffffff)
-        : const Color(0xffffffff);
-    final iconColor = widget.isDarkMode
-        ? const Color(0xff22283a)
-        : const Color(0xfff3b63a);
-    final iconData = widget.isDarkMode
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDarkMode
+        ? colorScheme.surface.withOpacity(0.8)
+        : colorScheme.surface;
+    final toggleColor = colorScheme.surface;
+    final iconColor = isDarkMode
+        ? Colors.amber
+        : Colors.amber;
+    final iconData = isDarkMode
         ? Icons.nightlight_round
         : Icons.wb_sunny_rounded;
     return GestureDetector(
       onTap: () {
-        widget.onThemeChanged(!widget.isDarkMode);
+        widget.onThemeChanged(!isDarkMode);
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -42,16 +42,14 @@ class _CustomThemeModeSwitchState extends State<CustomThemeModeSwitch> {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: widget.isDarkMode
-                ? AppColors.white.withOpacity(0.1)
-                : AppColors.black.withOpacity(0.05),
+            color: colorScheme.onSurface.withOpacity(0.1),
             width: 1,
           ),
         ),
         child: AnimatedAlign(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          alignment: widget.isDarkMode
+          alignment: isDarkMode
               ? Alignment.centerRight
               : Alignment.centerLeft,
           child: Padding(
@@ -64,7 +62,7 @@ class _CustomThemeModeSwitchState extends State<CustomThemeModeSwitch> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
+                    color: colorScheme.onSurface.withOpacity(0.15),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),

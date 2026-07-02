@@ -13,9 +13,9 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = context.watch<ThemeCubit>().isDarkMode;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SliverAppBar(
-      // backgroundColor: Colors.white,
-      // surfaceTintColor: Colors.transparent,
       elevation: 0,
       pinned: true,
       automaticallyImplyLeading: false,
@@ -29,13 +29,13 @@ class CustomAppBar extends StatelessWidget {
               gradient: AppGradients.primaryGradient,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Symbols.person, color: Colors.white, size: 18),
+            child: Icon(Symbols.person, color: colorScheme.onPrimary, size: 18),
           ),
           const SizedBox(width: 10),
           Text(
             'Profile',
             style: AppFonts.headlineMedium.copyWith(
-              // color: AppColors.primary,
+              color: colorScheme.onSurface,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
             ),
@@ -45,7 +45,11 @@ class CustomAppBar extends StatelessWidget {
       actions: [
         if (onEditPressed != null)
           IconButton(
-            icon: const Icon(Symbols.edit_square, color: AppColors.primary, size: 24),
+            icon: Icon(
+              Symbols.edit_square,
+              color: colorScheme.primary,
+              size: 24,
+            ),
             onPressed: onEditPressed,
             tooltip: 'Edit Profile',
           ),

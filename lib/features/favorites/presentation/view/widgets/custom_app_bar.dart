@@ -6,13 +6,12 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SliverAppBar(
-      // backgroundColor: Colors.white,
       elevation: 0,
       automaticallyImplyLeading: false,
       centerTitle: true,
-
-      // pinned: true,
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -32,7 +31,7 @@ class CustomAppBar extends StatelessWidget {
           Text(
             'My Favorites',
             style: AppFonts.headlineMedium.copyWith(
-              color: AppColors.primary,
+              color: colorScheme.primary,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
             ),

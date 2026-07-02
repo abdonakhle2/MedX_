@@ -16,16 +16,20 @@ class CustomSectionHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(icon, size: 22, color: AppColors.primary),
+          child: Icon(
+            icon,
+            size: 22,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         const SizedBox(width: 12),
         Text(
           title,
           style: AppFonts.headlineSmall.copyWith(
-            color: AppColors.black,
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.w800,
           ),
         ),

@@ -8,19 +8,25 @@ class CustomHomeStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: AppGradients.headerGradient,
+        gradient: isDarkMode
+            ? AppGradients.primaryDarkGradient
+            : AppGradients.headerGradient,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: AppShadows.elevatedShadow,
+        boxShadow: isDarkMode ? [] : AppShadows.elevatedShadow,
       ),
       child: Column(
         children: [
           Text(
             'OUR NETWORK',
             style: AppFonts.labelSmall.copyWith(
-              color: Colors.white.withOpacity(0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.onPrimary.withOpacity(isDarkMode ? 0.6 : 0.7),
               letterSpacing: 2,
               fontWeight: FontWeight.w600,
             ),

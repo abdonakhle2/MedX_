@@ -26,6 +26,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController _passwordController;
 
   DateTime? _selectedBirthdate;
+  bool _isPasswordHidden = false;
 
   @override
   void initState() {
@@ -88,7 +89,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _saveChanges() {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<ProfileCubit>().updateProfile(
-        // name: _nameController.text.trim(),
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim(),
         email: _emailController.text.trim(),
@@ -102,15 +102,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: AppColors.black,
+            color: colorScheme.onSurface,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -118,7 +121,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           'Edit Profile',
           style: AppFonts.headlineMedium.copyWith(
             fontWeight: FontWeight.w800,
-            color: AppColors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         centerTitle: false,
@@ -131,11 +134,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 content: Text(
                   'Profile updated successfully!',
                   style: AppFonts.bodyMedium.copyWith(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                backgroundColor: AppColors.success,
+                backgroundColor: colorScheme
+                    .primary, // الاعتماد على لون الثيم الأساسي للنجاح أو لون مخصص متوافق
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -150,11 +154,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 content: Text(
                   state.errorMessage,
                   style: AppFonts.bodyMedium.copyWith(
-                    color: Colors.white,
+                    color: colorScheme.onError,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                backgroundColor: AppColors.error,
+                backgroundColor: colorScheme.error,
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -186,10 +190,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               gradient: AppGradients.primaryGradient,
                               boxShadow: AppShadows.softShadow,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Icon(
                                 Symbols.person_rounded,
-                                color: Colors.white,
+                                color: colorScheme.onPrimary,
                                 size: 50,
                                 fill: 1.0,
                               ),
@@ -200,13 +204,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     const SizedBox(height: 32),
 
-                    // Full Name
-                    _buildFieldLabel('Full Name'),
+                    // First Name
+                    _buildFieldLabel(context, 'First Name'),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _firstNameController,
                       style: AppFonts.bodyMedium.copyWith(
-                        color: AppColors.black,
+                        color: colorScheme.onSurface,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -215,6 +219,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         return null;
                       },
                       decoration: _buildInputDecoration(
+                        context: context,
                         hintText: 'John',
                         icon: Symbols.person,
                       ),
@@ -222,12 +227,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // Last Name
-                    _buildFieldLabel('Last Name'),
+                    _buildFieldLabel(context, 'Last Name'),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _lastNameController,
                       style: AppFonts.bodyMedium.copyWith(
-                        color: AppColors.black,
+                        color: colorScheme.onSurface,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -236,6 +241,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         return null;
                       },
                       decoration: _buildInputDecoration(
+                        context: context,
                         hintText: 'Doe',
                         icon: Symbols.person,
                       ),
@@ -243,13 +249,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // Email Address
-                    _buildFieldLabel('Email Address'),
+                    _buildFieldLabel(context, 'Email Address'),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       style: AppFonts.bodyMedium.copyWith(
-                        color: AppColors.black,
+                        color: colorScheme.onSurface,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -264,6 +270,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         return null;
                       },
                       decoration: _buildInputDecoration(
+                        context: context,
                         hintText: 'JohnDoe@gmail.com',
                         icon: Symbols.mail,
                       ),
@@ -271,7 +278,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // Phone Number
-                    _buildFieldLabel('Phone Number'),
+                    _buildFieldLabel(context, 'Phone Number'),
                     const SizedBox(height: 8),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,10 +287,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           height: 56,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
-                            color: AppColors.greyLight,
+                            color: colorScheme.onSurface.withOpacity(0.05),
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
-                              color: Colors.grey.shade200,
+                              color: colorScheme.onSurface.withOpacity(0.1),
                               width: 1,
                             ),
                           ),
@@ -292,7 +299,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               "+963",
                               style: AppFonts.labelLarge.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.black,
+                                color: colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -306,7 +313,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             style: AppFonts.bodyMedium.copyWith(
-                              color: AppColors.black,
+                              color: colorScheme.onSurface,
                             ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
@@ -318,6 +325,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               return null;
                             },
                             decoration: _buildInputDecoration(
+                              context: context,
                               hintText: '999999999',
                               icon: Symbols.call,
                             ),
@@ -328,14 +336,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // Birthdate
-                    _buildFieldLabel('Birthdate'),
+                    _buildFieldLabel(context, 'Birthdate'),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _birthdateController,
                       readOnly: true,
                       onTap: () => _pickBirthdate(context),
                       style: AppFonts.bodyMedium.copyWith(
-                        color: AppColors.black,
+                        color: colorScheme.onSurface,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -344,6 +352,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         return null;
                       },
                       decoration: _buildInputDecoration(
+                        context: context,
                         hintText: 'Oct 24, 1992',
                         icon: Symbols.calendar_month,
                       ),
@@ -351,14 +360,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // ID / Passport Number
-                    _buildFieldLabel('ID / Passport Number'),
+                    _buildFieldLabel(context, 'ID / Passport Number'),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _idPassportController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       style: AppFonts.bodyMedium.copyWith(
-                        color: AppColors.black,
+                        color: colorScheme.onSurface,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -367,6 +376,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         return null;
                       },
                       decoration: _buildInputDecoration(
+                        context: context,
                         hintText: '123456789',
                         icon: Symbols.badge,
                       ),
@@ -374,12 +384,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // Address
-                    _buildFieldLabel('Address'),
+                    _buildFieldLabel(context, 'Address'),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _addressController,
                       style: AppFonts.bodyMedium.copyWith(
-                        color: AppColors.black,
+                        color: colorScheme.onSurface,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -388,18 +398,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         return null;
                       },
                       decoration: _buildInputDecoration(
+                        context: context,
                         hintText: '722 Marble Arch, West District, London, UK',
                         icon: Symbols.location_on,
                       ),
                     ),
                     const SizedBox(height: 20),
-                    _buildFieldLabel('password'),
+
+                    // Password
+                    _buildFieldLabel(context, 'Password'),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _passwordController,
                       style: AppFonts.bodyMedium.copyWith(
-                        color: AppColors.black,
+                        color: colorScheme.onSurface,
                       ),
+                      obscureText: _isPasswordHidden,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please enter your password';
@@ -409,9 +423,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         }
                         return null;
                       },
-                      decoration: _buildInputDecoration(
+
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: colorScheme.onSurface.withOpacity(0.05),
                         hintText: '**********',
-                        icon: Icons.visibility_off_rounded,
+                        hintStyle: TextStyle(
+                          color: colorScheme.onSurface.withOpacity(0.5),
+                        ),
+
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordHidden
+                                ? Icons.visibility_off_rounded
+                                : Icons.visibility_rounded,
+                            color: colorScheme.onSurface.withOpacity(0.6),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordHidden = !_isPasswordHidden;
+                            });
+                          },
+                        ),
+
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
                     ),
 
@@ -424,15 +461,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       child: ElevatedButton(
                         onPressed: isUpdating ? null : _saveChanges,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
+                          backgroundColor: colorScheme.primary,
+                          foregroundColor: colorScheme.onPrimary,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
                         child: isUpdating
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
+                            ? CircularProgressIndicator(
+                                color: colorScheme.onPrimary,
                               )
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -440,7 +478,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   Text(
                                     "Save Changes",
                                     style: AppFonts.labelLarge.copyWith(
-                                      color: Colors.white,
+                                      color: colorScheme.onPrimary,
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16,
                                     ),
@@ -449,12 +487,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   Container(
                                     padding: const EdgeInsets.all(4),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
+                                      color: colorScheme.onPrimary.withOpacity(
+                                        0.2,
+                                      ),
                                       shape: BoxShape.circle,
                                     ),
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.check_rounded,
-                                      color: Colors.white,
+                                      color: colorScheme.onPrimary,
                                       size: 16,
                                     ),
                                   ),
@@ -473,43 +513,57 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _buildFieldLabel(String text) {
+  Widget _buildFieldLabel(BuildContext context, String text) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Text(
       text,
       style: AppFonts.bodyLarge.copyWith(
         fontWeight: FontWeight.w600,
-        color: AppColors.black,
+        color: colorScheme.onSurface,
       ),
     );
   }
 
   InputDecoration _buildInputDecoration({
+    required BuildContext context,
     required String hintText,
     required IconData icon,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     return InputDecoration(
       hintText: hintText,
       hintStyle: AppFonts.bodyMedium.copyWith(
-        color: AppColors.secondary.withOpacity(0.4),
+        color: colorScheme.onSurface.withOpacity(0.4),
       ),
       prefixIcon: Icon(
         icon,
-        color: AppColors.secondary.withOpacity(0.6),
+        color: colorScheme.onSurface.withOpacity(0.4),
         size: 22,
       ),
       filled: true,
-      fillColor: AppColors.greyLight,
+      fillColor: colorScheme.onSurface.withOpacity(0.05),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide.none,
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+        borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+        borderSide: BorderSide(
+          color: colorScheme.onSurface.withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: colorScheme.error, width: 1),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: colorScheme.error, width: 1.5),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
     );

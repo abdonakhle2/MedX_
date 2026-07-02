@@ -14,9 +14,10 @@ class CustomEmailTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('log_in'),
-      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       keyboardType: TextInputType.emailAddress,
       onChanged: onChanged,
       validator: (value) {
@@ -32,25 +33,28 @@ class CustomEmailTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'ahmad@example.com',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         suffixIcon: Icon(
           Icons.email_rounded,
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.08),
+            width: 1,
+          ),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,

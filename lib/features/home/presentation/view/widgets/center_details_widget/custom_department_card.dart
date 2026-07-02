@@ -18,12 +18,19 @@ class CustomDepartmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
     final borderColor = isSelected
-        ? AppColors.primary
-        : AppColors.black.withOpacity(0.18);
+        ? colorScheme.primary
+        : (isDarkMode
+              ? Theme.of(context).colorScheme.onSurface.withOpacity(0.1)
+              : Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.12));
     final bgColor = isSelected
-        ? AppColors.primary.withOpacity(0.06)
-        : AppColors.white;
+        ? colorScheme.primary.withValues(alpha: isDarkMode ? 0.15 : 0.06)
+        : colorScheme.surface;
     return Card(
       margin: const EdgeInsets.only(right: 12),
       elevation: 0,
@@ -52,7 +59,7 @@ class CustomDepartmentCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
               color: bgColor,
-              boxShadow: AppShadows.cardShadow,
+              boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
               border: Border.all(
                 color: borderColor,
                 width: isSelected ? 2.0 : 1.0,
@@ -73,12 +80,20 @@ class CustomDepartmentCard extends StatelessWidget {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            AppColors.primary.withOpacity(0.16),
-                            AppColors.primary.withOpacity(0.02),
+                            colorScheme.primary.withValues(
+                              alpha: isDarkMode ? 0.25 : 0.16,
+                            ),
+                            colorScheme.primary.withValues(alpha: 0.02),
                           ],
                         ),
                       ),
-                      child: Icon(icon, color: AppColors.primary, size: 22),
+                      child: Icon(
+                        icon,
+                        color: isDarkMode
+                            ? AppColors.primaryLight
+                            : colorScheme.primary,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -89,8 +104,10 @@ class CustomDepartmentCard extends StatelessWidget {
                             title,
                             style: AppFonts.headlineSmall.copyWith(
                               color: isSelected
-                                  ? AppColors.primaryDark
-                                  : AppColors.black,
+                                  ? (isDarkMode
+                                        ? AppColors.primaryLight
+                                        : AppColors.primaryDark)
+                                  : colorScheme.onSurface,
                               fontWeight: FontWeight.w800,
                               letterSpacing: -0.4,
                             ),
@@ -101,7 +118,9 @@ class CustomDepartmentCard extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: AppFonts.bodyMedium.copyWith(
-                              color: AppColors.secondary,
+                              color: isDarkMode
+                                  ? const Color(0xFF94A3B8)
+                                  : AppColors.secondary,
                               height: 1.3,
                             ),
                           ),
@@ -119,21 +138,27 @@ class CustomDepartmentCard extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
+                        color: colorScheme.primary.withValues(
+                          alpha: isDarkMode ? 0.15 : 0.1,
+                        ),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.people_rounded,
                             size: 16,
-                            color: AppColors.primaryDark,
+                            color: isDarkMode
+                                ? AppColors.primaryLight
+                                : AppColors.primaryDark,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             '12 Doctors',
                             style: AppFonts.bodySmall.copyWith(
-                              color: AppColors.primaryDark,
+                              color: isDarkMode
+                                  ? AppColors.primaryLight
+                                  : AppColors.primaryDark,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -147,7 +172,9 @@ class CustomDepartmentCard extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.greyLight,
+                        color: isDarkMode
+                            ? const Color(0xFF1E293B)
+                            : AppColors.greyLight,
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Row(

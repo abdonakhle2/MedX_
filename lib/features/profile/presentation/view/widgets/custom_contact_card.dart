@@ -12,17 +12,24 @@ class CustomContactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: AppShadows.cardShadow,
+        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        border: Border.all(
+          color: colorScheme.onSurface.withOpacity(0.06),
+          width: 1,
+        ),
       ),
       padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomSectionHeader(
+          const CustomSectionHeader(
             title: 'Contact Information',
             icon: Symbols.contact_mail,
           ),
@@ -32,9 +39,12 @@ class CustomContactCard extends StatelessWidget {
             label: 'Email Address',
             value: user.email ?? '',
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Divider(color: AppColors.greyLight, height: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Divider(
+              color: colorScheme.onSurface.withOpacity(0.08),
+              height: 1,
+            ),
           ),
           CustomContactRow(
             icon: Symbols.call,

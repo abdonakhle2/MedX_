@@ -4,19 +4,24 @@ import 'package:project_1/constants/constants.dart';
 class CustomIdentityItem extends StatelessWidget {
   const CustomIdentityItem({
     super.key,
-    this.highlightColor = AppColors.primary,
+    this.highlightColor,
     this.isHighlighted = false,
     required this.label,
     required this.value,
     required this.icon,
   });
+
   final String label;
   final String value;
   final IconData icon;
   final bool isHighlighted;
-  final Color highlightColor;
+  final Color? highlightColor;
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final effectiveHighlightColor = highlightColor ?? colorScheme.primary;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -24,14 +29,16 @@ class CustomIdentityItem extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: isHighlighted
-                ? highlightColor.withOpacity(0.1)
-                : AppColors.greyLight.withOpacity(0.5),
+                ? effectiveHighlightColor.withOpacity(0.12)
+                : colorScheme.onSurface.withOpacity(0.05),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,
             size: 20,
-            color: isHighlighted ? highlightColor : AppColors.greyMedium,
+            color: isHighlighted
+                ? effectiveHighlightColor
+                : colorScheme.onSurface.withOpacity(0.5),
           ),
         ),
         const SizedBox(width: 14),
@@ -42,7 +49,7 @@ class CustomIdentityItem extends StatelessWidget {
               Text(
                 label.toUpperCase(),
                 style: AppFonts.labelSmall.copyWith(
-                  color: AppColors.greyMedium,
+                  color: colorScheme.onSurface.withOpacity(0.4),
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.0,
                 ),
@@ -51,7 +58,9 @@ class CustomIdentityItem extends StatelessWidget {
               Text(
                 value,
                 style: AppFonts.bodyLarge.copyWith(
-                  color: isHighlighted ? highlightColor : AppColors.black,
+                  color: isHighlighted
+                      ? effectiveHighlightColor
+                      : colorScheme.onSurface,
                   fontWeight: FontWeight.w700,
                   fontSize: isHighlighted ? 22 : 16,
                 ),

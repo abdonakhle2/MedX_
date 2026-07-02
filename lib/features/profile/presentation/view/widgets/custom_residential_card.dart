@@ -10,13 +10,14 @@ class CustomResidentialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: AppGradients.primaryGradient,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: AppShadows.elevatedShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,7 +25,7 @@ class CustomResidentialCard extends StatelessWidget {
           Text(
             "RESIDENTIAL",
             style: AppFonts.labelSmall.copyWith(
-              color: AppColors.white.withOpacity(0.8),
+              color: colorScheme.onPrimary.withOpacity(0.75),
               fontWeight: FontWeight.w700,
               letterSpacing: 2.0,
             ),
@@ -36,12 +37,12 @@ class CustomResidentialCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppColors.white.withOpacity(0.2),
+                  color: colorScheme.onPrimary.withOpacity(0.18),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
+                child: Icon(
                   Symbols.location_on,
-                  color: AppColors.white,
+                  color: colorScheme.onPrimary,
                   size: 24,
                   fill: 1.0,
                 ),
@@ -51,7 +52,7 @@ class CustomResidentialCard extends StatelessWidget {
                 child: Text(
                   user.address ?? '',
                   style: AppFonts.bodyLarge.copyWith(
-                    color: AppColors.white,
+                    color: colorScheme.onPrimary,
                     fontWeight: FontWeight.w700,
                     height: 1.4,
                   ),

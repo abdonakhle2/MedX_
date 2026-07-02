@@ -8,14 +8,18 @@ class CustomHomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return SliverToBoxAdapter(
       child: Container(
         padding: const EdgeInsets.all(24),
         width: double.infinity,
         decoration: BoxDecoration(
-          gradient: AppGradients.headerGradient,
+          gradient: isDarkMode
+              ? AppGradients.primaryDarkGradient
+              : AppGradients.headerGradient,
           borderRadius: BorderRadius.circular(28),
-          boxShadow: AppShadows.elevatedShadow,
+          boxShadow: isDarkMode ? [] : AppShadows.elevatedShadow,
         ),
         child: Stack(
           children: [
@@ -27,7 +31,9 @@ class CustomHomeHeader extends StatelessWidget {
                 height: 100,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.08),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(isDarkMode ? 0.04 : 0.08),
                 ),
               ),
             ),
@@ -39,7 +45,9 @@ class CustomHomeHeader extends StatelessWidget {
                 height: 60,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.05),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(isDarkMode ? 0.03 : 0.05),
                 ),
               ),
             ),
@@ -51,7 +59,7 @@ class CustomHomeHeader extends StatelessWidget {
                   Text(
                     'Prioritize Your\nHealth Today',
                     style: AppFonts.headlineLarge.copyWith(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       height: 1.2,
                     ),
                   ),
@@ -59,7 +67,9 @@ class CustomHomeHeader extends StatelessWidget {
                   Text(
                     'You have no upcoming appointments. Schedule a visit to stay on top of your health.',
                     style: AppFonts.bodyMedium.copyWith(
-                      color: Colors.white.withOpacity(0.85),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.85),
                       height: 1.5,
                     ),
                   ),
@@ -76,8 +86,12 @@ class CustomHomeHeader extends StatelessWidget {
                       ).pushReplacement(AppRouter.kSearchScreen);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: AppColors.primary,
+                      backgroundColor: isDarkMode
+                          ? const Color(0xFF1E293B)
+                          : Theme.of(context).colorScheme.onPrimary,
+                      foregroundColor: isDarkMode
+                          ? theme.colorScheme.primary
+                          : AppColors.primary,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
@@ -94,6 +108,9 @@ class CustomHomeHeader extends StatelessWidget {
                           'Book Appointment',
                           style: AppFonts.labelLarge.copyWith(
                             fontWeight: FontWeight.w700,
+                            color: isDarkMode
+                                ? Theme.of(context).colorScheme.onSurface
+                                : AppColors.primary,
                           ),
                         ),
                         const SizedBox(width: 8),

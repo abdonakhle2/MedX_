@@ -3,23 +3,28 @@ import 'package:project_1/constants/constants.dart';
 import 'package:project_1/features/home/presentation/view/home_screen.dart';
 
 void CustomShowSuccessDialog(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        backgroundColor: colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         content: Column(
-          mainAxisSize: MainAxisSize.min, // ليأخذ المربع حجم المحتوى فقط
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColors.success.withOpacity(0.1),
+                color: const Color(
+                  0xFF10B981,
+                ).withOpacity(0.1), // لون النجاح الأخضر بجرعة شفافة متوافقة
                 shape: BoxShape.circle,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.check_circle_rounded,
-                color: AppColors.success,
+                color: Color(0xFF10B981),
                 size: 60,
               ),
             ),
@@ -27,7 +32,7 @@ void CustomShowSuccessDialog(BuildContext context) {
             Text(
               'Success!',
               style: AppFonts.headlineLarge.copyWith(
-                color: AppColors.primary,
+                color: colorScheme.primary,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -36,7 +41,7 @@ void CustomShowSuccessDialog(BuildContext context) {
               'Your appointment has been booked successfully.',
               textAlign: TextAlign.center,
               style: AppFonts.bodyMedium.copyWith(
-                color: AppColors.secondary,
+                color: colorScheme.onSurface.withOpacity(0.7),
                 height: 1.4,
               ),
             ),
@@ -47,10 +52,11 @@ void CustomShowSuccessDialog(BuildContext context) {
               child: ElevatedButton(
                 onPressed: () => Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                ), // إغلاق المربع
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: colorScheme.primary,
+                  foregroundColor: colorScheme.onPrimary,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -59,7 +65,7 @@ void CustomShowSuccessDialog(BuildContext context) {
                 child: Text(
                   'Great!',
                   style: AppFonts.labelLarge.copyWith(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
                   ),

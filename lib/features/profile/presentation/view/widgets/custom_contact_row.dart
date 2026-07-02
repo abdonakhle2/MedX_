@@ -15,38 +15,42 @@ class CustomContactRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppColors.primaryLight.withOpacity(0.15),
+            color: colorScheme.primary.withOpacity(0.12),
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Icon(icon, color: AppColors.primary, size: 24),
+          child: Icon(icon, color: colorScheme.primary, size: 24),
         ),
         const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label.toUpperCase(),
-              style: AppFonts.labelSmall.copyWith(
-                color: AppColors.greyMedium,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.0,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label.toUpperCase(),
+                style: AppFonts.labelSmall.copyWith(
+                  color: colorScheme.onSurface.withOpacity(0.5),
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.0,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: AppFonts.bodyLarge.copyWith(
-                color: AppColors.black,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.5,
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: AppFonts.bodyLarge.copyWith(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

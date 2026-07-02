@@ -18,6 +18,8 @@ class NavCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: ClipRRect(
@@ -27,15 +29,17 @@ class NavCard extends StatelessWidget {
           height: height,
           padding: padding ?? const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.75),
+            color: isDarkMode 
+              ? colorScheme.surface.withOpacity(0.85)
+              : colorScheme.surface.withOpacity(0.75),
             borderRadius: BorderRadius.circular(28.0),
             border: Border.all(
-              color: Colors.white.withOpacity(0.3),
+              color: colorScheme.onSurface.withOpacity(isDarkMode ? 0.2 : 0.1),
               width: 1.0,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.06),
+                color: colorScheme.onSurface.withOpacity(isDarkMode ? 0.15 : 0.06),
                 blurRadius: 20.0,
                 spreadRadius: -5.0,
                 offset: const Offset(0, 4),

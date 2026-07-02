@@ -1,10 +1,8 @@
 import 'dart:ui';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:project_1/constants/constants.dart'
-    show AppFonts, AppColors, AppShadows;
+import 'package:project_1/constants/constants.dart' show AppFonts, AppShadows;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class CustomUploadMedicalFile extends StatefulWidget {
@@ -47,6 +45,9 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
   @override
   Widget build(BuildContext context) {
     final selectedFile = widget.selectedFile;
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -56,15 +57,15 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
             width: double.infinity,
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: colorScheme.surface,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: widget.errorText != null
-                    ? Colors.red.shade700
-                    : AppColors.primary.withOpacity(0.25),
+                    ? colorScheme.error
+                    : colorScheme.primary.withOpacity(0.25),
                 width: 1.2,
               ),
-              boxShadow: AppShadows.cardShadow,
+              boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
             ),
             child: selectedFile == null
                 ? Row(
@@ -72,7 +73,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                     children: [
                       Icon(
                         Symbols.upload_file_rounded,
-                        color: AppColors.primary,
+                        color: colorScheme.primary,
                         size: 22,
                       ),
                       const SizedBox(width: 12),
@@ -83,17 +84,10 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                             Text(
                               'Tap to Upload a photo/file medical',
                               style: AppFonts.labelLarge.copyWith(
-                                color: AppColors.primary,
+                                color: colorScheme.primary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            // const SizedBox(height: 6),
-                            // Text(
-                            //   'Tap to choose a photo/file ',
-                            //   style: AppFonts.bodyMedium.copyWith(
-                            //     color: AppColors.secondary,
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -112,13 +106,14 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                         selectedFile.name,
                         style: AppFonts.bodyLarge.copyWith(
                           fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         'The file selected. Tap to change.',
                         style: AppFonts.bodyMedium.copyWith(
-                          color: AppColors.secondary,
+                          color: colorScheme.onSurface.withOpacity(0.6),
                         ),
                       ),
                       Align(
@@ -128,7 +123,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                           child: Text(
                             'Change',
                             style: AppFonts.bodyLarge.copyWith(
-                              color: AppColors.primary,
+                              color: colorScheme.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -143,7 +138,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
           Text(
             widget.errorText!,
             style: AppFonts.bodySmall.copyWith(
-              color: Colors.red.shade700,
+              color: colorScheme.error,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -153,10 +148,10 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
   }
 
   Widget _buildFilePreview(PlatformFile file) {
+    final colorScheme = Theme.of(context).colorScheme;
     final extension = file.extension?.toLowerCase();
 
     if (extension == 'pdf') {
-      // 📄 عرض ملف الـ PDF من الذاكرة مباشرة
       return SfPdfViewer.memory(
         file.bytes!,
         canShowScrollHead: false,
@@ -165,7 +160,6 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
     } else if (extension == 'jpg' ||
         extension == 'jpeg' ||
         extension == 'png') {
-      // 🖼️ عرض الصورة كالمعتاد
       return Image.memory(
         file.bytes!,
         fit: BoxFit.cover,
@@ -173,19 +167,25 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
         height: 200,
       );
     } else {
-      // في حال رفع صيغة أخرى غير مدعومة للعرض المباشر
       return Container(
-        color: Colors.grey.shade200,
+        padding: const EdgeInsets.all(20),
+        color: colorScheme.onSurface.withOpacity(0.05),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.insert_drive_file,
-              color: Colors.blueGrey,
+              color: colorScheme.onSurface.withOpacity(0.4),
               size: 30,
             ),
             const SizedBox(width: 8),
-            Text(' ${file.name}'),
+            Expanded(
+              child: Text(
+                file.name,
+                style: TextStyle(color: colorScheme.onSurface),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
       );

@@ -7,11 +7,13 @@ class BuildFieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Text(
       text,
       style: AppFonts.bodyMedium.copyWith(
         fontWeight: FontWeight.w600,
-        color: AppColors.black,
+        color: colorScheme.onSurface,
       ),
     );
   }

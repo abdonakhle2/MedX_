@@ -4,7 +4,14 @@ import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/models/doctor.dart';
 
-Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
+Widget buildDoctorCard(
+  BuildContext context,
+  Doctor doctor, {
+  bool isGridView = false,
+}) {
+  final theme = Theme.of(context);
+  final colorScheme = theme.colorScheme;
+  final isDarkMode = theme.brightness == Brightness.dark;
   return Card(
     margin: EdgeInsets.zero,
     clipBehavior: Clip.antiAlias,
@@ -15,9 +22,14 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
       // margin: EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-        boxShadow: AppShadows.cardShadow,
-        border: Border.all(color: AppColors.black.withOpacity(0.3), width: 1.5),
+        color: Theme.of(context).colorScheme.surface,
+        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        border: Border.all(
+          color: isDarkMode
+              ? Theme.of(context).colorScheme.onSurface.withOpacity(0.1)
+              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.15),
+          width: 1.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,8 +46,10 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.primary.withOpacity(0.08),
-                      AppColors.primaryLight.withOpacity(0.04),
+                      colorScheme.primary.withValues(
+                        alpha: isDarkMode ? 0.15 : 0.08,
+                      ),
+                      AppColors.primaryLight.withValues(alpha: 0.04),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -47,13 +61,13 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.08),
+                          color: colorScheme.primary.withValues(alpha: 0.08),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           Icons.person_rounded,
                           size: isGridView ? 32 : 40,
-                          color: AppColors.primary.withOpacity(0.3),
+                          color: colorScheme.primary.withValues(alpha: 0.3),
                         ),
                       ),
                     ),
@@ -66,9 +80,9 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: colorScheme.surface,
                           borderRadius: BorderRadius.circular(12),
-                          boxShadow: AppShadows.softShadow,
+                          boxShadow: isDarkMode ? [] : AppShadows.softShadow,
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -83,6 +97,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                               "4.9",
                               style: AppFonts.labelSmall.copyWith(
                                 fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
                                 fontSize: 10,
                               ),
                             ),
@@ -106,7 +121,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                   Text(
                     doctor.name_en,
                     style: AppFonts.labelLarge.copyWith(
-                      color: AppColors.black,
+                      color: colorScheme.onSurface,
                       fontWeight: FontWeight.w800,
                       fontSize: isGridView ? 14 : 16,
                     ),
@@ -120,13 +135,17 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.08),
+                      color: colorScheme.primary.withValues(
+                        alpha: isDarkMode ? 0.15 : 0.08,
+                      ),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       doctor.specialization,
                       style: AppFonts.labelSmall.copyWith(
-                        color: AppColors.primary,
+                        color: isDarkMode
+                            ? AppColors.primaryLight
+                            : colorScheme.primary,
                         fontWeight: FontWeight.w600,
                         fontSize: 10,
                       ),
@@ -140,7 +159,9 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                       Text(
                         '\$${doctor.hourly_rate}',
                         style: AppFonts.labelLarge.copyWith(
-                          color: AppColors.primary,
+                          color: isDarkMode
+                              ? AppColors.primaryLight
+                              : colorScheme.primary,
                           fontWeight: FontWeight.w800,
                           fontSize: isGridView ? 14 : 16,
                         ),
@@ -148,7 +169,9 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                       Text(
                         '/hr',
                         style: AppFonts.labelSmall.copyWith(
-                          color: AppColors.black,
+                          color: isDarkMode
+                              ? const Color(0xFF94A3B8)
+                              : AppColors.black,
                           fontSize: 12,
                         ),
                       ),
@@ -175,7 +198,7 @@ Widget buildDoctorCard(Doctor doctor, {bool isGridView = false}) {
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
-                            backgroundColor: AppColors.primary,
+                            backgroundColor: colorScheme.primary,
                             foregroundColor: AppColors.neutral,
                             elevation: 0,
                             shape: RoundedRectangleBorder(

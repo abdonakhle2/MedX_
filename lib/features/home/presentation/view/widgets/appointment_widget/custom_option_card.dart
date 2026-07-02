@@ -17,14 +17,25 @@ class CustomOptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         gradient: isActive ? AppGradients.primaryGradient : null,
-        color: isActive ? null : Colors.white,
+        color: isActive ? null : colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: isActive ? AppShadows.elevatedShadow : AppShadows.softShadow,
+        boxShadow: isActive
+            ? AppShadows.elevatedShadow
+            : (isDarkMode ? [] : AppShadows.softShadow),
+        border: !isActive
+            ? Border.all(
+                color: colorScheme.onSurface.withOpacity(0.08),
+                width: 1,
+              )
+            : null,
       ),
       child: Row(
         children: [
@@ -33,12 +44,12 @@ class CustomOptionCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: isActive
                   ? Colors.white.withOpacity(0.2)
-                  : AppColors.primary.withOpacity(0.08),
+                  : colorScheme.primary.withOpacity(0.08),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(
               icon,
-              color: isActive ? Colors.white : AppColors.primary,
+              color: isActive ? Colors.white : colorScheme.primary,
               size: 26,
             ),
           ),
@@ -50,7 +61,7 @@ class CustomOptionCard extends StatelessWidget {
                 Text(
                   title,
                   style: AppFonts.bodyLarge.copyWith(
-                    color: isActive ? Colors.white : Colors.black,
+                    color: isActive ? Colors.white : colorScheme.onSurface,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -60,7 +71,7 @@ class CustomOptionCard extends StatelessWidget {
                   style: AppFonts.bodySmall.copyWith(
                     color: isActive
                         ? Colors.white.withOpacity(0.7)
-                        : AppColors.secondary,
+                        : colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
               ],
@@ -73,7 +84,7 @@ class CustomOptionCard extends StatelessWidget {
               border: Border.all(
                 color: isActive
                     ? Colors.white.withOpacity(0.5)
-                    : AppColors.greyLight,
+                    : colorScheme.onSurface.withOpacity(0.2),
                 width: 2,
               ),
               color: isActive
@@ -81,7 +92,7 @@ class CustomOptionCard extends StatelessWidget {
                   : Colors.transparent,
             ),
             child: isActive
-                ? Icon(Icons.check_rounded, color: Colors.white, size: 16)
+                ? const Icon(Icons.check_rounded, color: Colors.white, size: 16)
                 : const SizedBox(width: 16, height: 16),
           ),
         ],

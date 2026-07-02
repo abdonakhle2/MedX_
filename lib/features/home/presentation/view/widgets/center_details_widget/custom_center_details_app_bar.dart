@@ -6,6 +6,9 @@ class CustomCenterDetailsAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
     return SliverAppBar(
       // backgroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
@@ -18,12 +21,14 @@ class CustomCenterDetailsAppBar extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              gradient: AppGradients.primaryGradient,
+              gradient: isDarkMode
+                  ? AppGradients.primaryDarkGradient
+                  : AppGradients.primaryGradient,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.local_hospital_rounded,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               size: 18,
             ),
           ),
@@ -31,7 +36,7 @@ class CustomCenterDetailsAppBar extends StatelessWidget {
           Text(
             'Center Details',
             style: AppFonts.headlineMedium.copyWith(
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
             ),
@@ -42,12 +47,18 @@ class CustomCenterDetailsAppBar extends StatelessWidget {
         icon: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.greyLight,
+            color: isDarkMode ? const Color(0xFF1E293B) : AppColors.greyLight,
             borderRadius: BorderRadius.circular(10),
+            border: isDarkMode
+                ? Border.all(
+                    color: colorScheme.onSurface.withValues(alpha: 0.05),
+                    width: 1,
+                  )
+                : null,
           ),
           child: Icon(
             Icons.arrow_back_ios_rounded,
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             size: 18,
           ),
         ),

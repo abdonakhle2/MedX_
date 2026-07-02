@@ -20,6 +20,8 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return TextFormField(
       controller: widget.controller,
       validator: (value) {
@@ -31,9 +33,8 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
         }
         return null;
       },
-
       style: AppFonts.bodyMedium.copyWith(
-        color: AppColors.black,
+        color: colorScheme.onSurface,
         letterSpacing: 0.5,
       ),
       obscureText: obscureText,
@@ -42,7 +43,7 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
       decoration: InputDecoration(
         hintText: '*****',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.5),
+          color: colorScheme.onSurface.withOpacity(0.4),
           letterSpacing: 3,
         ),
         suffixIcon: IconButton(
@@ -55,22 +56,25 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
             obscureText
                 ? Icons.visibility_off_rounded
                 : Icons.visibility_rounded,
-            color: AppColors.secondary.withOpacity(0.5),
+            color: colorScheme.onSurface.withOpacity(0.4),
           ),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.08),
+            width: 1,
+          ),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,

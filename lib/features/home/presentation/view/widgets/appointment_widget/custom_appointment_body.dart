@@ -41,7 +41,7 @@ class _CustomAppointmentBodyState extends State<CustomAppointmentBody> {
 
             // تظهر خيارات الجدولة فقط عند اختيار "Doctor's Schedule"
             if (selectedMethod == "schedule") const CustomSchedulingCard(),
-            // const SizedBox(height: 10),
+            const SizedBox(height: 10),
             const CustomAddNote(),
             const SizedBox(height: 2),
             FormField<PlatformFile?>(

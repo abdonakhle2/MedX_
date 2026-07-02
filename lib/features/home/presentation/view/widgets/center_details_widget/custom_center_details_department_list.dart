@@ -50,6 +50,8 @@ class _CustomCenterDetailsDepartmentListState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final width = MediaQuery.of(context).size.width;
     final crossAxis = width < 600 ? 2 : 3;
 
@@ -103,7 +105,7 @@ class _CustomCenterDetailsDepartmentListState
             itemBuilder: (context, idx) {
               final doc =
                   (departments[selectedIndex]['doctors'] as List<Doctor>)[idx];
-              return buildDoctorCard(doc, isGridView: true);
+              return buildDoctorCard(context, doc, isGridView: true);
             },
           ),
         ),

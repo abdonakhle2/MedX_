@@ -7,26 +7,27 @@ class CustomSignUpAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         IconButton(
           padding: EdgeInsets.zero,
           icon: const Icon(Icons.arrow_back),
-          color: AppColors.primary,
+          color: colorScheme.primary,
           onPressed: () => GoRouter.of(context).pop(),
-          // onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
         ),
-        SizedBox(width: 12),
+        const SizedBox(width: 12),
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            gradient: AppGradients.primaryGradient,
+            color: colorScheme.primary,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.local_hospital_rounded,
-            color: Colors.white,
+            color: colorScheme.onPrimary,
             size: 18,
           ),
         ),
@@ -34,7 +35,7 @@ class CustomSignUpAppBar extends StatelessWidget {
         Text(
           'MedX',
           style: AppFonts.headlineMedium.copyWith(
-            color: AppColors.primary,
+            color: colorScheme.primary,
             fontWeight: FontWeight.w800,
             letterSpacing: -0.5,
           ),

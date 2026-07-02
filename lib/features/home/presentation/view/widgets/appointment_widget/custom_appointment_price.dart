@@ -7,12 +7,19 @@ class CustomAppointmentPrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        color: Colors.white,
-        boxShadow: AppShadows.softShadow,
+        color: colorScheme.surface,
+        boxShadow: isDarkMode ? [] : AppShadows.softShadow,
+        border: Border.all(
+          color: colorScheme.onSurface.withOpacity(0.1),
+          width: 1.5,
+        ),
       ),
       child: Column(
         children: [
@@ -26,7 +33,7 @@ class CustomAppointmentPrice extends StatelessWidget {
               gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
-                  AppColors.greyLight,
+                  colorScheme.onSurface.withOpacity(0.15),
                   Colors.transparent,
                 ],
               ),
@@ -40,12 +47,13 @@ class CustomAppointmentPrice extends StatelessWidget {
                 'Total cash',
                 style: AppFonts.headlineSmall.copyWith(
                   fontWeight: FontWeight.w800,
+                  color: colorScheme.onSurface,
                 ),
               ),
               Text(
                 '\$200.00',
                 style: AppFonts.headlineSmall.copyWith(
-                  color: AppColors.primary,
+                  color: colorScheme.primary,
                   fontWeight: FontWeight.w800,
                 ),
               ),

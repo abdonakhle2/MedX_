@@ -42,13 +42,21 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        color: Colors.white,
-        boxShadow: AppShadows.cardShadow,
+        color: colorScheme.surface,
+        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        border: isDarkMode
+            ? Border.all(
+                color: colorScheme.onSurface.withOpacity(0.08),
+                width: 1.5,
+              )
+            : null,
       ),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(
@@ -60,7 +68,12 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
             children: [
               // Welcome Header
               // const SizedBox(height: 20),
-              Text('Welcome Back', style: AppFonts.headlineLarge),
+              Text(
+                'Welcome Back',
+                style: AppFonts.headlineLarge.copyWith(
+                  color: colorScheme.onSurface,
+                ),
+              ),
               const SizedBox(height: 20),
               // Phone Number
               Row(
@@ -70,6 +83,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                     'Email',
                     style: AppFonts.bodyLarge.copyWith(
                       fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -90,6 +104,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                     'Password',
                     style: AppFonts.bodyLarge.copyWith(
                       fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -110,7 +125,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                   child: Text(
                     'Forgot Password?',
                     style: AppFonts.labelMedium.copyWith(
-                      color: AppColors.primary,
+                      color: colorScheme.primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

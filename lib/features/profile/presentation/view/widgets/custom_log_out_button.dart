@@ -9,28 +9,23 @@ class CustomLogOutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final errorColor = colorScheme.error;
+
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.error.withOpacity(0.05),
+        color: errorColor.withOpacity(0.06),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.error.withOpacity(0.15),
-          width: 1.5,
-        ),
+        border: Border.all(color: errorColor.withOpacity(0.2), width: 1.5),
       ),
       child: Material(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          highlightColor: AppColors.error.withOpacity(0.1),
-          splashColor: AppColors.error.withOpacity(0.1),
+          highlightColor: errorColor.withOpacity(0.1),
+          splashColor: errorColor.withOpacity(0.1),
           onTap: () {
-            // Navigator.pushAndRemoveUntil(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const LogInScreen()),
-            //   (route) => false,
-            // );
             GoRouter.of(context).go(AppRouter.kLogInScreen);
           },
           child: Padding(
@@ -38,13 +33,13 @@ class CustomLogOutButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Symbols.logout_rounded, color: AppColors.error, size: 24),
+                Icon(Symbols.logout_rounded, color: errorColor, size: 24),
                 const SizedBox(width: 12),
                 Text(
                   'Logout',
                   style: AppFonts.bodyLarge.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: AppColors.error,
+                    color: errorColor,
                     letterSpacing: 0.5,
                   ),
                 ),

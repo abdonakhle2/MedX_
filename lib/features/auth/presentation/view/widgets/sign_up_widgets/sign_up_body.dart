@@ -9,7 +9,6 @@ import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widget
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_sing_up_app_bar.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_tail_text_sign_up.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_upload_id_passport.dart';
-
 import 'package:project_1/models/user.dart';
 
 class SignUpBody extends StatefulWidget {
@@ -70,24 +69,24 @@ class _SignUpBodyState extends State<SignUpBody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(child: const CustomSignUpAppBar()),
+        const Center(child: CustomSignUpAppBar()),
         const SizedBox(height: 25),
         // Step indicators
         CustomStepIndicator(),
         const SizedBox(height: 30),
         // Form container
         SingUpForm(context),
-
         // Security note
         const SizedBox(height: 24),
-
         // Footer
         const CustomTailTextSignUp(),
       ],
     );
   }
 
-  Widget BuildGenderOption(String gender, IconData icon) {
+  Widget BuildGenderOption(BuildContext context, String gender, IconData icon) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     bool isSelected = selectedGender == gender;
     return Expanded(
       child: GestureDetector(
@@ -101,10 +100,12 @@ class _SignUpBodyState extends State<SignUpBody> {
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
             gradient: isSelected ? AppGradients.primaryGradient : null,
-            color: isSelected ? null : AppColors.greyLight,
+            color: isSelected ? null : colorScheme.onSurface.withOpacity(0.05),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: isSelected ? Colors.transparent : Colors.grey.shade200,
+              color: isSelected
+                  ? Colors.transparent
+                  : colorScheme.onSurface.withOpacity(0.1),
               width: 1,
             ),
             boxShadow: isSelected ? AppShadows.elevatedShadow : [],
@@ -115,13 +116,17 @@ class _SignUpBodyState extends State<SignUpBody> {
               Icon(
                 icon,
                 size: 20,
-                color: isSelected ? Colors.white : AppColors.secondary,
+                color: isSelected
+                    ? colorScheme.onPrimary
+                    : colorScheme.onSurface.withOpacity(0.6),
               ),
               const SizedBox(width: 8),
               Text(
                 gender,
                 style: AppFonts.labelLarge.copyWith(
-                  color: isSelected ? Colors.white : AppColors.black,
+                  color: isSelected
+                      ? colorScheme.onPrimary
+                      : colorScheme.onSurface,
                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 ),
               ),
@@ -133,37 +138,41 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   Widget SingUpForm(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: AppShadows.cardShadow,
+        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        border: isDarkMode
+            ? Border.all(color: colorScheme.onSurface.withOpacity(0.08))
+            : null,
       ),
       child: Form(
         key: formKey,
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (currentStep == 0) ...[
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'First Name'),
               const SizedBox(height: 10),
-              CustomFirstNameTextField(),
+              CustomFirstNameTextField(context),
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'Last Name'),
               const SizedBox(height: 10),
-              CustomLastNameTextField(),
+              CustomLastNameTextField(context),
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'Email Address'),
               const SizedBox(height: 10),
-              CustomEmailAddressTextField(),
+              CustomEmailAddressTextField(context),
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'Phone Number'),
               const SizedBox(height: 10),
-              CustomPhoneNumberTextField(),
+              CustomPhoneNumberTextField(context),
             ] else if (currentStep == 1) ...[
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'Gender'),
@@ -201,12 +210,14 @@ class _SignUpBodyState extends State<SignUpBody> {
                                       : null,
                                   color: selectedGender == 'Male'
                                       ? null
-                                      : AppColors.greyLight,
+                                      : colorScheme.onSurface.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
                                     color: selectedGender == 'Male'
                                         ? Colors.transparent
-                                        : Colors.grey.shade200,
+                                        : colorScheme.onSurface.withOpacity(
+                                            0.1,
+                                          ),
                                     width: 1,
                                   ),
                                   boxShadow: selectedGender == 'Male'
@@ -220,16 +231,18 @@ class _SignUpBodyState extends State<SignUpBody> {
                                       Icons.male_rounded,
                                       size: 20,
                                       color: selectedGender == 'Male'
-                                          ? Colors.white
-                                          : AppColors.secondary,
+                                          ? colorScheme.onPrimary
+                                          : colorScheme.onSurface.withOpacity(
+                                              0.6,
+                                            ),
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
                                       'Male',
                                       style: AppFonts.labelLarge.copyWith(
                                         color: selectedGender == 'Male'
-                                            ? Colors.white
-                                            : AppColors.black,
+                                            ? colorScheme.onPrimary
+                                            : colorScheme.onSurface,
                                         fontWeight: selectedGender == 'Male'
                                             ? FontWeight.w700
                                             : FontWeight.w500,
@@ -260,12 +273,14 @@ class _SignUpBodyState extends State<SignUpBody> {
                                       : null,
                                   color: selectedGender == 'Female'
                                       ? null
-                                      : AppColors.greyLight,
+                                      : colorScheme.onSurface.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
                                     color: selectedGender == 'Female'
                                         ? Colors.transparent
-                                        : Colors.grey.shade200,
+                                        : colorScheme.onSurface.withOpacity(
+                                            0.1,
+                                          ),
                                     width: 1,
                                   ),
                                   boxShadow: selectedGender == 'Female'
@@ -279,16 +294,18 @@ class _SignUpBodyState extends State<SignUpBody> {
                                       Icons.female_rounded,
                                       size: 20,
                                       color: selectedGender == 'Female'
-                                          ? Colors.white
-                                          : AppColors.secondary,
+                                          ? colorScheme.onPrimary
+                                          : colorScheme.onSurface.withOpacity(
+                                              0.6,
+                                            ),
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
                                       'Female',
                                       style: AppFonts.labelLarge.copyWith(
                                         color: selectedGender == 'Female'
-                                            ? Colors.white
-                                            : AppColors.black,
+                                            ? colorScheme.onPrimary
+                                            : colorScheme.onSurface,
                                         fontWeight: selectedGender == 'Female'
                                             ? FontWeight.w700
                                             : FontWeight.w500,
@@ -307,7 +324,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                           child: Text(
                             field.errorText ?? '',
                             style: AppFonts.bodySmall.copyWith(
-                              color: Colors.red.shade700,
+                              color: colorScheme.error,
                             ),
                           ),
                         ),
@@ -322,12 +339,11 @@ class _SignUpBodyState extends State<SignUpBody> {
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'Address'),
               const SizedBox(height: 10),
-              CustomAddressTextField(),
+              CustomAddressTextField(context),
             ] else if (currentStep == 2) ...[
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'ID / Passport Number'),
               const SizedBox(height: 10),
-              CustomIdPassportTextField(),
               const SizedBox(height: 20),
               FormField<PlatformFile?>(
                 key: uploadFieldKey,
@@ -354,18 +370,18 @@ class _SignUpBodyState extends State<SignUpBody> {
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'Password'),
               const SizedBox(height: 10),
-              CustomPasswordTextField(),
+              CustomPasswordTextField(context),
               const SizedBox(height: 20),
               const BuildFieldLabel(text: 'Confirm Password'),
               const SizedBox(height: 10),
-              CustomConfirmPasswordTextField(),
+              CustomConfirmPasswordTextField(context),
             ],
             const SizedBox(height: 28),
             // Action button
             CustomNextButton(context),
             if (currentStep > 0) ...[
               const SizedBox(height: 12),
-              CustomBackButton(),
+              CustomBackButton(context),
             ],
             if (currentStep == 0) ...[const SizedBox(height: 12)],
           ],
@@ -396,7 +412,8 @@ class _SignUpBodyState extends State<SignUpBody> {
     }
   }
 
-  Center CustomBackButton() {
+  Center CustomBackButton(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Center(
       child: TextButton(
         onPressed: () {
@@ -409,14 +426,14 @@ class _SignUpBodyState extends State<SignUpBody> {
           children: [
             Icon(
               Icons.arrow_back_rounded,
-              color: AppColors.secondary,
+              color: colorScheme.onSurface.withOpacity(0.6),
               size: 16,
             ),
             const SizedBox(width: 6),
             Text(
               "Back",
               style: AppFonts.labelLarge.copyWith(
-                color: AppColors.secondary,
+                color: colorScheme.onSurface.withOpacity(0.6),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -427,6 +444,7 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   SizedBox CustomNextButton(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: double.infinity,
       height: 56,
@@ -438,13 +456,6 @@ class _SignUpBodyState extends State<SignUpBody> {
                 currentStep++;
               });
             } else {
-              // Navigator.pushAndRemoveUntil(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => HomeScreen(userName: user.name),
-              //   ),
-              //   (route) => false,
-              // );
               GoRouter.of(
                 context,
               ).pushReplacement(AppRouter.kHomeScreen, extra: user.name);
@@ -452,7 +463,8 @@ class _SignUpBodyState extends State<SignUpBody> {
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -464,7 +476,7 @@ class _SignUpBodyState extends State<SignUpBody> {
             Text(
               currentStep == 2 ? "Verify" : "Next",
               style: AppFonts.labelLarge.copyWith(
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
               ),
@@ -473,14 +485,14 @@ class _SignUpBodyState extends State<SignUpBody> {
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: colorScheme.onPrimary.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 currentStep == 2
                     ? Icons.check_rounded
                     : Icons.arrow_forward_rounded,
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 size: 16,
               ),
             ),
@@ -490,12 +502,13 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextFormField CustomConfirmPasswordTextField() {
+  TextFormField CustomConfirmPasswordTextField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('signup_confirm_password'),
       controller: confirmPasswordController,
       style: AppFonts.bodyMedium.copyWith(
-        color: AppColors.black,
+        color: colorScheme.onSurface,
         letterSpacing: 0.5,
       ),
       obscureText: obscureConfirmPassword,
@@ -515,7 +528,7 @@ class _SignUpBodyState extends State<SignUpBody> {
       decoration: InputDecoration(
         hintText: 'Retype your password',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         suffixIcon: IconButton(
           onPressed: () {
@@ -527,22 +540,33 @@ class _SignUpBodyState extends State<SignUpBody> {
             obscureConfirmPassword
                 ? Icons.visibility_off_rounded
                 : Icons.visibility_rounded,
-            color: AppColors.secondary.withOpacity(0.4),
+            color: colorScheme.onSurface.withOpacity(0.4),
           ),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -552,12 +576,13 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextFormField CustomPasswordTextField() {
+  TextFormField CustomPasswordTextField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('signup_password'),
       controller: passwordController,
       style: AppFonts.bodyMedium.copyWith(
-        color: AppColors.black,
+        color: colorScheme.onSurface,
         letterSpacing: 0.5,
       ),
       obscureText: obscurePassword,
@@ -577,7 +602,7 @@ class _SignUpBodyState extends State<SignUpBody> {
       decoration: InputDecoration(
         hintText: 'Minimum 8 characters',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         suffixIcon: IconButton(
           onPressed: () {
@@ -589,22 +614,33 @@ class _SignUpBodyState extends State<SignUpBody> {
             obscurePassword
                 ? Icons.visibility_off_rounded
                 : Icons.visibility_rounded,
-            color: AppColors.secondary.withOpacity(0.4),
+            color: colorScheme.onSurface.withOpacity(0.4),
           ),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -614,58 +650,11 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextFormField CustomIdPassportTextField() {
-    return TextFormField(
-      key: const ValueKey('signup_id_passport'),
-      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
-      keyboardType: TextInputType.number,
-      onChanged: (data) {
-        user.id_passport = int.tryParse(data) ?? 0;
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'Please enter your ID or passport number';
-        }
-        if (int.tryParse(value.trim()) == null) {
-          return 'Please enter a valid number';
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: '0123456789',
-        hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
-        ),
-        suffixIcon: Icon(
-          Icons.badge_rounded,
-          color: AppColors.secondary.withOpacity(0.4),
-        ),
-        filled: true,
-        fillColor: AppColors.greyLight,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-      ),
-    );
-  }
-
-  TextFormField CustomAddressTextField() {
+  TextFormField CustomAddressTextField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('signup_address'),
-      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       onChanged: (data) {
         user.address = data;
       },
@@ -678,25 +667,36 @@ class _SignUpBodyState extends State<SignUpBody> {
       decoration: InputDecoration(
         hintText: 'Damascus, Syria',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         suffixIcon: Icon(
           Icons.location_on_rounded,
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -707,10 +707,11 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   TextFormField CustomBirthDateTextField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('signup_birthdate'),
       controller: birthdateController,
-      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       readOnly: true,
       keyboardType: TextInputType.datetime,
       onTap: () => _pickBirthdate(context),
@@ -723,25 +724,36 @@ class _SignUpBodyState extends State<SignUpBody> {
       decoration: InputDecoration(
         hintText: '10-07-1990',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         suffixIcon: Icon(
           Icons.calendar_today_rounded,
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -754,29 +766,37 @@ class _SignUpBodyState extends State<SignUpBody> {
   Row CustomGenderOption() {
     return Row(
       children: [
-        BuildGenderOption('Male', Icons.male_rounded),
+        BuildGenderOption(context, 'Male', Icons.male_rounded),
         const SizedBox(width: 14),
-        BuildGenderOption('Female', Icons.female_rounded),
+        BuildGenderOption(context, 'Female', Icons.female_rounded),
       ],
     );
   }
 
-  Row CustomPhoneNumberTextField() {
+  Row CustomPhoneNumberTextField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 64,
+          height: 50,
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
-            color: AppColors.greyLight,
+            color: colorScheme.onSurface.withOpacity(0.05),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.grey.shade200, width: 1),
+            border: Border.all(
+              color: colorScheme.onSurface.withOpacity(0.1),
+              width: 1,
+            ),
           ),
           child: Center(
             child: Text(
               "+963",
-              style: AppFonts.labelLarge.copyWith(fontWeight: FontWeight.bold),
+              style: AppFonts.labelLarge.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
             ),
           ),
         ),
@@ -784,7 +804,7 @@ class _SignUpBodyState extends State<SignUpBody> {
         Expanded(
           child: TextFormField(
             key: const ValueKey('signup_phone'),
-            style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+            style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
             keyboardType: TextInputType.phone,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onChanged: (data) {
@@ -802,26 +822,37 @@ class _SignUpBodyState extends State<SignUpBody> {
             decoration: InputDecoration(
               hintText: '094 123 456',
               hintStyle: AppFonts.bodyMedium.copyWith(
-                color: AppColors.secondary.withOpacity(0.4),
+                color: colorScheme.onSurface.withOpacity(0.4),
               ),
               suffixIcon: Icon(
                 Icons.phone_rounded,
-                color: AppColors.secondary.withOpacity(0.4),
+                color: colorScheme.onSurface.withOpacity(0.4),
                 size: 20,
               ),
               filled: true,
-              fillColor: AppColors.greyLight,
+              fillColor: colorScheme.onSurface.withOpacity(0.05),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+                borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+                borderSide: BorderSide(
+                  color: colorScheme.onSurface.withOpacity(0.1),
+                  width: 1,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(color: colorScheme.error, width: 1),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(color: colorScheme.error, width: 1.5),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 18,
@@ -834,10 +865,11 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextFormField CustomEmailAddressTextField() {
+  TextFormField CustomEmailAddressTextField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('signup_email'),
-      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       keyboardType: TextInputType.emailAddress,
       onChanged: (data) {
         user.email = data;
@@ -855,25 +887,36 @@ class _SignUpBodyState extends State<SignUpBody> {
       decoration: InputDecoration(
         hintText: 'ahmad@example.com',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         suffixIcon: Icon(
           Icons.email_rounded,
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -883,11 +926,12 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextFormField CustomFirstNameTextField() {
+  TextFormField CustomFirstNameTextField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('signup_first_name'),
       controller: firstNameController,
-      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       keyboardType: TextInputType.name,
       textCapitalization: TextCapitalization.words,
       onChanged: (data) {
@@ -905,25 +949,36 @@ class _SignUpBodyState extends State<SignUpBody> {
       decoration: InputDecoration(
         hintText: 'Ahmad',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         suffixIcon: Icon(
           Icons.person_rounded,
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -933,11 +988,12 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  TextFormField CustomLastNameTextField() {
+  TextFormField CustomLastNameTextField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('signup_last_name'),
       controller: lastNameController,
-      style: AppFonts.bodyMedium.copyWith(color: AppColors.black),
+      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       keyboardType: TextInputType.name,
       textCapitalization: TextCapitalization.words,
       onChanged: (data) {
@@ -955,25 +1011,36 @@ class _SignUpBodyState extends State<SignUpBody> {
       decoration: InputDecoration(
         hintText: 'Al-Faraj',
         hintStyle: AppFonts.bodyMedium.copyWith(
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         suffixIcon: Icon(
           Icons.person_outline_rounded,
-          color: AppColors.secondary.withOpacity(0.4),
+          color: colorScheme.onSurface.withOpacity(0.4),
         ),
         filled: true,
-        fillColor: AppColors.greyLight,
+        fillColor: colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,

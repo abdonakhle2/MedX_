@@ -11,7 +11,7 @@ class CustomCommentBox extends StatelessWidget {
         color: AppColors.greyLight,
         borderRadius: BorderRadius.circular(18),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      // padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextField(
         maxLines: 5,
         style: AppFonts.bodyMedium,

@@ -6,8 +6,13 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return SliverAppBar(
-      backgroundColor: AppColors.neutral,
+      backgroundColor: isDarkMode
+          ? const Color(0xFF0F172A)
+          : colorScheme.surface,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       title: Row(
@@ -16,12 +21,14 @@ class CustomAppBar extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              gradient: AppGradients.primaryGradient,
+              gradient: isDarkMode
+                  ? AppGradients.primaryDarkGradient
+                  : AppGradients.primaryGradient,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.local_hospital_rounded,
-              color: Colors.white,
+              color: colorScheme.onPrimary,
               size: 18,
             ),
           ),
@@ -29,7 +36,9 @@ class CustomAppBar extends StatelessWidget {
           Text(
             'Appointment',
             style: AppFonts.headlineMedium.copyWith(
-              color: AppColors.primary,
+              color: isDarkMode
+                  ? colorScheme.primaryContainer
+                  : colorScheme.primary,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
             ),
@@ -38,19 +47,23 @@ class CustomAppBar extends StatelessWidget {
       ),
       centerTitle: true,
       leading: IconButton(
+        onPressed: () => Navigator.pop(context),
         icon: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.greyLight,
+            color: isDarkMode
+                ? const Color(0xFF1E293B)
+                : colorScheme.onSurface.withOpacity(0.06),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
             Icons.arrow_back_ios_rounded,
-            color: AppColors.primary,
+            color: isDarkMode
+                ? colorScheme.primaryContainer
+                : colorScheme.primary,
             size: 18,
           ),
         ),
-        onPressed: () => Navigator.pop(context),
       ),
     );
   }

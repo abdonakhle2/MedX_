@@ -10,6 +10,8 @@ class CustomProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       children: [
         Stack(
@@ -21,19 +23,11 @@ class CustomProfileHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: AppGradients.primaryGradient,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 15,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
               ),
-              child: const Center(
+              child: Center(
                 child: Icon(
                   Symbols.person_rounded,
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   size: 60,
                   fill: 1.0,
                 ),
@@ -45,7 +39,7 @@ class CustomProfileHeader extends StatelessWidget {
         Text(
           user.name ?? '',
           style: AppFonts.headlineLarge.copyWith(
-            color: AppColors.black,
+            color: colorScheme.onSurface,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -56,25 +50,21 @@ class CustomProfileHeader extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.primaryLight.withOpacity(0.15),
+                color: colorScheme.primary.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: AppColors.primaryLight.withOpacity(0.3),
+                  color: colorScheme.primary.withOpacity(0.25),
                 ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Symbols.badge,
-                    size: 18,
-                    color: AppColors.primaryDark,
-                  ),
+                  Icon(Symbols.badge, size: 18, color: colorScheme.primary),
                   const SizedBox(width: 8),
                   Text(
                     'ID: ${user.id_passport ?? ''}',
                     style: AppFonts.labelLarge.copyWith(
-                      color: AppColors.black,
+                      color: colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.5,
                     ),
@@ -103,7 +93,7 @@ class CustomProfileHeader extends StatelessWidget {
                   Text(
                     'PREMIUM',
                     style: AppFonts.labelLarge.copyWith(
-                      color: AppColors.black,
+                      color: colorScheme.onSurface,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,
                     ),

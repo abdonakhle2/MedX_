@@ -8,25 +8,28 @@ class CustomPrivcyText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Text.rich(
       textAlign: TextAlign.center,
       TextSpan(
         text: 'By confirming, you agree to our ',
-        style: AppFonts.bodySmall.copyWith(color: AppColors.secondary),
+        style: AppFonts.bodySmall.copyWith(
+          color: colorScheme.onSurface.withOpacity(0.6),
+        ),
         children: [
           TextSpan(
             text: 'Terms of Service',
             style: TextStyle(
-              color: AppColors.primary,
+              color: colorScheme.primary,
               fontWeight: FontWeight.bold,
               decoration: TextDecoration.underline,
-              decorationColor: AppColors.primary.withOpacity(0.3),
+              decorationColor: colorScheme.primary.withOpacity(0.3),
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 CustomShowPolicyDialog(
                   context,
-
                   "Terms of Service",
                   "1. User must be 18+ years old.\n"
                       "2. Accurate information is required.\n"
@@ -38,12 +41,11 @@ class CustomPrivcyText extends StatelessWidget {
           TextSpan(
             text: 'Privacy Policy',
             style: TextStyle(
-              color: AppColors.primary,
+              color: colorScheme.primary,
               fontWeight: FontWeight.bold,
               decoration: TextDecoration.underline,
-              decorationColor: AppColors.primary.withOpacity(0.3),
+              decorationColor: colorScheme.primary.withOpacity(0.3),
             ),
-            // عند الضغط على "Privacy Policy"
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 CustomShowPolicyDialog(

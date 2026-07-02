@@ -13,6 +13,7 @@ class BuildStepIndiactor extends StatelessWidget {
   final int step;
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Expanded(
       child: Column(
         children: [
@@ -21,12 +22,14 @@ class BuildStepIndiactor extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 2),
             decoration: BoxDecoration(
               gradient: isActive ? AppGradients.primaryGradient : null,
-              color: isActive ? null : Colors.grey.shade200,
+              color: isActive
+                  ? colorScheme.primary
+                  : colorScheme.onSurface.withOpacity(0.12),
               borderRadius: BorderRadius.circular(3),
               boxShadow: isActive
                   ? [
                       BoxShadow(
-                        color: AppColors.primary.withOpacity(0.3),
+                        color: colorScheme.primary.withOpacity(0.3),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),
@@ -39,7 +42,9 @@ class BuildStepIndiactor extends StatelessWidget {
             title,
             style: AppFonts.labelSmall.copyWith(
               fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-              color: isActive ? AppColors.primary : AppColors.secondary,
+              color: isActive
+                  ? colorScheme.primary
+                  : colorScheme.onSurface.withOpacity(0.4),
               letterSpacing: 0.5,
               fontSize: 12,
             ),

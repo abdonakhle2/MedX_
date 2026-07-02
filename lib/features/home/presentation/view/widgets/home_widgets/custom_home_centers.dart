@@ -9,6 +9,8 @@ class CustomHomeCenters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 1),
       child: Column(
@@ -16,10 +18,15 @@ class CustomHomeCenters extends StatelessWidget {
         children: [
           const CustomTopRatedDoctors(),
           const SizedBox(height: 24),
-          Text('Medical Centers', style: AppFonts.headlineMedium),
+          Text(
+            'Medical Centers',
+            style: AppFonts.headlineMedium.copyWith(
+              color: colorScheme.onSurface,
+            ),
+          ),
           const SizedBox(height: 20),
           const CustomHomeList(),
-          const SizedBox(height: 10),
+          // const SizedBox(height: 10),
           const CustomHomeStats(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.1),
         ],

@@ -6,8 +6,9 @@ class CustomSearchAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SliverAppBar(
-      // backgroundColor: AppColors.white,
       automaticallyImplyLeading: false,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +29,7 @@ class CustomSearchAppBar extends StatelessWidget {
           Text(
             'Search',
             style: AppFonts.headlineMedium.copyWith(
-              color: AppColors.primary,
+              color: colorScheme.primary,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
             ),

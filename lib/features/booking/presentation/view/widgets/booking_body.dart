@@ -15,13 +15,13 @@ class BookingBody extends StatefulWidget {
 
 class _BookingBodyState extends State<BookingBody> {
   bool isPending = true;
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      physics: ScrollPhysics(),
+      physics: const ScrollPhysics(),
       slivers: [
         const CustomBookingAppBar(),
-
         SliverToBoxAdapter(
           child: Column(
             children: [
@@ -55,19 +55,30 @@ class _BookingBodyState extends State<BookingBody> {
               ),
             );
           },
-          child: buildBodyScreen(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: buildBodyScreen(),
+          ),
         );
       },
     );
   }
 
   Container buildBodyScreen() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: AppShadows.cardShadow,
+        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        border: Border.all(
+          color: colorScheme.onSurface.withOpacity(0.08),
+          width: 1.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,15 +95,15 @@ class _BookingBodyState extends State<BookingBody> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        AppColors.primary.withOpacity(0.08),
-                        AppColors.primaryLight.withOpacity(0.05),
+                        colorScheme.primary.withOpacity(0.08),
+                        colorScheme.primary.withOpacity(0.03),
                       ],
                     ),
                   ),
                   child: Icon(
                     Symbols.person_filled_rounded,
                     size: 180,
-                    color: AppColors.primary.withOpacity(0.2),
+                    color: colorScheme.primary.withOpacity(0.15),
                   ),
                 ),
               ),
@@ -109,7 +120,7 @@ class _BookingBodyState extends State<BookingBody> {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primary.withOpacity(0.3),
+                        color: colorScheme.primary.withOpacity(0.25),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -118,7 +129,7 @@ class _BookingBodyState extends State<BookingBody> {
                   child: Text(
                     'CARDIOLOGY',
                     style: AppFonts.labelSmall.copyWith(
-                      color: AppColors.white,
+                      color: colorScheme.onPrimary,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1,
                     ),
@@ -177,6 +188,7 @@ class _BookingBodyState extends State<BookingBody> {
                 Text(
                   'Dr. Elena Rodriguez',
                   style: AppFonts.headlineMedium.copyWith(
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.3,
                   ),
@@ -185,7 +197,7 @@ class _BookingBodyState extends State<BookingBody> {
                 Text(
                   'MedX Center',
                   style: AppFonts.bodyMedium.copyWith(
-                    color: AppColors.secondary,
+                    color: colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -193,7 +205,7 @@ class _BookingBodyState extends State<BookingBody> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.greyLight,
+                    color: colorScheme.onSurface.withOpacity(0.04),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -204,13 +216,13 @@ class _BookingBodyState extends State<BookingBody> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: AppColors.primary.withOpacity(0.1),
+                                color: colorScheme.primary.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Icon(
                                 Symbols.calendar_today,
                                 size: 20,
-                                color: AppColors.primary,
+                                color: colorScheme.primary,
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -220,12 +232,15 @@ class _BookingBodyState extends State<BookingBody> {
                                 Text(
                                   'Date',
                                   style: AppFonts.labelSmall.copyWith(
-                                    color: AppColors.secondary,
+                                    color: colorScheme.onSurface.withOpacity(
+                                      0.5,
+                                    ),
                                   ),
                                 ),
                                 Text(
                                   'Oct 24, 2023',
                                   style: AppFonts.bodyMedium.copyWith(
+                                    color: colorScheme.onSurface,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -237,7 +252,7 @@ class _BookingBodyState extends State<BookingBody> {
                       Container(
                         width: 1,
                         height: 36,
-                        color: Colors.grey.shade300,
+                        color: colorScheme.onSurface.withOpacity(0.1),
                       ),
                       Expanded(
                         child: Row(
@@ -246,13 +261,13 @@ class _BookingBodyState extends State<BookingBody> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: AppColors.primary.withOpacity(0.1),
+                                color: colorScheme.primary.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Icon(
                                 Symbols.access_time,
                                 size: 20,
-                                color: AppColors.primary,
+                                color: colorScheme.primary,
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -262,12 +277,15 @@ class _BookingBodyState extends State<BookingBody> {
                                 Text(
                                   'Time',
                                   style: AppFonts.labelSmall.copyWith(
-                                    color: AppColors.secondary,
+                                    color: colorScheme.onSurface.withOpacity(
+                                      0.5,
+                                    ),
                                   ),
                                 ),
                                 Text(
                                   '10:30 AM',
                                   style: AppFonts.bodyMedium.copyWith(
+                                    color: colorScheme.onSurface,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -292,9 +310,9 @@ class _BookingBodyState extends State<BookingBody> {
                         child: Container(
                           height: 48,
                           decoration: BoxDecoration(
-                            color: AppColors.greyLight,
+                            color: colorScheme.onSurface.withOpacity(0.04),
                             border: Border.all(
-                              color: AppColors.black.withOpacity(0.3),
+                              color: colorScheme.onSurface.withOpacity(0.15),
                               width: 1.5,
                             ),
                             borderRadius: BorderRadius.circular(14),
@@ -329,6 +347,7 @@ class _BookingBodyState extends State<BookingBody> {
                                 child: Text(
                                   "Reschedule",
                                   style: AppFonts.labelLarge.copyWith(
+                                    color: colorScheme.onSurface,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -344,7 +363,7 @@ class _BookingBodyState extends State<BookingBody> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
-                              color: AppColors.error.withOpacity(0.3),
+                              color: AppColors.error.withOpacity(0.4),
                               width: 1.5,
                             ),
                           ),
@@ -374,8 +393,8 @@ class _BookingBodyState extends State<BookingBody> {
                     height: 48,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: AppColors.white,
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.onPrimary,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -387,12 +406,12 @@ class _BookingBodyState extends State<BookingBody> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.star_rounded, size: 18),
+                          const Icon(Icons.star_rounded, size: 18),
                           const SizedBox(width: 8),
                           Text(
                             "Rate Visit",
                             style: AppFonts.labelLarge.copyWith(
-                              color: AppColors.neutral,
+                              color: colorScheme.onPrimary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -408,12 +427,21 @@ class _BookingBodyState extends State<BookingBody> {
   }
 
   Widget CustomBodyButton() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: AppShadows.softShadow,
+        color: isDarkMode
+            ? colorScheme.surface
+            : colorScheme.onSurface.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colorScheme.onSurface.withOpacity(isDarkMode ? 0.1 : 0.05),
+        ),
       ),
       child: Row(
         children: [
@@ -430,14 +458,15 @@ class _BookingBodyState extends State<BookingBody> {
                 decoration: BoxDecoration(
                   gradient: isPending ? AppGradients.primaryGradient : null,
                   color: isPending ? null : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: isPending ? AppShadows.elevatedShadow : [],
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
                   child: Text(
                     'Pending',
                     style: AppFonts.labelLarge.copyWith(
-                      color: isPending ? Colors.white : AppColors.secondary,
+                      color: isPending
+                          ? Colors.white
+                          : colorScheme.onSurface.withOpacity(0.6),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -458,14 +487,15 @@ class _BookingBodyState extends State<BookingBody> {
                 decoration: BoxDecoration(
                   gradient: !isPending ? AppGradients.primaryGradient : null,
                   color: !isPending ? null : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: !isPending ? AppShadows.elevatedShadow : [],
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
                   child: Text(
                     'Completed',
                     style: AppFonts.labelLarge.copyWith(
-                      color: !isPending ? Colors.white : AppColors.secondary,
+                      color: !isPending
+                          ? Colors.white
+                          : colorScheme.onSurface.withOpacity(0.6),
                       fontWeight: FontWeight.w700,
                     ),
                   ),

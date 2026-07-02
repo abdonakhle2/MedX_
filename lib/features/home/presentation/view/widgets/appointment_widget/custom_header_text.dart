@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:project_1/constants/constants.dart';
 
 class CustomHeaderText extends StatelessWidget {
@@ -7,13 +6,20 @@ class CustomHeaderText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.neutral,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: AppShadows.cardShadow,
+        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        border: Border.all(
+          color: colorScheme.onSurface.withOpacity(0.08),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,19 +28,22 @@ class CustomHeaderText extends StatelessWidget {
             'Book with Elite Medical Clinic',
             style: AppFonts.headlineSmall.copyWith(
               fontWeight: FontWeight.w800,
-              color: AppColors.primary,
+              color: colorScheme.primary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Ahmad ali',
-            style: AppFonts.bodyMedium.copyWith(fontWeight: FontWeight.w800),
+            style: AppFonts.bodyMedium.copyWith(
+              fontWeight: FontWeight.w800,
+              color: colorScheme.onSurface,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             'Cardiology',
             style: AppFonts.bodyMedium.copyWith(
-              color: AppColors.primary.withOpacity(0.7),
+              color: colorScheme.primary.withOpacity(0.7),
               fontWeight: FontWeight.w600,
             ),
           ),

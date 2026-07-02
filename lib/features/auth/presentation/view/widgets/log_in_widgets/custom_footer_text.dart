@@ -6,6 +6,8 @@ class CustomFooterText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: [
         Expanded(
@@ -13,7 +15,10 @@ class CustomFooterText extends StatelessWidget {
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.transparent, Colors.grey.shade300],
+                colors: [
+                  Colors.transparent,
+                  colorScheme.onSurface.withOpacity(0.15),
+                ],
               ),
             ),
           ),
@@ -23,7 +28,7 @@ class CustomFooterText extends StatelessWidget {
           child: Text(
             "NEW TO THE PLATFORM?",
             style: AppFonts.labelSmall.copyWith(
-              color: AppColors.secondary,
+              color: colorScheme.onSurface.withOpacity(0.6),
               letterSpacing: 1,
             ),
           ),
@@ -33,7 +38,10 @@ class CustomFooterText extends StatelessWidget {
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.grey.shade300, Colors.transparent],
+                colors: [
+                  colorScheme.onSurface.withOpacity(0.15),
+                  Colors.transparent,
+                ],
               ),
             ),
           ),

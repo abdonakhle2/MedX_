@@ -6,13 +6,19 @@ class CustomCenterDetailsAbout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: AppGradients.surfaceGradient,
+        gradient: isDarkMode ? null : AppGradients.surfaceGradient,
         borderRadius: BorderRadius.circular(24),
+        color: isDarkMode ? colorScheme.surface : null,
         border: Border.all(
-          color: AppColors.primary.withOpacity(0.08),
+          color: isDarkMode
+              ? const Color(0xFF334155)
+              : AppColors.primary.withOpacity(0.08),
           width: 1,
         ),
       ),
@@ -24,12 +30,16 @@ class CustomCenterDetailsAbout extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
+                  color: isDarkMode
+                      ? AppColors.primaryLight.withOpacity(0.15)
+                      : AppColors.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
                   Icons.info_outline_rounded,
-                  color: AppColors.primary,
+                  color: isDarkMode
+                      ? AppColors.primaryLight
+                      : AppColors.primary,
                   size: 20,
                 ),
               ),
@@ -37,7 +47,9 @@ class CustomCenterDetailsAbout extends StatelessWidget {
               Text(
                 'About the Institute',
                 style: AppFonts.headlineSmall.copyWith(
-                  color: AppColors.primary,
+                  color: isDarkMode
+                      ? AppColors.primaryLight
+                      : AppColors.primary,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -47,7 +59,7 @@ class CustomCenterDetailsAbout extends StatelessWidget {
           Text(
             'At Harborview, we redefine clinical excellence through an editorial lens. Our facility combines state-of-the-art diagnostic technology...',
             style: AppFonts.bodyMedium.copyWith(
-              color: AppColors.secondary,
+              color: isDarkMode ? const Color(0xFF94A3B8) : AppColors.secondary,
               height: 1.6,
             ),
           ),

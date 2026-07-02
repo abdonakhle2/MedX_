@@ -3,8 +3,7 @@ import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:project_1/constants/constants.dart'
-    show AppFonts, AppColors, AppShadows;
+import 'package:project_1/constants/constants.dart' show AppFonts;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class CustomUploadIdPassportFile extends StatefulWidget {
@@ -39,16 +38,14 @@ class _CustomUploadIdPassportFileState
         widget.onFileSelected?.call(result.files.first);
       }
     } catch (error) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Unable to pick image: $error')));
+      debugPrint("Error picking file: $error");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final selectedFile = widget.selectedFile;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -56,84 +53,69 @@ class _CustomUploadIdPassportFileState
           onTap: _pickPassportImage,
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(18),
+            height: 140,
             decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(18),
+              color: colorScheme.onSurface.withOpacity(0.04),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: widget.errorText != null
-                    ? Colors.red.shade700
-                    : AppColors.primary.withOpacity(0.25),
-                width: 1.2,
+                    ? colorScheme.error
+                    : colorScheme.onSurface.withOpacity(0.15),
+                style: BorderStyle.solid,
+                width: 1.5,
               ),
-              boxShadow: AppShadows.cardShadow,
             ),
-            child: selectedFile == null
-                ? Row(
+            child: widget.selectedFile != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Stack(
+                      children: [
+                        _buildFilePreview(widget.selectedFile!),
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.onFileSelected?.call(null);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: colorScheme.error.withOpacity(0.9),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.close_rounded,
+                                color: Colors.white,
+                                size: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Symbols.upload_file_rounded,
-                        color: AppColors.primary,
-                        size: 22,
+                        Symbols.cloud_upload_rounded,
+                        size: 36,
+                        color: colorScheme.primary,
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Upload a clear passport photo',
-                              style: AppFonts.labelLarge.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              'Tap to choose a passport image (JPG or PNG)',
-                              style: AppFonts.bodyMedium.copyWith(
-                                color: AppColors.secondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (selectedFile.bytes != null)
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: _buildFilePreview(selectedFile),
-                        ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       Text(
-                        selectedFile.name,
-                        style: AppFonts.bodyLarge.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Passport image selected. Tap to change.',
+                        'Upload ID or Passport',
                         style: AppFonts.bodyMedium.copyWith(
-                          color: AppColors.secondary,
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onSurface,
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: _pickPassportImage,
-                          child: Text(
-                            'Change',
-                            style: AppFonts.bodyLarge.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Supported formats: JPG, PNG, PDF',
+                        style: AppFonts.labelSmall.copyWith(
+                          color: colorScheme.onSurface.withOpacity(0.4),
                         ),
                       ),
                     ],
@@ -145,7 +127,7 @@ class _CustomUploadIdPassportFileState
           Text(
             widget.errorText!,
             style: AppFonts.bodySmall.copyWith(
-              color: Colors.red.shade700,
+              color: colorScheme.error,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -155,10 +137,10 @@ class _CustomUploadIdPassportFileState
   }
 
   Widget _buildFilePreview(PlatformFile file) {
+    final colorScheme = Theme.of(context).colorScheme;
     final extension = file.extension?.toLowerCase();
 
     if (extension == 'pdf') {
-      // 📄 عرض ملف الـ PDF من الذاكرة مباشرة
       return SfPdfViewer.memory(
         file.bytes!,
         canShowScrollHead: false,
@@ -167,7 +149,6 @@ class _CustomUploadIdPassportFileState
     } else if (extension == 'jpg' ||
         extension == 'jpeg' ||
         extension == 'png') {
-      // 🖼️ عرض الصورة كالمعتاد
       return Image.memory(
         file.bytes!,
         fit: BoxFit.cover,
@@ -175,19 +156,14 @@ class _CustomUploadIdPassportFileState
         height: 200,
       );
     } else {
-      // في حال رفع صيغة أخرى غير مدعومة للعرض المباشر
       return Container(
-        color: Colors.grey.shade200,
+        color: colorScheme.onSurface.withOpacity(0.08),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.insert_drive_file,
-              color: Colors.blueGrey,
-              size: 30,
-            ),
+            Icon(Icons.insert_drive_file_rounded, color: colorScheme.primary),
             const SizedBox(width: 8),
-            Text('ملف مدعوم: ${file.name}'),
+            Text(file.name, style: TextStyle(color: colorScheme.onSurface)),
           ],
         ),
       );

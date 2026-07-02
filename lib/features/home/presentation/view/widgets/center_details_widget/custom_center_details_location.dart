@@ -7,12 +7,16 @@ class CustomCenterDetailsLocation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: AppGradients.headerGradient,
+        gradient: isDarkMode
+            ? AppGradients.primaryDarkGradient
+            : AppGradients.headerGradient,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: AppShadows.elevatedShadow,
+        boxShadow: isDarkMode ? [] : AppShadows.elevatedShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,12 +26,14 @@ class CustomCenterDetailsLocation extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
                   Icons.location_on_rounded,
-                  color: AppColors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   size: 22,
                 ),
               ),
@@ -35,7 +41,7 @@ class CustomCenterDetailsLocation extends StatelessWidget {
               Text(
                 'Location',
                 style: AppFonts.headlineSmall.copyWith(
-                  color: AppColors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -45,7 +51,7 @@ class CustomCenterDetailsLocation extends StatelessWidget {
           Text(
             '4221 Medical District Plaza, WA 98101',
             style: AppFonts.bodyMedium.copyWith(
-              color: Colors.white.withOpacity(0.85),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.85),
               height: 1.4,
             ),
             maxLines: 2,
@@ -64,7 +70,7 @@ class CustomCenterDetailsLocation extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.white,
+                backgroundColor: Theme.of(context).colorScheme.surface,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -75,14 +81,14 @@ class CustomCenterDetailsLocation extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.directions_rounded,
-                    color: AppColors.primary,
+                    color: Theme.of(context).colorScheme.onSurface,
                     size: 20,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     'GET DIRECTIONS',
                     style: AppFonts.labelLarge.copyWith(
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.5,
                     ),

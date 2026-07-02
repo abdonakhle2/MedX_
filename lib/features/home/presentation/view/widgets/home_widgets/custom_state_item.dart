@@ -19,12 +19,16 @@ class CustomStateItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: Colors.white.withOpacity(0.6), size: 20),
+          Icon(
+            icon,
+            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
+            size: 20,
+          ),
           const SizedBox(height: 8),
           Text(
             value,
             style: AppFonts.headlineSmall.copyWith(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -32,7 +36,7 @@ class CustomStateItem extends StatelessWidget {
           Text(
             label,
             style: AppFonts.labelSmall.copyWith(
-              color: Colors.white.withOpacity(0.6),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
               letterSpacing: 1.2,
               fontSize: 10,
             ),

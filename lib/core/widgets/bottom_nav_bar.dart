@@ -22,19 +22,20 @@ class BottomNavBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(Symbols.home_app_logo, 'HOME', 0),
-            _buildNavItem(Symbols.favorite, 'FAVORITES', 1),
-            _buildNavItem(Symbols.manage_search, 'SEARCH', 2),
-            _buildNavItem(Symbols.calendar_today, 'BOOKINGS', 3),
-            _buildNavItem(Symbols.person, 'PROFILE', 4),
+            _buildNavItem(context, Symbols.home_app_logo, 'HOME', 0),
+            _buildNavItem(context, Symbols.favorite, 'FAVORITES', 1),
+            _buildNavItem(context, Symbols.manage_search, 'SEARCH', 2),
+            _buildNavItem(context, Symbols.calendar_today, 'BOOKINGS', 3),
+            _buildNavItem(context, Symbols.person, 'PROFILE', 4),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
+  Widget _buildNavItem(BuildContext context, IconData icon, String label, int index) {
     final isSelected = currentIndex == index;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return GestureDetector(
       onTap: () => onTap(index),
@@ -50,7 +51,7 @@ class BottomNavBar extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.25),
+                    color: colorScheme.primary.withOpacity(0.25),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -63,7 +64,7 @@ class BottomNavBar extends StatelessWidget {
             Icon(
               icon,
               color: isSelected
-                  ? Colors.white
+                  ? colorScheme.onPrimary
                   : AppColors.secondary.withOpacity(0.6),
               size: 24,
             ),
@@ -72,7 +73,7 @@ class BottomNavBar extends StatelessWidget {
               label,
               style: AppFonts.labelSmall.copyWith(
                 color: isSelected
-                    ? Colors.white
+                    ? colorScheme.onPrimary
                     : AppColors.secondary.withOpacity(0.5),
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 fontSize: 9,

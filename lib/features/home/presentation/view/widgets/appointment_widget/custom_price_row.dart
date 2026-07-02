@@ -9,17 +9,21 @@ class CustomPriceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: AppFonts.bodyMedium.copyWith(color: AppColors.secondary),
+          style: AppFonts.bodyMedium.copyWith(
+            color: colorScheme.onSurface.withOpacity(0.6),
+          ),
         ),
         Text(
           '\$${price.toStringAsFixed(2)}',
           style: AppFonts.bodyLarge.copyWith(
-            color: AppColors.primary,
+            color: colorScheme.primary,
             fontWeight: FontWeight.w600,
           ),
         ),

@@ -20,6 +20,9 @@ class _CardClinicState extends State<CardClinic> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Card(
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
@@ -46,9 +49,9 @@ class _CardClinicState extends State<CardClinic> {
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
-              color: AppColors.cardBg,
+              color: colorScheme.surface,
               borderRadius: BorderRadius.circular(24),
-              boxShadow: AppShadows.cardShadow,
+              boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24),
@@ -61,6 +64,7 @@ class _CardClinicState extends State<CardClinic> {
                       Container(
                         height: 180,
                         width: double.infinity,
+
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
@@ -87,24 +91,25 @@ class _CardClinicState extends State<CardClinic> {
                         ),
                       ),
                       // Gradient overlay at bottom
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                AppColors.cardBg.withOpacity(0.8),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   bottom: 0,
+                      //   left: 0,
+                      //   right: 0,
+                      //   child: Container(
+                      //     height: 40,
+                      //     decoration: BoxDecoration(
+                      //       gradient: LinearGradient(
+                      //         begin: Alignment.topCenter,
+                      //         end: Alignment.bottomCenter,
+                      //         colors: [
+                      //           Colors.black.withOpacity(0.15),
+                      //           Colors.transparent,
+                      //           colorScheme.surface.withOpacity(0.9),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Positioned(
                         top: 8,
                         right: 8,
@@ -114,9 +119,9 @@ class _CardClinicState extends State<CardClinic> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                          color: colorScheme.surface,
                             borderRadius: BorderRadius.circular(12),
-                            boxShadow: AppShadows.softShadow,
+                            boxShadow: isDarkMode ? [] : AppShadows.softShadow,
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -179,7 +184,7 @@ class _CardClinicState extends State<CardClinic> {
                               child: Text(
                                 'PRIMARY FACILITY',
                                 style: AppFonts.labelSmall.copyWith(
-                                  color: const Color(0xFF0D9488),
+                                  color: Color(0xFF2DD4BF),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 10,
                                   letterSpacing: 0.5,
@@ -221,12 +226,9 @@ class _CardClinicState extends State<CardClinic> {
                         // Hospital name
                         Text(
                           widget.clinic.name_en,
-                          style: TextStyle(
-                            color: AppColors.black,
-                            fontWeight: FontWeight.bold,
+                          style: theme.textTheme.headlineSmall?.copyWith(
                             letterSpacing: -0.3,
-                            fontSize: 20,
-                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -234,14 +236,13 @@ class _CardClinicState extends State<CardClinic> {
                         // Description
                         Text(
                           widget.clinic.description,
-                          style: AppFonts.bodySmall.copyWith(
-                            color: AppColors.secondary,
+                          style: theme.textTheme.bodyMedium?.copyWith(
                             height: 1.5,
                           ),
                         ),
 
                         const SizedBox(height: 16),
-                        Container(height: 1, color: AppColors.greyLight),
+                        Container(height: 1, color: theme.dividerColor),
                         const SizedBox(height: 16),
 
                         // Distance and Arrow
@@ -250,20 +251,21 @@ class _CardClinicState extends State<CardClinic> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: AppColors.greyLight,
+                                color: isDarkMode
+                                    ? const Color(0xFF334155)
+                                    : AppColors.greyLight,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Icon(
                                 Icons.location_on_rounded,
                                 size: 16,
-                                color: AppColors.primary,
+                                color: colorScheme.primary,
                               ),
                             ),
                             const SizedBox(width: 10),
                             Text(
                               widget.clinic.location,
-                              style: AppFonts.bodySmall.copyWith(
-                                color: AppColors.secondary,
+                              style: theme.textTheme.bodySmall?.copyWith(
                                 fontWeight: FontWeight.w500,
                               ),
                             ),

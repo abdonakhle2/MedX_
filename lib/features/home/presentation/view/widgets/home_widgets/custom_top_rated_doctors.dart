@@ -74,7 +74,10 @@ class CustomTopRatedDoctors extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             'Top Rated Doctors',
-            style: AppFonts.headlineSmall.copyWith(fontWeight: FontWeight.w800),
+            style: AppFonts.headlineSmall.copyWith(
+              fontWeight: FontWeight.w800,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         ),
         const SizedBox(height: 14),
@@ -120,8 +123,12 @@ class CustomTopRatedDoctors extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24),
                           gradient: LinearGradient(
                             colors: [
-                              Colors.black.withOpacity(0.08),
-                              Colors.black.withOpacity(0.20),
+                              Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withOpacity(0.08),
+                              Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withOpacity(0.20),
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
@@ -137,9 +144,12 @@ class CustomTopRatedDoctors extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.surface,
                             borderRadius: BorderRadius.circular(18),
-                            boxShadow: AppShadows.softShadow,
+                            boxShadow:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? []
+                                : AppShadows.softShadow,
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,

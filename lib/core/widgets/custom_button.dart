@@ -9,13 +9,14 @@ class CustomButton extends StatelessWidget {
   Color? color;
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        splashColor: Colors.white.withOpacity(0.2),
-        highlightColor: Colors.white.withOpacity(0.1),
+        splashColor: colorScheme.onPrimary.withOpacity(0.2),
+        highlightColor: colorScheme.onPrimary.withOpacity(0.1),
         child: Ink(
           decoration: BoxDecoration(
             gradient: color != null ? null : AppGradients.primaryGradient,
@@ -33,16 +34,16 @@ class CustomButton extends StatelessWidget {
                 Text(
                   text,
                   style: AppFonts.labelLarge.copyWith(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     letterSpacing: 0.5,
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_rounded,
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   size: 20,
                 ),
               ],

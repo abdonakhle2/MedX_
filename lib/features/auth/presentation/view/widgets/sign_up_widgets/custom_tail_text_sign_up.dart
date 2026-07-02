@@ -6,17 +6,23 @@ class CustomTailTextSignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          BuildFooterItem(
+          const BuildFooterItem(
             icon: Icons.verified_user_rounded,
             label: 'HIPAA COMPLIANT',
           ),
-          Container(width: 1, height: 16, color: Colors.grey.shade300),
-          BuildFooterItem(icon: Icons.lock_rounded, label: '256-BIT AES'),
+          Container(
+            width: 1,
+            height: 16,
+            color: colorScheme.onSurface.withOpacity(0.12),
+          ),
+          const BuildFooterItem(icon: Icons.lock_rounded, label: '256-BIT AES'),
         ],
       ),
     );

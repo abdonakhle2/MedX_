@@ -9,14 +9,16 @@ class BuildFooterItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: [
-        Icon(icon, size: 14, color: AppColors.secondary.withOpacity(0.5)),
+        Icon(icon, size: 14, color: colorScheme.onSurface.withOpacity(0.4)),
         const SizedBox(width: 6),
         Text(
           label,
           style: AppFonts.labelSmall.copyWith(
-            color: AppColors.secondary.withOpacity(0.5),
+            color: colorScheme.onSurface.withOpacity(0.4),
             fontWeight: FontWeight.w600,
             letterSpacing: 0.5,
           ),

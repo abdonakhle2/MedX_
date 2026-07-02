@@ -16,7 +16,8 @@ class CustomHomeList extends StatelessWidget {
           clinic_id: 'clinic_$index',
           name_en: 'City General Hospital ${index + 1}',
           name_ar: 'مستشفى المدينة العام ${index + 1}',
-          description: 'A cornerstone of regional health, providing comprehensive emergency care, surgery, and advanced diagnostics.',
+          description:
+              'A cornerstone of regional health, providing comprehensive emergency care, surgery, and advanced diagnostics.',
           location: '${1.2 + index * 0.3} miles away',
           work_hours: 8,
           phone_number: '123456789',

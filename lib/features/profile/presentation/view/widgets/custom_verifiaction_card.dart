@@ -3,22 +3,29 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_section_header.dart';
 
-class CustomVerifiactionCard extends StatelessWidget {
-  const CustomVerifiactionCard({super.key});
+class CustomVerificationCard extends StatelessWidget {
+  const CustomVerificationCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: AppShadows.cardShadow,
+        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        border: Border.all(
+          color: colorScheme.onSurface.withOpacity(0.06),
+          width: 1,
+        ),
       ),
       padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomSectionHeader(
+          const CustomSectionHeader(
             title: 'Verification Documents',
             icon: Symbols.verified,
           ),
@@ -32,7 +39,7 @@ class CustomVerifiactionCard extends StatelessWidget {
                     Text(
                       "PASSPORT NUMBER",
                       style: AppFonts.labelSmall.copyWith(
-                        color: AppColors.greyMedium,
+                        color: colorScheme.onSurface.withOpacity(0.4),
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.0,
                       ),
@@ -41,7 +48,7 @@ class CustomVerifiactionCard extends StatelessWidget {
                     Text(
                       "AA 839 201 02",
                       style: AppFonts.bodyLarge.copyWith(
-                        color: AppColors.black,
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.5,
                       ),
@@ -55,7 +62,7 @@ class CustomVerifiactionCard extends StatelessWidget {
                   Text(
                     "EXPIRY",
                     style: AppFonts.labelSmall.copyWith(
-                      color: AppColors.greyMedium,
+                      color: colorScheme.onSurface.withOpacity(0.4),
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.0,
                     ),
@@ -64,7 +71,7 @@ class CustomVerifiactionCard extends StatelessWidget {
                   Text(
                     "Jan 2029",
                     style: AppFonts.bodyLarge.copyWith(
-                      color: AppColors.black,
+                      color: colorScheme.onSurface,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -74,12 +81,12 @@ class CustomVerifiactionCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryLight.withOpacity(0.15),
+                  color: colorScheme.primary.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
+                child: Icon(
                   Symbols.visibility,
-                  color: AppColors.primary,
+                  color: colorScheme.primary,
                   size: 20,
                 ),
               ),

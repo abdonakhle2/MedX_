@@ -6,14 +6,18 @@ class CustomSubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return SizedBox(
       width: double.infinity,
-      height: 55,
+      height: 56,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(16),
           ),
           elevation: 0,
         ),
@@ -26,13 +30,13 @@ class CustomSubmitButton extends StatelessWidget {
             Text(
               "Submit Rating",
               style: AppFonts.labelLarge.copyWith(
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
               ),
             ),
             const SizedBox(width: 10),
-            const Icon(Icons.send_rounded, color: Colors.white, size: 20),
+            Icon(Icons.send_rounded, color: colorScheme.onPrimary, size: 20),
           ],
         ),
       ),

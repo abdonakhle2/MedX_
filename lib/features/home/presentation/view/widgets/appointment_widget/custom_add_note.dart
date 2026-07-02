@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:project_1/constants/constants.dart';
 
 class CustomAddNote extends StatelessWidget {
@@ -7,58 +6,29 @@ class CustomAddNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SafeArea(
       child: Column(
         children: [
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     Container(
-          //       padding: const EdgeInsets.all(8),
-          //       decoration: BoxDecoration(
-          //         color: AppColors.primary.withOpacity(0.1),
-          //         borderRadius: BorderRadius.circular(10),
-          //       ),
-          //       child: Icon(
-          //         Symbols.note_alt,
-          //         color: AppColors.primary,
-          //         size: 20,
-          //       ),
-          //     ),
-          //     const SizedBox(width: 12),
-          //     Text(
-          //       'Consultation Notes',
-          //       style: AppFonts.headlineSmall.copyWith(
-          //         fontWeight: FontWeight.w800,
-          //         letterSpacing: -0.3,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // const SizedBox(height: 14),
-          // Text(
-          //   'Mention any specific symptoms, medical history, or concerns you wish to discuss during the session.',
-          //   style: AppFonts.bodyMedium.copyWith(
-          //     color: AppColors.secondary,
-          //     height: 1.5,
-          //   ),
-          // ),
-          // const SizedBox(height: 16),
           Container(
             decoration: BoxDecoration(
-              color: AppColors.grey.withOpacity(0.1),
+              color: colorScheme.surface,
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: Colors.grey.shade200, width: 1),
+              border: Border.all(
+                color: colorScheme.onSurface.withOpacity(0.1),
+                width: 1,
+              ),
             ),
             child: TextField(
-              cursorColor: AppColors.primary,
+              cursorColor: colorScheme.primary,
               maxLines: 5,
-              style: AppFonts.bodyMedium,
+              style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
               decoration: InputDecoration(
                 filled: false,
                 hintText: 'Type your notes here...',
                 hintStyle: AppFonts.bodyMedium.copyWith(
-                  color: AppColors.secondary.withOpacity(0.4),
+                  color: colorScheme.onSurface.withOpacity(0.4),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
@@ -67,7 +37,7 @@ class CustomAddNote extends StatelessWidget {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide(
-                    color: AppColors.primary.withOpacity(0.3),
+                    color: colorScheme.primary.withOpacity(0.4),
                     width: 1.5,
                   ),
                 ),

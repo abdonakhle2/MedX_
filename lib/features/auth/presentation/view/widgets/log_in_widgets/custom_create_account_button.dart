@@ -8,25 +8,25 @@ class CustomCreateAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           'Don\'t have an account?',
-          style: AppFonts.bodyMedium.copyWith(color: AppColors.secondary),
+          style: AppFonts.bodyMedium.copyWith(
+            color: colorScheme.onSurface.withOpacity(0.7),
+          ),
         ),
         TextButton(
           onPressed: () {
-            // Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => SignUpScreen()),
-            // );
             GoRouter.of(context).push(AppRouter.kSignUpScreen);
           },
           child: Text(
             'Create Account',
             style: AppFonts.labelLarge.copyWith(
-              color: AppColors.primary,
+              color: colorScheme.primary,
               fontWeight: FontWeight.bold,
             ),
           ),

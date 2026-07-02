@@ -7,6 +7,7 @@ class CustomConfirmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: double.infinity,
       height: 56,
@@ -17,8 +18,8 @@ class CustomConfirmButton extends StatelessWidget {
               CustomShowSuccessDialog(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.neutral,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
@@ -30,7 +31,7 @@ class CustomConfirmButton extends StatelessWidget {
                 Text(
                   "Confirm Booking",
                   style: AppFonts.labelLarge.copyWith(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
                   ),
@@ -39,13 +40,13 @@ class CustomConfirmButton extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: colorScheme.onPrimary.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.check_rounded,
                     size: 16,
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                   ),
                 ),
               ],
