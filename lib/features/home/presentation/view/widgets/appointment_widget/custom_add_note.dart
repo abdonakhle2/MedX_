@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomAddNote extends StatelessWidget {
   const CustomAddNote({super.key});
@@ -7,6 +8,7 @@ class CustomAddNote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
 
     return SafeArea(
       child: Column(
@@ -26,7 +28,7 @@ class CustomAddNote extends StatelessWidget {
               style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
               decoration: InputDecoration(
                 filled: false,
-                hintText: 'Type your notes here...',
+                hintText: localeText.bookingNotesHint,
                 hintStyle: AppFonts.bodyMedium.copyWith(
                   color: colorScheme.onSurface.withOpacity(0.4),
                 ),

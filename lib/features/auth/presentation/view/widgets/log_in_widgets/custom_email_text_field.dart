@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomEmailTextField extends StatelessWidget {
   const CustomEmailTextField({
@@ -14,24 +15,29 @@ class CustomEmailTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       key: const ValueKey('log_in'),
+      controller: controller,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.left,
       style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       keyboardType: TextInputType.emailAddress,
       onChanged: onChanged,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your email';
+          return localeText.emailRequiredLogin; // استخدم النص المترجم هنا
         }
         final emailPattern = RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+");
         if (!emailPattern.hasMatch(value.trim())) {
-          return 'Please enter a valid email';
+          return localeText.emailInvalidLogin; // استخدم النص المترجم هنا
         }
         return null;
       },
       decoration: InputDecoration(
         hintText: 'ahmad@example.com',
+        hintTextDirection: TextDirection.ltr,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
         ),

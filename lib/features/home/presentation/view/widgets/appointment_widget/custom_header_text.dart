@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomHeaderText extends StatelessWidget {
   const CustomHeaderText({super.key});
@@ -8,6 +9,7 @@ class CustomHeaderText extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final localeText = AppLocalizations.of(context)!;
 
     return Container(
       width: double.infinity,
@@ -25,7 +27,7 @@ class CustomHeaderText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Book with Elite Medical Clinic',
+            '${localeText.bookingWithDoctorPrefix} Elite Medical Clinic',
             style: AppFonts.headlineSmall.copyWith(
               fontWeight: FontWeight.w800,
               color: colorScheme.primary,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomCenterDetailsAppBar extends StatelessWidget {
   const CustomCenterDetailsAppBar({super.key});
@@ -7,6 +8,8 @@ class CustomCenterDetailsAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localeText = AppLocalizations.of(context)!;
+
     final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
     return SliverAppBar(
@@ -34,7 +37,7 @@ class CustomCenterDetailsAppBar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            'Center Details',
+            localeText.centerDetailsTitle,
             style: AppFonts.headlineMedium.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w800,

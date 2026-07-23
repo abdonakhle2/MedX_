@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_section_header.dart';
 
 class CustomVerificationCard extends StatelessWidget {
@@ -8,6 +9,8 @@ class CustomVerificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
+
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -25,8 +28,8 @@ class CustomVerificationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CustomSectionHeader(
-            title: 'Verification Documents',
+          CustomSectionHeader(
+            title: localeText.profileVerificationDocuments,
             icon: Symbols.verified,
           ),
           const SizedBox(height: 24),
@@ -37,7 +40,7 @@ class CustomVerificationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "PASSPORT NUMBER",
+                      localeText.profilePassportNumber,
                       style: AppFonts.labelSmall.copyWith(
                         color: colorScheme.onSurface.withOpacity(0.4),
                         fontWeight: FontWeight.w700,
@@ -60,7 +63,7 @@ class CustomVerificationCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "EXPIRY",
+                    localeText.profileStartDate,
                     style: AppFonts.labelSmall.copyWith(
                       color: colorScheme.onSurface.withOpacity(0.4),
                       fontWeight: FontWeight.w700,

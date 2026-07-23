@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomPasswordTextField extends StatefulWidget {
   const CustomPasswordTextField({
@@ -20,16 +21,19 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
 
     return TextFormField(
       controller: widget.controller,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.left,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Password is required';
+          return localeText.passwordRequiredLogin;
         }
         if (value.length < 8) {
-          return 'Password must be at least 8 characters';
+          return localeText.passwordLengthLogin;
         }
         return null;
       },
@@ -42,6 +46,7 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         hintText: '*****',
+        hintTextDirection: TextDirection.ltr,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
           letterSpacing: 3,

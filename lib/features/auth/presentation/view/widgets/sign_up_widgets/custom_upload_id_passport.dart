@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart' show AppFonts;
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class CustomUploadIdPassportFile extends StatefulWidget {
@@ -44,6 +45,7 @@ class _CustomUploadIdPassportFileState
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
@@ -105,7 +107,7 @@ class _CustomUploadIdPassportFileState
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Upload ID or Passport',
+                        localeText.registerUploadIDPassport,
                         style: AppFonts.bodyMedium.copyWith(
                           fontWeight: FontWeight.w600,
                           color: colorScheme.onSurface,
@@ -113,7 +115,7 @@ class _CustomUploadIdPassportFileState
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Supported formats: JPG, PNG, PDF',
+                        localeText.registerSupportedFormats,
                         style: AppFonts.labelSmall.copyWith(
                           color: colorScheme.onSurface.withOpacity(0.4),
                         ),

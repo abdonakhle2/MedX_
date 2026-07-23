@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 void CustomShowPolicyDialog(BuildContext context, String title, String rules) {
   final colorScheme = Theme.of(context).colorScheme;
-
+  final localeText = AppLocalizations.of(context)!;
   showDialog(
     context: context,
     builder: (context) {
@@ -19,7 +20,7 @@ void CustomShowPolicyDialog(BuildContext context, String title, String rules) {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
-                title.contains("Terms")
+                title.contains(localeText.termsTitle)
                     ? Icons.description_rounded
                     : Icons.shield_rounded,
                 color: colorScheme.primary,
@@ -60,7 +61,7 @@ void CustomShowPolicyDialog(BuildContext context, String title, String rules) {
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               child: Text(
-                "I Understand",
+                localeText.termsUnderstandButton,
                 style: AppFonts.labelLarge.copyWith(
                   color: colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,

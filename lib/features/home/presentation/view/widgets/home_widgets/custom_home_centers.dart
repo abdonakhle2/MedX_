@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_home_list.dart';
 import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_home_stats.dart';
 import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_top_rated_doctors.dart';
@@ -9,6 +10,7 @@ class CustomHomeCenters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     return Padding(
@@ -19,7 +21,7 @@ class CustomHomeCenters extends StatelessWidget {
           const CustomTopRatedDoctors(),
           const SizedBox(height: 24),
           Text(
-            'Medical Centers',
+            localeText.homeMedicalCenters,
             style: AppFonts.headlineMedium.copyWith(
               color: colorScheme.onSurface,
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/home/presentation/view/widgets/center_details_widget/custom_department_card.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/widgets/doctor_card.dart';
@@ -50,8 +51,10 @@ class _CustomCenterDetailsDepartmentListState
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    // final theme = Theme.of(context);
+    // final colorScheme = theme.colorScheme;
+    final localeText = AppLocalizations.of(context)!;
+
     final width = MediaQuery.of(context).size.width;
     final crossAxis = width < 600 ? 2 : 3;
 
@@ -84,7 +87,7 @@ class _CustomCenterDetailsDepartmentListState
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
-            'Doctors',
+            localeText.centerDoctors,
             style: AppFonts.headlineSmall.copyWith(fontWeight: FontWeight.w800),
           ),
         ),

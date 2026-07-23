@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_1/features/search/presentation/view/widgets/custom_app_bar.dart';
 import 'package:project_1/features/search/presentation/view/widgets/custom_body_button.dart';
 import 'package:project_1/features/search/presentation/view/widgets/custom_result_search_list.dart';
+import 'package:project_1/features/search/presentation/view/widgets/custom_search_bar.dart';
 
 class SearchBody extends StatefulWidget {
   const SearchBody({super.key});
@@ -25,7 +26,7 @@ class _SearchBodyState extends State<SearchBody> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 24),
-
+                CustomSearchBar(),
                 // Search bar
                 const SizedBox(height: 20),
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
 
 class CustomHomeHeader extends StatelessWidget {
@@ -8,6 +9,7 @@ class CustomHomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
     return SliverToBoxAdapter(
@@ -57,7 +59,7 @@ class CustomHomeHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Prioritize Your\nHealth Today',
+                    localeText.homeHeaderTitle,
                     style: AppFonts.headlineLarge.copyWith(
                       color: Theme.of(context).colorScheme.onPrimary,
                       height: 1.2,
@@ -65,7 +67,7 @@ class CustomHomeHeader extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'You have no upcoming appointments. Schedule a visit to stay on top of your health.',
+                    localeText.homeHeaderSubtitle,
                     style: AppFonts.bodyMedium.copyWith(
                       color: Theme.of(
                         context,
@@ -105,7 +107,7 @@ class CustomHomeHeader extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Book Appointment',
+                          localeText.homeBookAppointment,
                           style: AppFonts.labelLarge.copyWith(
                             fontWeight: FontWeight.w700,
                             color: isDarkMode

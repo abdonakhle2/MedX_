@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/booking/presentation/view/widgets/custom_app_bar.dart';
 import 'package:project_1/features/booking/presentation/view/widgets/custom_show_dialog.dart';
 import 'package:project_1/features/home/presentation/view/appointment_screen.dart';
@@ -65,6 +66,7 @@ class _BookingBodyState extends State<BookingBody> {
   }
 
   Container buildBodyScreen() {
+    final localeText = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
@@ -166,7 +168,9 @@ class _BookingBodyState extends State<BookingBody> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        isPending ? 'Pending' : 'Completed',
+                        isPending
+                            ? localeText.bookingsPending
+                            : localeText.bookingsCompleted,
                         style: AppFonts.labelSmall.copyWith(
                           color: isPending
                               ? AppColors.amber
@@ -195,7 +199,7 @@ class _BookingBodyState extends State<BookingBody> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'MedX Center',
+                  localeText.bookingsMedXCenter,
                   style: AppFonts.bodyMedium.copyWith(
                     color: colorScheme.onSurface.withOpacity(0.6),
                   ),
@@ -230,7 +234,7 @@ class _BookingBodyState extends State<BookingBody> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Date',
+                                  localeText.bookingsDate,
                                   style: AppFonts.labelSmall.copyWith(
                                     color: colorScheme.onSurface.withOpacity(
                                       0.5,
@@ -275,7 +279,7 @@ class _BookingBodyState extends State<BookingBody> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Time',
+                                  localeText.bookingsTime,
                                   style: AppFonts.labelSmall.copyWith(
                                     color: colorScheme.onSurface.withOpacity(
                                       0.5,
@@ -345,7 +349,7 @@ class _BookingBodyState extends State<BookingBody> {
                               },
                               child: Center(
                                 child: Text(
-                                  "Reschedule",
+                                  localeText.bookingsReschedule,
                                   style: AppFonts.labelLarge.copyWith(
                                     color: colorScheme.onSurface,
                                     fontWeight: FontWeight.w600,
@@ -375,7 +379,7 @@ class _BookingBodyState extends State<BookingBody> {
                               onTap: () {},
                               child: Center(
                                 child: Text(
-                                  "Cancel",
+                                  localeText.bookingsCancel,
                                   style: AppFonts.labelLarge.copyWith(
                                     color: AppColors.error,
                                     fontWeight: FontWeight.w600,
@@ -409,7 +413,7 @@ class _BookingBodyState extends State<BookingBody> {
                           const Icon(Icons.star_rounded, size: 18),
                           const SizedBox(width: 8),
                           Text(
-                            "Rate Visit",
+                            localeText.bookingsRateVisit,
                             style: AppFonts.labelLarge.copyWith(
                               color: colorScheme.onPrimary,
                               fontWeight: FontWeight.w600,
@@ -427,6 +431,7 @@ class _BookingBodyState extends State<BookingBody> {
   }
 
   Widget CustomBodyButton() {
+    final localeText = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
@@ -462,7 +467,7 @@ class _BookingBodyState extends State<BookingBody> {
                 ),
                 child: Center(
                   child: Text(
-                    'Pending',
+                    localeText.bookingsPending,
                     style: AppFonts.labelLarge.copyWith(
                       color: isPending
                           ? Colors.white
@@ -491,7 +496,7 @@ class _BookingBodyState extends State<BookingBody> {
                 ),
                 child: Center(
                   child: Text(
-                    'Completed',
+                    localeText.bookingsCompleted,
                     style: AppFonts.labelLarge.copyWith(
                       color: !isPending
                           ? Colors.white

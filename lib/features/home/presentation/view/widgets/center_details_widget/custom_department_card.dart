@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomDepartmentCard extends StatelessWidget {
   const CustomDepartmentCard({
@@ -18,6 +19,8 @@ class CustomDepartmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
@@ -53,7 +56,7 @@ class CustomDepartmentCard extends StatelessWidget {
                 // );
               },
           child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 8),
+            // margin: const EdgeInsets.symmetric(vertical: 8),
             width: 250,
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
@@ -154,7 +157,7 @@ class CustomDepartmentCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            '12 Doctors',
+                            '12 ${localeText.centerDoctors}',
                             style: AppFonts.bodySmall.copyWith(
                               color: isDarkMode
                                   ? AppColors.primaryLight
@@ -186,7 +189,7 @@ class CustomDepartmentCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            '4.9 Rating',
+                            '4.9 ${localeText.centerRating}',
                             style: AppFonts.bodySmall.copyWith(
                               fontWeight: FontWeight.w700,
                               color: AppColors.amber,

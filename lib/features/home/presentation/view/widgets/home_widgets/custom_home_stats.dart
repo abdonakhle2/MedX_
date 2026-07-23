@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_divider.dart';
 import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_state_item.dart';
 
@@ -9,6 +10,7 @@ class CustomHomeStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localeText = AppLocalizations.of(context)!;
     final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
@@ -22,7 +24,7 @@ class CustomHomeStats extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'OUR NETWORK',
+            localeText.homeOurNetwork,
             style: AppFonts.labelSmall.copyWith(
               color: Theme.of(
                 context,
@@ -33,32 +35,32 @@ class CustomHomeStats extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Row(
-            children: const [
+            children: [
               CustomStateItem(
                 value: '500+',
-                label: 'SPECIALISTS',
+                label: localeText.homeSpecialists,
                 icon: Icons.medical_services_rounded,
               ),
               CustomDivider(),
               CustomStateItem(
                 value: '15',
-                label: 'DISTRICTS',
+                label: localeText.homeDistricts,
                 icon: Icons.location_city_rounded,
               ),
             ],
           ),
           const SizedBox(height: 16),
           Row(
-            children: const [
+            children: [
               CustomStateItem(
                 value: '24/7',
-                label: 'SUPPORT',
+                label: localeText.homeSupport,
                 icon: Icons.support_agent_rounded,
               ),
               CustomDivider(),
               CustomStateItem(
                 value: '4.8',
-                label: 'AVG RATING',
+                label: localeText.homeAvgRating,
                 icon: Icons.star_rounded,
               ),
             ],

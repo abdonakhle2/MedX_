@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/favorites/presentation/view/widgets/custom_app_bar.dart';
 import 'package:project_1/core/widgets/card_clinic.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
@@ -11,6 +12,7 @@ class FavoritesBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -40,7 +42,7 @@ class FavoritesBody extends StatelessWidget {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              "No favorites added yet",
+                              localeText.favoritesEmpty,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: colorScheme.onSurface.withOpacity(0.5),

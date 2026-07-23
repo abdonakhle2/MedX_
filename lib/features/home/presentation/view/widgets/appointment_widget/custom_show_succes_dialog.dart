@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/home/presentation/view/home_screen.dart';
 
 void CustomShowSuccessDialog(BuildContext context) {
@@ -8,6 +9,7 @@ void CustomShowSuccessDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
+      final localeText = AppLocalizations.of(context)!;
       return AlertDialog(
         backgroundColor: colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
@@ -30,7 +32,7 @@ void CustomShowSuccessDialog(BuildContext context) {
             ),
             const SizedBox(height: 24),
             Text(
-              'Success!',
+              localeText.bookingSuccessTitle,
               style: AppFonts.headlineLarge.copyWith(
                 color: colorScheme.primary,
                 fontWeight: FontWeight.w800,
@@ -38,7 +40,7 @@ void CustomShowSuccessDialog(BuildContext context) {
             ),
             const SizedBox(height: 10),
             Text(
-              'Your appointment has been booked successfully.',
+              localeText.bookingSuccessMessage,
               textAlign: TextAlign.center,
               style: AppFonts.bodyMedium.copyWith(
                 color: colorScheme.onSurface.withOpacity(0.7),
@@ -63,7 +65,7 @@ void CustomShowSuccessDialog(BuildContext context) {
                   ),
                 ),
                 child: Text(
-                  'Great!',
+                  localeText.bookingSuccessButton,
                   style: AppFonts.labelLarge.copyWith(
                     color: colorScheme.onPrimary,
                     fontWeight: FontWeight.w700,

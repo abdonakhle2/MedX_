@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/function/launch_url.dart';
 
 class CustomCenterDetailsLocation extends StatelessWidget {
@@ -8,6 +9,8 @@ class CustomCenterDetailsLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localeText = AppLocalizations.of(context)!;
+
     final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
@@ -39,7 +42,7 @@ class CustomCenterDetailsLocation extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                'Location',
+                localeText.centerLocation,
                 style: AppFonts.headlineSmall.copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,
@@ -86,7 +89,7 @@ class CustomCenterDetailsLocation extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'GET DIRECTIONS',
+                    localeText.centerGetDirections,
                     style: AppFonts.labelLarge.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w700,

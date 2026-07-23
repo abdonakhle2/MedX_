@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/Custom_log_in_button.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/log_in_widgets/custom_create_account_button.dart';
@@ -43,6 +44,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
@@ -69,7 +71,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
               // Welcome Header
               // const SizedBox(height: 20),
               Text(
-                'Welcome Back',
+                localeText.welcomeBackLogin,
                 style: AppFonts.headlineLarge.copyWith(
                   color: colorScheme.onSurface,
                 ),
@@ -80,7 +82,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Email',
+                    localeText.emailLogin,
                     style: AppFonts.bodyLarge.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.onSurface,
@@ -101,7 +103,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Password',
+                    localeText.passwordLogin,
                     style: AppFonts.bodyLarge.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.onSurface,
@@ -123,7 +125,7 @@ class _CustomLogInBodyState extends State<CustomLogInBody> {
                 child: TextButton(
                   onPressed: () {},
                   child: Text(
-                    'Forgot Password?',
+                    localeText.forgotPasswordLogin,
                     style: AppFonts.labelMedium.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.w600,

@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/models/doctor.dart';
+
+String _getDoctorImageUrl(Doctor doctor) {
+  if (doctor.photo.isNotEmpty) {
+    return doctor.photo;
+  }
+
+  final urls = [
+    'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80',
+  ];
+  final index = doctor.name_en.hashCode.abs() % urls.length;
+  return urls[index];
+}
 
 Widget buildDoctorCard(
   BuildContext context,
@@ -10,6 +26,7 @@ Widget buildDoctorCard(
   bool isGridView = false,
 }) {
   final theme = Theme.of(context);
+  final localeText = AppLocalizations.of(context)!;
   final colorScheme = theme.colorScheme;
   final isDarkMode = theme.brightness == Brightness.dark;
   return Card(
@@ -56,18 +73,31 @@ Widget buildDoctorCard(
                   ),
                 ),
                 child: Stack(
+                  fit: StackFit.expand,
                   children: [
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: colorScheme.primary.withValues(alpha: 0.08),
-                          shape: BoxShape.circle,
+                    Image.network(
+                      _getDoctorImageUrl(doctor),
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: colorScheme.primary.withValues(alpha: 0.08),
+                        child: Center(
+                          child: Icon(
+                            Icons.person_rounded,
+                            size: isGridView ? 32 : 40,
+                            color: colorScheme.primary.withValues(alpha: 0.3),
+                          ),
                         ),
-                        child: Icon(
-                          Icons.person_rounded,
-                          size: isGridView ? 32 : 40,
-                          color: colorScheme.primary.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.black.withOpacity(0.08),
+                            Colors.black.withOpacity(0.28),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                         ),
                       ),
                     ),
@@ -167,7 +197,7 @@ Widget buildDoctorCard(
                         ),
                       ),
                       Text(
-                        '/hr',
+                        localeText.doctorHourlySuffix,
                         style: AppFonts.labelSmall.copyWith(
                           color: isDarkMode
                               ? const Color(0xFF94A3B8)
@@ -206,7 +236,7 @@ Widget buildDoctorCard(
                             ),
                           ),
                           child: Text(
-                            "Book",
+                            localeText.doctorBookButton,
                             style: AppFonts.labelMedium.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,

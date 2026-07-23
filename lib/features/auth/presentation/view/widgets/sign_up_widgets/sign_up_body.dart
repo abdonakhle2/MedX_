@@ -3,10 +3,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_field_label.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_step_indiactor.dart';
-import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_sing_up_app_bar.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_tail_text_sign_up.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_upload_id_passport.dart';
 import 'package:project_1/models/user.dart';
@@ -56,6 +56,7 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -69,8 +70,6 @@ class _SignUpBodyState extends State<SignUpBody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Center(child: CustomSignUpAppBar()),
-        const SizedBox(height: 25),
         // Step indicators
         CustomStepIndicator(),
         const SizedBox(height: 30),
@@ -138,6 +137,7 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   Widget SingUpForm(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
@@ -158,30 +158,30 @@ class _SignUpBodyState extends State<SignUpBody> {
           children: [
             if (currentStep == 0) ...[
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'First Name'),
+              BuildFieldLabel(text: localeText.registerFirstName),
               const SizedBox(height: 10),
               CustomFirstNameTextField(context),
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Last Name'),
+              BuildFieldLabel(text: localeText.registerLastName),
               const SizedBox(height: 10),
               CustomLastNameTextField(context),
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Email Address'),
+              BuildFieldLabel(text: localeText.registerEmailAddressLabel),
               const SizedBox(height: 10),
               CustomEmailAddressTextField(context),
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Phone Number'),
+              BuildFieldLabel(text: localeText.registerPhoneNumber),
               const SizedBox(height: 10),
               CustomPhoneNumberTextField(context),
             ] else if (currentStep == 1) ...[
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Gender'),
+              BuildFieldLabel(text: localeText.registerGender),
               const SizedBox(height: 10),
               FormField<String>(
                 key: genderFieldKey,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please select your gender';
+                    return localeText.registerSelectGender;
                   }
                   return null;
                 },
@@ -238,7 +238,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      'Male',
+                                      localeText.registerMale,
                                       style: AppFonts.labelLarge.copyWith(
                                         color: selectedGender == 'Male'
                                             ? colorScheme.onPrimary
@@ -301,7 +301,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      'Female',
+                                      localeText.registerFemale,
                                       style: AppFonts.labelLarge.copyWith(
                                         color: selectedGender == 'Female'
                                             ? colorScheme.onPrimary
@@ -333,24 +333,24 @@ class _SignUpBodyState extends State<SignUpBody> {
                 },
               ),
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Birthdate'),
+              BuildFieldLabel(text: localeText.registerBirthdate),
               const SizedBox(height: 10),
               CustomBirthDateTextField(context),
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Address'),
+              BuildFieldLabel(text: localeText.registerAddress),
               const SizedBox(height: 10),
               CustomAddressTextField(context),
             ] else if (currentStep == 2) ...[
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'ID / Passport Number'),
-              const SizedBox(height: 10),
+              // const BuildFieldLabel(text: 'ID / Passport Number'),
+              // const SizedBox(height: 10),
               const SizedBox(height: 20),
               FormField<PlatformFile?>(
                 key: uploadFieldKey,
                 initialValue: uploadedPassportFile,
                 validator: (value) {
                   if (value == null) {
-                    return 'Please upload your ID/passport image';
+                    return localeText.registerUploadID;
                   }
                   return null;
                 },
@@ -368,11 +368,11 @@ class _SignUpBodyState extends State<SignUpBody> {
                 },
               ),
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Password'),
+              BuildFieldLabel(text: localeText.passwordLogin),
               const SizedBox(height: 10),
               CustomPasswordTextField(context),
               const SizedBox(height: 20),
-              const BuildFieldLabel(text: 'Confirm Password'),
+              BuildFieldLabel(text: localeText.registerConfirmPassword),
               const SizedBox(height: 10),
               CustomConfirmPasswordTextField(context),
             ],
@@ -391,6 +391,7 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   Future<void> _pickBirthdate(BuildContext context) async {
+    final localeText = AppLocalizations.of(context)!;
     final pickedDate = await showDatePicker(
       context: context,
       initialDate:
@@ -399,7 +400,7 @@ class _SignUpBodyState extends State<SignUpBody> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       fieldHintText: 'DD-MM-YYYY',
-      helpText: 'Select birthdate',
+      helpText: localeText.registerSelectBirthdate,
     );
 
     if (pickedDate != null) {
@@ -413,6 +414,7 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   Center CustomBackButton(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     return Center(
       child: TextButton(
@@ -431,7 +433,7 @@ class _SignUpBodyState extends State<SignUpBody> {
             ),
             const SizedBox(width: 6),
             Text(
-              "Back",
+              localeText.registerBack,
               style: AppFonts.labelLarge.copyWith(
                 color: colorScheme.onSurface.withOpacity(0.6),
                 fontWeight: FontWeight.w600,
@@ -444,6 +446,7 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   SizedBox CustomNextButton(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: double.infinity,
@@ -463,8 +466,9 @@ class _SignUpBodyState extends State<SignUpBody> {
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: colorScheme.primary,
+          backgroundColor: AppColors.primary,
           foregroundColor: colorScheme.onPrimary,
+
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -474,7 +478,9 @@ class _SignUpBodyState extends State<SignUpBody> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              currentStep == 2 ? "Verify" : "Next",
+              currentStep == 2
+                  ? localeText.registerVerify
+                  : localeText.registerNext,
               style: AppFonts.labelLarge.copyWith(
                 color: colorScheme.onPrimary,
                 fontWeight: FontWeight.w700,
@@ -504,9 +510,12 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   TextFormField CustomConfirmPasswordTextField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
     return TextFormField(
       key: const ValueKey('signup_confirm_password'),
       controller: confirmPasswordController,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.left,
       style: AppFonts.bodyMedium.copyWith(
         color: colorScheme.onSurface,
         letterSpacing: 0.5,
@@ -518,15 +527,15 @@ class _SignUpBodyState extends State<SignUpBody> {
       },
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please confirm your password';
+          return localeText.registerConfirmPasswordRequired;
         }
         if (value != passwordController.text) {
-          return 'Passwords do not match';
+          return localeText.registerPasswordsDoNotMatch;
         }
         return null;
       },
       decoration: InputDecoration(
-        hintText: 'Retype your password',
+        hintText: localeText.registerRetypePassword,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
         ),
@@ -578,8 +587,12 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   TextFormField CustomPasswordTextField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
+
     return TextFormField(
       key: const ValueKey('signup_password'),
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.left,
       controller: passwordController,
       style: AppFonts.bodyMedium.copyWith(
         color: colorScheme.onSurface,
@@ -592,15 +605,15 @@ class _SignUpBodyState extends State<SignUpBody> {
       },
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter a password';
+          return localeText.passwordRequiredLogin;
         }
         if (value.trim().length < 8) {
-          return 'Password must be at least 8 characters';
+          return localeText.passwordLengthLogin;
         }
         return null;
       },
       decoration: InputDecoration(
-        hintText: 'Minimum 8 characters',
+        hintText: localeText.registerMinimumCharacters,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
         ),
@@ -652,6 +665,7 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   TextFormField CustomAddressTextField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
     return TextFormField(
       key: const ValueKey('signup_address'),
       style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
@@ -660,12 +674,12 @@ class _SignUpBodyState extends State<SignUpBody> {
       },
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your address';
+          return localeText.registerEnterAddress;
         }
         return null;
       },
       decoration: InputDecoration(
-        hintText: 'Damascus, Syria',
+        hintText: localeText.registerAddressExample,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
         ),
@@ -708,6 +722,7 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   TextFormField CustomBirthDateTextField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
     return TextFormField(
       key: const ValueKey('signup_birthdate'),
       controller: birthdateController,
@@ -717,12 +732,12 @@ class _SignUpBodyState extends State<SignUpBody> {
       onTap: () => _pickBirthdate(context),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please select your birthdate';
+          return localeText.registerSelectBirthdate;
         }
         return null;
       },
       decoration: InputDecoration(
-        hintText: '10-07-1990',
+        hintText: localeText.registerBirthdateExample,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
         ),
@@ -764,111 +779,130 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   Row CustomGenderOption() {
+    final localeText = AppLocalizations.of(context)!;
     return Row(
       children: [
-        BuildGenderOption(context, 'Male', Icons.male_rounded),
+        BuildGenderOption(context, localeText.registerMale, Icons.male_rounded),
         const SizedBox(width: 14),
-        BuildGenderOption(context, 'Female', Icons.female_rounded),
+        BuildGenderOption(
+          context,
+          localeText.registerFemale,
+          Icons.female_rounded,
+        ),
       ],
     );
   }
 
-  Row CustomPhoneNumberTextField(BuildContext context) {
+  Widget CustomPhoneNumberTextField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 64,
-          height: 50,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          decoration: BoxDecoration(
-            color: colorScheme.onSurface.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: colorScheme.onSurface.withOpacity(0.1),
-              width: 1,
-            ),
-          ),
-          child: Center(
-            child: Text(
-              "+963",
-              style: AppFonts.labelLarge.copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface,
+    final localeText = AppLocalizations.of(context)!;
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 64,
+            height: 50,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+              color: colorScheme.onSurface.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: colorScheme.onSurface.withOpacity(0.1),
+                width: 1,
               ),
             ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: TextFormField(
-            key: const ValueKey('signup_phone'),
-            style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
-            keyboardType: TextInputType.phone,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            onChanged: (data) {
-              user.phone_number = int.tryParse(data) ?? 0;
-            },
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Please enter your phone number';
-              }
-              if (value.trim().length < 7) {
-                return 'Enter a valid phone number';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-              hintText: '094 123 456',
-              hintStyle: AppFonts.bodyMedium.copyWith(
-                color: colorScheme.onSurface.withOpacity(0.4),
-              ),
-              suffixIcon: Icon(
-                Icons.phone_rounded,
-                color: colorScheme.onSurface.withOpacity(0.4),
-                size: 20,
-              ),
-              filled: true,
-              fillColor: colorScheme.onSurface.withOpacity(0.05),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide(
-                  color: colorScheme.onSurface.withOpacity(0.1),
-                  width: 1,
+            child: Center(
+              child: Text(
+                "+963",
+                textDirection: TextDirection.ltr,
+                style: AppFonts.labelLarge.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
                 ),
               ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide(color: colorScheme.error, width: 1),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 18,
-                vertical: 16,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: TextFormField(
+              key: const ValueKey('signup_phone'),
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.left,
+              style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
+              keyboardType: TextInputType.phone,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              onChanged: (data) {
+                user.phone_number = int.tryParse(data) ?? 0;
+              },
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return localeText.registerEnterPhone;
+                }
+                if (value.trim().length < 9) {
+                  return localeText.registerInvalidPhone;
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: '094 123 456',
+                hintTextDirection: TextDirection.ltr,
+                hintStyle: AppFonts.bodyMedium.copyWith(
+                  color: colorScheme.onSurface.withOpacity(0.4),
+                ),
+                suffixIcon: Icon(
+                  Icons.phone_rounded,
+                  color: colorScheme.onSurface.withOpacity(0.4),
+                  size: 20,
+                ),
+                filled: true,
+                fillColor: colorScheme.onSurface.withOpacity(0.05),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(
+                    color: colorScheme.primary,
+                    width: 1.5,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(
+                    color: colorScheme.onSurface.withOpacity(0.1),
+                    width: 1,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(color: colorScheme.error, width: 1),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(color: colorScheme.error, width: 1.5),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 16,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   TextFormField CustomEmailAddressTextField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
     return TextFormField(
       key: const ValueKey('signup_email'),
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.left,
       style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       keyboardType: TextInputType.emailAddress,
       onChanged: (data) {
@@ -876,16 +910,17 @@ class _SignUpBodyState extends State<SignUpBody> {
       },
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your email';
+          return localeText.emailRequiredLogin;
         }
         final emailPattern = RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+");
         if (!emailPattern.hasMatch(value.trim())) {
-          return 'Please enter a valid email';
+          return localeText.emailInvalidLogin;
         }
         return null;
       },
       decoration: InputDecoration(
         hintText: 'ahmad@example.com',
+        hintTextDirection: TextDirection.ltr,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
         ),
@@ -928,6 +963,7 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   TextFormField CustomFirstNameTextField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
     return TextFormField(
       key: const ValueKey('signup_first_name'),
       controller: firstNameController,
@@ -939,15 +975,15 @@ class _SignUpBodyState extends State<SignUpBody> {
       },
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your first name';
+          return localeText.registerFirstNameRequired;
         }
         if (value.trim().length < 2) {
-          return 'Please enter a valid first name';
+          return localeText.registerInvalidFirstName;
         }
         return null;
       },
       decoration: InputDecoration(
-        hintText: 'Ahmad',
+        hintText: localeText.registerFirstNameExample,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
         ),
@@ -990,6 +1026,7 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   TextFormField CustomLastNameTextField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
     return TextFormField(
       key: const ValueKey('signup_last_name'),
       controller: lastNameController,
@@ -1001,15 +1038,15 @@ class _SignUpBodyState extends State<SignUpBody> {
       },
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your last name';
+          return localeText.registerLastNameRequired;
         }
         if (value.trim().length < 2) {
-          return 'Please enter a valid last name';
+          return localeText.registerInvalidLastName;
         }
         return null;
       },
       decoration: InputDecoration(
-        hintText: 'Al-Faraj',
+        hintText: localeText.registerLastNameExample,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),
         ),
@@ -1051,22 +1088,23 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   Row CustomStepIndicator() {
+    final localeText = AppLocalizations.of(context)!;
     return Row(
       children: [
         BuildStepIndiactor(
-          title: 'BASIC INFO',
+          title: localeText.registerTabBasicInfo,
           isActive: currentStep >= 0,
           step: 0,
         ),
         const SizedBox(width: 8),
         BuildStepIndiactor(
-          title: 'CREDENTIALS',
+          title: localeText.registerTabCredentials,
           isActive: currentStep >= 1,
           step: 1,
         ),
         const SizedBox(width: 8),
         BuildStepIndiactor(
-          title: 'VERIFICATION',
+          title: localeText.registerTabVerification,
           isActive: currentStep >= 2,
           step: 2,
         ),

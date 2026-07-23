@@ -2,10 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/models/clinic.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_state.dart';
+
+String _getClinicImageUrl(ClinicModel clinic) {
+  final urls = [
+    'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80',
+    'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=900&q=80',
+    'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80',
+  ];
+  final index = clinic.name_en.hashCode.abs() % urls.length;
+  return urls[index];
+}
 
 class CardClinic extends StatefulWidget {
   final ClinicModel clinic;
@@ -20,6 +31,7 @@ class _CardClinicState extends State<CardClinic> {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
@@ -61,33 +73,52 @@ class _CardClinicState extends State<CardClinic> {
                   // Image section with gradient overlay
                   Stack(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 180,
                         width: double.infinity,
-
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.primary.withOpacity(0.15),
-                              AppColors.primaryLight.withOpacity(0.08),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.1),
-                              shape: BoxShape.circle,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.network(
+                              _getClinicImageUrl(widget.clinic),
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Container(
+                                color: AppColors.primary.withOpacity(0.12),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.local_hospital_rounded,
+                                    size: 44,
+                                  ),
+                                ),
+                              ),
                             ),
-                            child: Icon(
-                              Icons.local_hospital_rounded,
-                              size: 44,
-                              color: AppColors.primary.withOpacity(0.5),
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.black.withOpacity(0.15),
+                                    Colors.black.withOpacity(0.4),
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                              ),
                             ),
-                          ),
+                            Center(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.18),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.local_hospital_rounded,
+                                  size: 44,
+                                  color: Colors.white.withOpacity(0.9),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       // Gradient overlay at bottom
@@ -119,7 +150,7 @@ class _CardClinicState extends State<CardClinic> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                          color: colorScheme.surface,
+                            color: colorScheme.surface,
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: isDarkMode ? [] : AppShadows.softShadow,
                           ),
@@ -182,7 +213,7 @@ class _CardClinicState extends State<CardClinic> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                'PRIMARY FACILITY',
+                                localeText.appointmentPrimaryFacility,
                                 style: AppFonts.labelSmall.copyWith(
                                   color: Color(0xFF2DD4BF),
                                   fontWeight: FontWeight.bold,

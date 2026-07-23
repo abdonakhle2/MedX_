@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_show_succes_dialog.dart';
 
 class CustomConfirmButton extends StatelessWidget {
@@ -7,6 +8,8 @@ class CustomConfirmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
+
     final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: double.infinity,
@@ -29,7 +32,7 @@ class CustomConfirmButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Confirm Booking",
+                  localeText.bookingConfirmButton,
                   style: AppFonts.labelLarge.copyWith(
                     color: colorScheme.onPrimary,
                     fontWeight: FontWeight.w700,

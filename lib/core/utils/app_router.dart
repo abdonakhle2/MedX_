@@ -25,8 +25,12 @@ abstract class AppRouter {
   static const String kEditProfileScreen = '/EditProfileScreen';
   static const String kSearchScreen = '/SearchScreen';
   static final router = GoRouter(
+    initialLocation: kSplashScreen,
     routes: [
-      GoRoute(path: '/', builder: (context, state) => const SplashView()),
+      GoRoute(
+        path: kSplashScreen,
+        builder: (context, state) => const SplashView(),
+      ),
       GoRoute(
         path: kSignUpScreen,
         builder: (context, state) => const SignUpScreen(),

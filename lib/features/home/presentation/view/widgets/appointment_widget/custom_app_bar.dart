@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -8,6 +9,7 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final localeText = AppLocalizations.of(context)!;
 
     return SliverAppBar(
       backgroundColor: isDarkMode
@@ -34,7 +36,7 @@ class CustomAppBar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            'Appointment',
+            localeText.bookingAppointmentTitle,
             style: AppFonts.headlineMedium.copyWith(
               color: isDarkMode
                   ? colorScheme.primaryContainer

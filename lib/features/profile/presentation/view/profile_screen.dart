@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/core/localization/cubit/loacale_cubit.dart';
 import 'package:project_1/core/utils/app_router.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/custom_language_dialog.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_body.dart';
 import 'package:project_1/core/widgets/bottom_nav_bar.dart';
 import 'package:project_1/features/profile/presentation/view/edit_profile_screen.dart';
@@ -63,6 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   );
                 },
+                onLanguagePressed: () => CustomLanguageDialog(context),
               );
             } else if (state is ProfileError) {
               return Center(child: Text(state.errorMessage));

@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart' show AppFonts, AppShadows;
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class CustomUploadMedicalFile extends StatefulWidget {
@@ -35,15 +36,17 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
         widget.onFileSelected?.call(result.files.first);
       }
     } catch (error) {
+      final localeText = AppLocalizations.of(context)!;
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Unable to pick image: $error')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${localeText.medicalUploadError} $error')),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final selectedFile = widget.selectedFile;
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -82,7 +85,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Tap to Upload a photo/file medical',
+                              localeText.medicalUploadTapToUpload,
                               style: AppFonts.labelLarge.copyWith(
                                 color: colorScheme.primary,
                                 fontWeight: FontWeight.w700,
@@ -111,7 +114,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'The file selected. Tap to change.',
+                        localeText.medicalUploadFileSelected,
                         style: AppFonts.bodyMedium.copyWith(
                           color: colorScheme.onSurface.withOpacity(0.6),
                         ),
@@ -121,7 +124,7 @@ class _CustomUploadMedicalFileState extends State<CustomUploadMedicalFile> {
                         child: TextButton(
                           onPressed: _pickPassportImage,
                           child: Text(
-                            'Change',
+                            localeText.medicalUploadChange,
                             style: AppFonts.bodyLarge.copyWith(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.w600,

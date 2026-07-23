@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
 
 import 'package:project_1/models/doctor.dart';
@@ -67,13 +68,14 @@ class CustomTopRatedDoctors extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
-            'Top Rated Doctors',
+            localeText.homeTopRatedDoctors,
             style: AppFonts.headlineSmall.copyWith(
               fontWeight: FontWeight.w800,
               color: Theme.of(context).colorScheme.onSurface,

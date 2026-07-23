@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomSubmitButton extends StatelessWidget {
   const CustomSubmitButton({super.key});
@@ -7,6 +8,7 @@ class CustomSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = theme.colorScheme;
 
     return SizedBox(
@@ -28,7 +30,7 @@ class CustomSubmitButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Submit Rating",
+              localeText.ratingSubmit,
               style: AppFonts.labelLarge.copyWith(
                 color: colorScheme.onPrimary,
                 fontWeight: FontWeight.w700,

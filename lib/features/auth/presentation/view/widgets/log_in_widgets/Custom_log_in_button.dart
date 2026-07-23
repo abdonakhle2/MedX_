@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/widgets/custom_button.dart';
 
 class CustomLogInButton extends StatelessWidget {
@@ -8,8 +9,10 @@ class CustomLogInButton extends StatelessWidget {
   final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
+
     return CustomButton(
-      text: 'Login',
+      text: localeText.buttonLogin,
       onTap: onTap,
       //() {
       //   Navigator.pushReplacement(

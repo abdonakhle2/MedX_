@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
 
 class CustomLogOutButton extends StatelessWidget {
@@ -11,6 +12,7 @@ class CustomLogOutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final errorColor = colorScheme.error;
+    final localeText = AppLocalizations.of(context)!;
 
     return Container(
       decoration: BoxDecoration(
@@ -30,20 +32,23 @@ class CustomLogOutButton extends StatelessWidget {
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Symbols.logout_rounded, color: errorColor, size: 24),
-                const SizedBox(width: 12),
-                Text(
-                  'Logout',
-                  style: AppFonts.bodyLarge.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: errorColor,
-                    letterSpacing: 0.5,
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Symbols.logout_rounded, color: errorColor, size: 24),
+                  const SizedBox(width: 12),
+                  Text(
+                    localeText.profileLogout,
+                    style: AppFonts.bodyLarge.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: errorColor,
+                      letterSpacing: 0.5,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

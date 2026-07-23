@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_1/constants/constants.dart';
 
 class CustomThemeModeSwitch extends StatefulWidget {
   const CustomThemeModeSwitch({
@@ -23,9 +22,7 @@ class _CustomThemeModeSwitchState extends State<CustomThemeModeSwitch> {
         ? colorScheme.surface.withOpacity(0.8)
         : colorScheme.surface;
     final toggleColor = colorScheme.surface;
-    final iconColor = isDarkMode
-        ? Colors.amber
-        : Colors.amber;
+    final iconColor = isDarkMode ? Colors.amber : Colors.amber;
     final iconData = isDarkMode
         ? Icons.nightlight_round
         : Icons.wb_sunny_rounded;
@@ -49,9 +46,7 @@ class _CustomThemeModeSwitchState extends State<CustomThemeModeSwitch> {
         child: AnimatedAlign(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          alignment: isDarkMode
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
+          alignment: isDarkMode ? Alignment.centerRight : Alignment.centerLeft,
           child: Padding(
             padding: const EdgeInsets.all(3.0),
             child: Container(

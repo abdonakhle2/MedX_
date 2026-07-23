@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/models/clinic.dart';
 import 'favorites_state.dart';
 

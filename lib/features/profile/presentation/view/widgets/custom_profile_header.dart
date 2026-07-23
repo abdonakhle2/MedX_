@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/models/user.dart';
 
 class CustomProfileHeader extends StatelessWidget {
@@ -10,6 +11,8 @@ class CustomProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
+
     final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
@@ -62,7 +65,7 @@ class CustomProfileHeader extends StatelessWidget {
                   Icon(Symbols.badge, size: 18, color: colorScheme.primary),
                   const SizedBox(width: 8),
                   Text(
-                    'ID: ${user.id_passport ?? ''}',
+                    '${localeText.profileIdLabel} ${user.id_passport ?? ''}',
                     style: AppFonts.labelLarge.copyWith(
                       color: colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
@@ -91,7 +94,7 @@ class CustomProfileHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'PREMIUM',
+                    localeText.profilePremium,
                     style: AppFonts.labelLarge.copyWith(
                       color: colorScheme.onSurface,
                       fontWeight: FontWeight.w800,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomBodyButton extends StatelessWidget {
   CustomBodyButton({
@@ -11,6 +12,7 @@ class CustomBodyButton extends StatelessWidget {
   final ValueChanged<bool> onChanged;
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -41,7 +43,7 @@ class CustomBodyButton extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Center',
+                    localeText.searchCenter,
                     style: AppFonts.labelLarge.copyWith(
                       color: isCenter
                           ? Colors.white
@@ -68,7 +70,7 @@ class CustomBodyButton extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Doctor',
+                    localeText.searchDoctor,
                     style: AppFonts.labelLarge.copyWith(
                       color: !isCenter
                           ? Colors.white

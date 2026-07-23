@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/booking/presentation/view/widgets/custom_comment_box.dart';
 import 'package:project_1/features/booking/presentation/view/widgets/custom_header.dart';
 import 'package:project_1/features/booking/presentation/view/widgets/custom_rating_stars.dart';
@@ -11,6 +12,7 @@ class CustomRatingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
@@ -25,7 +27,7 @@ class CustomRatingCard extends StatelessWidget {
               children: [
                 const SizedBox(height: 70),
                 Text(
-                  "How was your clinical experience with",
+                  localeText.ratingQuestion,
                   textAlign: TextAlign.center,
                   style: AppFonts.bodyMedium.copyWith(
                     color: isDarkMode
@@ -48,7 +50,7 @@ class CustomRatingCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "SHARE YOUR THOUGHTS",
+                    localeText.ratingShareThoughts,
                     style: AppFonts.labelSmall.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.5,
@@ -66,7 +68,7 @@ class CustomRatingCard extends StatelessWidget {
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(
-                    "Maybe later",
+                    localeText.ratingMaybeLater,
                     style: AppFonts.bodyMedium.copyWith(
                       color: isDarkMode
                           ? colorScheme.onSurface.withOpacity(0.6)

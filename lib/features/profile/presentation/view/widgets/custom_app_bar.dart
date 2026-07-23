@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/theme/cubit/theme_cubit.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/custom_theme_mode_switch.dart';
 
@@ -12,6 +13,7 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final isDarkMode = context.watch<ThemeCubit>().isDarkMode;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -33,7 +35,7 @@ class CustomAppBar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            'Profile',
+            localeText.profileTitle,
             style: AppFonts.headlineMedium.copyWith(
               color: colorScheme.onSurface,
               fontWeight: FontWeight.w800,
@@ -51,10 +53,10 @@ class CustomAppBar extends StatelessWidget {
               size: 24,
             ),
             onPressed: onEditPressed,
-            tooltip: 'Edit Profile',
+            tooltip: localeText.profileEditTitle,
           ),
         Padding(
-          padding: const EdgeInsets.only(right: 16.0),
+          padding: const EdgeInsets.only(right: 16.0, left: 10),
           child: CustomThemeModeSwitch(
             isDarkMode: isDarkMode,
             onThemeChanged: (value) {

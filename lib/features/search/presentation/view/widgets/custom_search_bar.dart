@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomSearchBar extends StatelessWidget {
   const CustomSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
@@ -25,7 +27,7 @@ class CustomSearchBar extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Icon(Icons.search_rounded, color: colorScheme.primary),
           ),
-          hintText: 'Search for doctors or centers',
+          hintText: localeText.searchHint,
           hintStyle: AppFonts.bodyMedium.copyWith(
             color: colorScheme.onSurface.withOpacity(0.4),
           ),

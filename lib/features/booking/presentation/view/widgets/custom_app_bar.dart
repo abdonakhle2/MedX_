@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomBookingAppBar extends StatelessWidget {
   const CustomBookingAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     return SliverAppBar(
       // backgroundColor: AppColors.neutral,
       automaticallyImplyLeading: false,
@@ -27,7 +29,7 @@ class CustomBookingAppBar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            'Bookings',
+            localeText.bookingsTitle,
             style: AppFonts.headlineMedium.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w800,

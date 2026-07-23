@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/home/presentation/view/widgets/center_details_widget/custom_info_badge.dart';
 
 class CustomCenterDetailsHeaderImage extends StatelessWidget {
@@ -7,6 +8,8 @@ class CustomCenterDetailsHeaderImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
+
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
@@ -17,7 +20,7 @@ class CustomCenterDetailsHeaderImage extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         image: const DecorationImage(
           image: NetworkImage(
-            'https://images.unsplash.com/photo-1588776814546-9b1c8e5f0a3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG9zcGl0YWx8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60',
+            'https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1000&q=80',
           ),
           fit: BoxFit.cover,
         ),
@@ -68,7 +71,10 @@ class CustomCenterDetailsHeaderImage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const CustomInfoBadge(value: '4.5 ⭐', label: 'EXPERIENCE'),
+                    CustomInfoBadge(
+                      value: '4.5 ⭐',
+                      label: localeText.centerRating,
+                    ),
                     VerticalDivider(
                       color: isDarkMode
                           ? Theme.of(
@@ -81,9 +87,9 @@ class CustomCenterDetailsHeaderImage extends StatelessWidget {
                       indent: 2,
                       endIndent: 2,
                     ),
-                    const CustomInfoBadge(
+                    CustomInfoBadge(
                       value: '8 AM - 8 PM',
-                      label: 'OPERATING HOURS',
+                      label: localeText.centerOperatingHours,
                     ),
                   ],
                 ),

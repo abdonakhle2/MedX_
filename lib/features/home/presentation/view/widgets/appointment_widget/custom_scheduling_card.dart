@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomSchedulingCard extends StatefulWidget {
   const CustomSchedulingCard({super.key});
@@ -46,6 +47,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -81,12 +83,12 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
 
   Widget _buildSelectedDateTimeHeader(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
+    final localeText = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Appointment time',
+          localeText.bookingAppointmentTimeLabel,
           style: AppFonts.labelLarge.copyWith(
             color: colorScheme.onSurface.withOpacity(0.6),
             fontWeight: FontWeight.w700,
@@ -127,7 +129,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
                       Text(
                         selectedDate != null
                             ? '${_getWeekDayName(selectedDate!)}, ${selectedDate!.day} ${_getMonthName(selectedDate!.month)} ${selectedDate!.year}'
-                            : 'No date selected',
+                            : localeText.bookingNoDateSelected,
                         style: AppFonts.bodyLarge.copyWith(
                           color: colorScheme.onSurface,
                           fontWeight: FontWeight.w700,
@@ -135,7 +137,8 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        selectedTime?.format(context) ?? 'No time selected',
+                        selectedTime?.format(context) ??
+                            localeText.bookingNoTimeSelected,
                         style: AppFonts.bodyMedium.copyWith(
                           color: colorScheme.onSurface.withOpacity(0.6),
                         ),
@@ -150,7 +153,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
         ),
         const SizedBox(height: 10),
         Text(
-          'Tap to change date and time',
+          localeText.bookingTapToChangeDateTime,
           style: AppFonts.bodySmall.copyWith(
             color: colorScheme.onSurface.withOpacity(0.5),
           ),
@@ -161,6 +164,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
 
   Future<void> _showScheduleDialog(BuildContext context) async {
     final colorScheme = Theme.of(context).colorScheme;
+    final localeText = AppLocalizations.of(context)!;
     DateTime tempDate = selectedDate ?? today;
     TimeOfDay tempTime = selectedTime ?? const TimeOfDay(hour: 14, minute: 30);
 
@@ -175,7 +179,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
                 borderRadius: BorderRadius.circular(22),
               ),
               title: Text(
-                'Choose date & time',
+                localeText.bookingChooseDateTime,
                 style: AppFonts.headlineSmall.copyWith(
                   color: colorScheme.onSurface,
                   fontWeight: FontWeight.w700,
@@ -202,7 +206,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
                         initialDate: tempDate,
                         firstDate: today,
                         lastDate: today.add(const Duration(days: 90)),
-                        helpText: 'Select appointment date',
+                        helpText: localeText.bookingSelectAppointmentDate,
                       );
                       if (date != null) {
                         dialogSetState(() {
@@ -222,7 +226,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Date',
+                                localeText.bookingsDate,
                                 style: AppFonts.bodyMedium.copyWith(
                                   color: colorScheme.onSurface.withOpacity(0.5),
                                 ),
@@ -276,7 +280,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Time',
+                                localeText.bookingsTime,
                                 style: AppFonts.bodyMedium.copyWith(
                                   color: colorScheme.onSurface.withOpacity(0.5),
                                 ),
@@ -315,7 +319,7 @@ class _CustomSchedulingCardState extends State<CustomSchedulingCard> {
                     ),
                   ),
                   child: Text(
-                    'Confirm',
+                    localeText.confirmButton,
                     style: AppFonts.labelLarge.copyWith(
                       color: colorScheme.onPrimary,
                       fontWeight: FontWeight.w700,

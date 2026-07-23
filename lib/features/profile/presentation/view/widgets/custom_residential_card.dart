@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/models/user.dart';
 
 class CustomResidentialCard extends StatelessWidget {
@@ -10,6 +11,8 @@ class CustomResidentialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
+
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
@@ -23,7 +26,7 @@ class CustomResidentialCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "RESIDENTIAL",
+            localeText.profileResidential,
             style: AppFonts.labelSmall.copyWith(
               color: colorScheme.onPrimary.withOpacity(0.75),
               fontWeight: FontWeight.w700,

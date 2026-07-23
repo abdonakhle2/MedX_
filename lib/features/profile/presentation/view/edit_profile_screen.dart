@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_upload_id_passport.dart';
 import 'package:project_1/models/user.dart';
 import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
 import 'package:project_1/features/profile/presentation/manager/cubit/profile_state.dart';
@@ -69,12 +71,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _pickBirthdate(BuildContext context) async {
+    final localeText = AppLocalizations.of(context)!;
+
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedBirthdate ?? DateTime(1990, 1, 1),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
-      helpText: 'Select Birthdate',
+      helpText: localeText.registerSelectBirthdate,
     );
 
     if (pickedDate != null) {
@@ -103,7 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
+    final localeText = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
@@ -118,7 +122,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Edit Profile',
+          localeText.profileEditTitle,
           style: AppFonts.headlineMedium.copyWith(
             fontWeight: FontWeight.w800,
             color: colorScheme.onSurface,
@@ -132,7 +136,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'Profile updated successfully!',
+                  localeText.editProfileUpdateSuccess,
                   style: AppFonts.bodyMedium.copyWith(
                     color: colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
@@ -169,6 +173,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           }
         },
         builder: (context, state) {
+          final localeText = AppLocalizations.of(context)!;
+
           final isUpdating = state is ProfileUpdating;
           return SafeArea(
             child: SingleChildScrollView(
@@ -205,7 +211,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 32),
 
                     // First Name
-                    _buildFieldLabel(context, 'First Name'),
+                    _buildFieldLabel(context, localeText.registerFirstName),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _firstNameController,
@@ -214,20 +220,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your first name';
+                          return localeText.registerFirstNameRequired;
                         }
                         return null;
                       },
                       decoration: _buildInputDecoration(
                         context: context,
-                        hintText: 'John',
+                        hintText: localeText.registerFirstNameExample,
                         icon: Symbols.person,
                       ),
                     ),
                     const SizedBox(height: 20),
 
                     // Last Name
-                    _buildFieldLabel(context, 'Last Name'),
+                    _buildFieldLabel(context, localeText.registerLastName),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _lastNameController,
@@ -236,36 +242,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your last name';
+                          return localeText.registerLastNameRequired;
                         }
                         return null;
                       },
                       decoration: _buildInputDecoration(
                         context: context,
-                        hintText: 'Doe',
+                        hintText: localeText.registerLastNameExample,
                         icon: Symbols.person,
                       ),
                     ),
                     const SizedBox(height: 20),
 
                     // Email Address
-                    _buildFieldLabel(context, 'Email Address'),
+                    _buildFieldLabel(
+                      context,
+                      localeText.registerEmailAddressLabel,
+                    ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _emailController,
+                      textDirection: TextDirection.ltr,
+                      textAlign: TextAlign.left,
                       keyboardType: TextInputType.emailAddress,
                       style: AppFonts.bodyMedium.copyWith(
                         color: colorScheme.onSurface,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your email';
+                          return localeText.emailRequiredLogin;
                         }
                         final emailRegex = RegExp(
                           r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                         );
                         if (!emailRegex.hasMatch(value.trim())) {
-                          return 'Please enter a valid email address';
+                          return localeText.emailInvalidLogin;
                         }
                         return null;
                       },
@@ -278,65 +289,71 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // Phone Number
-                    _buildFieldLabel(context, 'Phone Number'),
+                    _buildFieldLabel(context, localeText.registerPhoneNumber),
                     const SizedBox(height: 8),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 56,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          decoration: BoxDecoration(
-                            color: colorScheme.onSurface.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: colorScheme.onSurface.withOpacity(0.1),
-                              width: 1,
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 56,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: colorScheme.onSurface.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: colorScheme.onSurface.withOpacity(0.1),
+                                width: 1,
+                              ),
                             ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "+963",
-                              style: AppFonts.labelLarge.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onSurface,
+                            child: Center(
+                              child: Text(
+                                "+963",
+                                textDirection: TextDirection.ltr,
+                                style: AppFonts.labelLarge.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: colorScheme.onSurface,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _phoneController,
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            style: AppFonts.bodyMedium.copyWith(
-                              color: colorScheme.onSurface,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please enter your phone number';
-                              }
-                              if (value.trim().length < 7) {
-                                return 'Enter a valid phone number';
-                              }
-                              return null;
-                            },
-                            decoration: _buildInputDecoration(
-                              context: context,
-                              hintText: '999999999',
-                              icon: Symbols.call,
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: TextFormField(
+                              controller: _phoneController,
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.left,
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              style: AppFonts.bodyMedium.copyWith(
+                                color: colorScheme.onSurface,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return localeText.registerInvalidPhone;
+                                }
+                                if (value.trim().length < 9) {
+                                  return localeText.registerInvalidPhone;
+                                }
+                                return null;
+                              },
+                              decoration: _buildInputDecoration(
+                                context: context,
+                                hintText: '999999999',
+                                icon: Symbols.call,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 20),
 
                     // Birthdate
-                    _buildFieldLabel(context, 'Birthdate'),
+                    _buildFieldLabel(context, localeText.profileBirthdate),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _birthdateController,
@@ -347,7 +364,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please select your birthdate';
+                          return localeText.registerSelectBirthdate;
                         }
                         return null;
                       },
@@ -360,31 +377,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // ID / Passport Number
-                    _buildFieldLabel(context, 'ID / Passport Number'),
+                    _buildFieldLabel(context, localeText.profilePassportNumber),
                     const SizedBox(height: 8),
-                    TextFormField(
-                      controller: _idPassportController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: AppFonts.bodyMedium.copyWith(
-                        color: colorScheme.onSurface,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your ID/Passport number';
-                        }
-                        return null;
-                      },
-                      decoration: _buildInputDecoration(
-                        context: context,
-                        hintText: '123456789',
-                        icon: Symbols.badge,
-                      ),
-                    ),
+                    // TextFormField(
+                    //   controller: _idPassportController,
+                    //   keyboardType: TextInputType.number,
+                    //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    //   style: AppFonts.bodyMedium.copyWith(
+                    //     color: colorScheme.onSurface,
+                    //   ),
+                    //   validator: (value) {
+                    //     if (value == null || value.trim().isEmpty) {
+                    //       return localeText.registerUploadIDPassport;
+                    //     }
+                    //     return null;
+                    //   },
+                    //   decoration: _buildInputDecoration(
+                    //     context: context,
+                    //     hintText: '123456789',
+                    //     icon: Symbols.badge,
+                    //   ),
+                    // ),
+                    CustomUploadIdPassportFile(),
                     const SizedBox(height: 20),
 
                     // Address
-                    _buildFieldLabel(context, 'Address'),
+                    _buildFieldLabel(context, localeText.registerAddress),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _addressController,
@@ -393,7 +411,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your residential address';
+                          return localeText.registerAddress;
                         }
                         return null;
                       },
@@ -406,20 +424,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 20),
 
                     // Password
-                    _buildFieldLabel(context, 'Password'),
+                    _buildFieldLabel(context, localeText.passwordLogin),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _passwordController,
+                      textDirection: TextDirection.ltr,
+                      textAlign: TextAlign.left,
                       style: AppFonts.bodyMedium.copyWith(
                         color: colorScheme.onSurface,
                       ),
                       obscureText: _isPasswordHidden,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your password';
+                          return localeText.passwordRequiredLogin;
                         }
                         if (value.length < 8) {
-                          return 'Password must be at least 8 characters';
+                          return localeText.registerMinimumCharacters;
                         }
                         return null;
                       },
@@ -428,6 +448,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         filled: true,
                         fillColor: colorScheme.onSurface.withOpacity(0.05),
                         hintText: '**********',
+                        hintTextDirection: TextDirection.ltr,
                         hintStyle: TextStyle(
                           color: colorScheme.onSurface.withOpacity(0.5),
                         ),
@@ -476,7 +497,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Save Changes",
+                                    localeText.editProfileSaveChanges,
                                     style: AppFonts.labelLarge.copyWith(
                                       color: colorScheme.onPrimary,
                                       fontWeight: FontWeight.w700,

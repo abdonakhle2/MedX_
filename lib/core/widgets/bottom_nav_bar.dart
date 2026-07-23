@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/widgets/glass_card.dart';
 import 'package:project_1/constants/constants.dart';
 
@@ -15,6 +16,7 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: NavCard(
@@ -22,18 +24,43 @@ class BottomNavBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(context, Symbols.home_app_logo, 'HOME', 0),
-            _buildNavItem(context, Symbols.favorite, 'FAVORITES', 1),
-            _buildNavItem(context, Symbols.manage_search, 'SEARCH', 2),
-            _buildNavItem(context, Symbols.calendar_today, 'BOOKINGS', 3),
-            _buildNavItem(context, Symbols.person, 'PROFILE', 4),
+            _buildNavItem(
+              context,
+              Symbols.home_app_logo,
+              localeText.navHome,
+              0,
+            ),
+            _buildNavItem(
+              context,
+              Symbols.favorite,
+              localeText.navFavorites,
+              1,
+            ),
+            _buildNavItem(
+              context,
+              Symbols.manage_search,
+              localeText.navSearch,
+              2,
+            ),
+            _buildNavItem(
+              context,
+              Symbols.calendar_today,
+              localeText.navBookings,
+              3,
+            ),
+            _buildNavItem(context, Symbols.person, localeText.navProfile, 4),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(BuildContext context, IconData icon, String label, int index) {
+  Widget _buildNavItem(
+    BuildContext context,
+    IconData icon,
+    String label,
+    int index,
+  ) {
     final isSelected = currentIndex == index;
     final colorScheme = Theme.of(context).colorScheme;
 

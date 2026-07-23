@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_add_note.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_appointment_price.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/custom_confirm_button.dart';
@@ -25,6 +26,8 @@ class _CustomAppointmentBodyState extends State<CustomAppointmentBody> {
   Key? get uploadFieldKey => null;
   @override
   Widget build(BuildContext context) {
+    final localeText = AppLocalizations.of(context)!;
+
     PlatformFile? uploadedPassportFile;
     return SliverToBoxAdapter(
       child: SingleChildScrollView(
@@ -74,12 +77,14 @@ class _CustomAppointmentBodyState extends State<CustomAppointmentBody> {
   }
 
   Widget CustomMethodSelection() {
+    final localeText = AppLocalizations.of(context)!;
+
     return Column(
       children: [
         GestureDetector(
           onTap: () => setState(() => selectedMethod = "earliest"),
           child: CustomOptionCard(
-            title: "Earliest Available",
+            title: localeText.bookingEarliestAvailable,
             subtitle: "Today at 4:30 PM",
             icon: Icons.flash_on_rounded,
             isActive: selectedMethod == "earliest",
@@ -89,8 +94,8 @@ class _CustomAppointmentBodyState extends State<CustomAppointmentBody> {
         GestureDetector(
           onTap: () => setState(() => selectedMethod = "schedule"),
           child: CustomOptionCard(
-            title: "Doctor's Schedule",
-            subtitle: "Pick a custom date/time",
+            title: localeText.bookingDoctorSchedule,
+            subtitle: localeText.bookingPickCustomDateTime,
             icon: Icons.calendar_today_rounded,
             isActive: selectedMethod == "schedule",
           ),
