@@ -1,36 +1,38 @@
 class User {
+  final int? id;
   String? firstName;
   String? lastName;
-  int? phone_number;
+  String? phoneNumber;
   String? email;
   String? gender;
   DateTime? birthdate;
   String? address;
-  int? id_passport;
+  String? idPassport;
   String? password;
-  String? confirm_password;
-  bool Is_verified;
+  String? confirmPassword;
+  bool isVerified;
 
   User({
+    this.id,
     this.firstName,
     this.lastName,
-    this.phone_number,
+    this.phoneNumber,
     this.email,
     this.gender,
     this.birthdate,
     this.address,
-    this.id_passport,
+    this.idPassport,
     this.password,
-    this.confirm_password,
-    this.Is_verified = false,
+    this.confirmPassword,
+    this.isVerified = false,
   });
 
-  /// Full name getter for backwards compatibility
+  /// Full name getter
   String? get name {
     final parts = [
       firstName,
       lastName,
-    ].where((p) => p != null && p.isNotEmpty).toList();
+    ].where((p) => p != null && p.trim().isNotEmpty).toList();
     return parts.isEmpty ? null : parts.join(' ');
   }
 
@@ -46,15 +48,16 @@ class User {
   }
 
   static User currentUser = User(
+    id: 502,
     firstName: 'John',
     lastName: 'Doe',
-    phone_number: 999999999,
+    phoneNumber: '234567890298123',
     email: 'JohnDoe@gmail.com',
     gender: 'Female',
     birthdate: DateTime(1992, 10, 24),
     address: '722 Marble Arch, West District, London, UK',
-    id_passport: 123456789,
-    Is_verified: true,
+    idPassport: '123456789',
+    isVerified: true,
   );
 
   int get age {
@@ -87,37 +90,44 @@ class User {
     return "${months[birthdate!.month - 1]} ${birthdate!.day}, ${birthdate!.year}";
   }
 
+  /// 👈 تم تعديل المفاتيح لكي تطابق استجابة الـ Backend بالكامل
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      firstName: json['firstName']?.toString(),
-      lastName: json['lastName']?.toString(),
-      phone_number: int.tryParse(json['phone_number'].toString()),
-      email: json['email']?.toString(),
-      gender: json['gender']?.toString(),
-      birthdate: json['birthdate'] != null
-          ? DateTime.parse(json['birthdate'].toString())
-          : null,
-      address: json['address']?.toString(),
-      id_passport: int.tryParse(json['id_passport'].toString()),
-      password: json['password']?.toString(),
-      confirm_password: json['confirm_password']?.toString(),
-      Is_verified: json['Is_verified'] == true,
+      id: int.tryParse(json['id']?.toString() ?? '') ?? 0,
+      firstName: json['first_name']?.toString() ?? '',
+      lastName: json['last_name']?.toString() ?? '',
+      phoneNumber: json['phone_number']?.toString() ?? '',
+      email: json['email']?.toString() ?? '',
+      gender: json['gender']?.toString() ?? '',
+      birthdate:
+          DateTime.tryParse(json['birthdate']?.toString() ?? '') ??
+          DateTime.now(),
+      address: json['address']?.toString() ?? '',
+      idPassport: json['id_passport']?.toString() ?? '',
+      password: json['password']?.toString() ?? '',
+      confirmPassword: json['password_confirmation']?.toString() ?? '',
+      isVerified: json['is_verified'] == true || json['is_verified'] == 1,
     );
   }
 
+  /// 👈 تم ضبط تحويل التاريخ إلى صيغة ISO String متوافقة مع الـ JSON
   Map<String, dynamic> toJson() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'phone_number': phone_number,
+      if (id != null) 'id': id,
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone_number': phoneNumber,
       'email': email,
       'gender': gender,
-      'birthdate': birthdate,
+      // تحويل التاريخ لصيغة YYYY-MM-DD لضمان القبول في السيرفر
+      'birthdate': birthdate != null
+          ? "${birthdate!.year}-${birthdate!.month.toString().padLeft(2, '0')}-${birthdate!.day.toString().padLeft(2, '0')}"
+          : null,
       'address': address,
-      'id_passport': id_passport,
-      'password': password,
-      'confirm_password': confirm_password,
-      'Is_verified': Is_verified,
+      'id_passport': idPassport,
+      if (password != null) 'password': password,
+      if (confirmPassword != null) 'password_confirmation': confirmPassword,
+      'is_verified': isVerified,
     };
   }
 }

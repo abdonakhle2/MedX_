@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_app_bar.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_contact_card.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_identity_card.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_log_out_button.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_profile_header.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_residential_card.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_verifiaction_card.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_app_bar.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_contact_card.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_identity_card.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_log_out_button.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_profile_header.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_residential_card.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_verifiaction_card.dart';
 import 'package:project_1/models/user.dart';
 
 class ProfileBody extends StatelessWidget {

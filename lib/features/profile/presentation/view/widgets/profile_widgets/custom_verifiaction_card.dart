@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_section_header.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_section_header.dart';
 
 class CustomVerificationCard extends StatelessWidget {
   const CustomVerificationCard({super.key});

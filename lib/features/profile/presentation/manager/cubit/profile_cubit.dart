@@ -18,10 +18,10 @@ class ProfileCubit extends Cubit<ProfileState> {
     required String firstName,
     required String lastName,
     required String email,
-    required int? phone,
+    required String? phone,
     required DateTime? birthdate,
     required String address,
-    required int? idPassport,
+    required String? idPassport,
   }) {
     emit(ProfileUpdating());
     try {
@@ -29,10 +29,10 @@ class ProfileCubit extends Cubit<ProfileState> {
       User.currentUser.firstName = firstName;
       User.currentUser.lastName = lastName;
       User.currentUser.email = email;
-      User.currentUser.phone_number = phone;
+      User.currentUser.phoneNumber = phone;
       User.currentUser.birthdate = birthdate;
       User.currentUser.address = address;
-      User.currentUser.id_passport = idPassport;
+      User.currentUser.idPassport = idPassport;
 
       emit(ProfileUpdateSuccess(User.currentUser));
       // Re-emit loaded so current state is accurate

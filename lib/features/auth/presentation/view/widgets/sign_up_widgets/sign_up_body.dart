@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
+import 'package:project_1/core/utils/function/custom_snack_bar.dart';
+import 'package:project_1/features/auth/presentation/manager/register_cubit/register_cubit.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_field_label.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_step_indiactor.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_tail_text_sign_up.dart';
-import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_upload_id_passport.dart';
+import 'package:project_1/core/widgets/custom_upload_id_passport.dart';
 import 'package:project_1/models/user.dart';
 
 class SignUpBody extends StatefulWidget {
@@ -28,12 +31,15 @@ class _SignUpBodyState extends State<SignUpBody> {
   String? selectedGender;
   late User user;
   PlatformFile? uploadedPassportFile;
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController birthdateController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
   DateTime? selectedBirthdate;
@@ -45,28 +51,66 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   @override
+  @override
   void dispose() {
-    birthdateController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    birthdateController.dispose();
+    addressController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  void _syncUserData() {
+    user.firstName = firstNameController.text.trim();
+    user.lastName = lastNameController.text.trim();
+    user.email = emailController.text.trim();
+    user.phoneNumber = phoneController.text.trim();
+    user.gender = selectedGender ?? '';
+    user.birthdate = selectedBirthdate;
+    user.address = addressController.text.trim();
+    user.password = passwordController.text;
+    user.confirmPassword = confirmPasswordController.text;
   }
 
   @override
   Widget build(BuildContext context) {
     final localeText = AppLocalizations.of(context)!;
-    return SafeArea(
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-        child: SingUpBody(context),
-      ),
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listener: (context, state) {
+        if (state is RegisterSuccess) {
+          customSnackBar(
+            context,
+            'welcome, ${user.name}',
+            backgroundColor: Colors.green,
+          );
+          GoRouter.of(
+            context,
+          ).pushReplacement(AppRouter.kHomeScreen, extra: state.user.firstName);
+        } else if (state is RegisterFailure) {
+          customSnackBar(
+            context,
+            state.errorMessage,
+            backgroundColor: Theme.of(context).colorScheme.error,
+          );
+        }
+      },
+      builder: (context, state) {
+        return SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: SingUpBody(context, state),
+          ),
+        );
+      },
     );
   }
 
-  Widget SingUpBody(BuildContext context) {
+  Widget SingUpBody(BuildContext context, RegisterState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,7 +118,7 @@ class _SignUpBodyState extends State<SignUpBody> {
         CustomStepIndicator(),
         const SizedBox(height: 30),
         // Form container
-        SingUpForm(context),
+        SingUpForm(context, state),
         // Security note
         const SizedBox(height: 24),
         // Footer
@@ -136,7 +180,7 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  Widget SingUpForm(BuildContext context) {
+  Widget SingUpForm(BuildContext context, RegisterState state) {
     final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -179,6 +223,7 @@ class _SignUpBodyState extends State<SignUpBody> {
               const SizedBox(height: 10),
               FormField<String>(
                 key: genderFieldKey,
+                initialValue: selectedGender,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return localeText.registerSelectGender;
@@ -195,7 +240,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedGender = 'Male';
+                                  selectedGender = 'male';
                                   user.gender = selectedGender!;
                                   field.didChange(selectedGender);
                                 });
@@ -205,22 +250,22 @@ class _SignUpBodyState extends State<SignUpBody> {
                                   vertical: 14,
                                 ),
                                 decoration: BoxDecoration(
-                                  gradient: selectedGender == 'Male'
+                                  gradient: selectedGender == 'male'
                                       ? AppGradients.primaryGradient
                                       : null,
-                                  color: selectedGender == 'Male'
+                                  color: selectedGender == 'male'
                                       ? null
                                       : colorScheme.onSurface.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
-                                    color: selectedGender == 'Male'
+                                    color: selectedGender == 'male'
                                         ? Colors.transparent
                                         : colorScheme.onSurface.withOpacity(
                                             0.1,
                                           ),
                                     width: 1,
                                   ),
-                                  boxShadow: selectedGender == 'Male'
+                                  boxShadow: selectedGender == 'male'
                                       ? AppShadows.elevatedShadow
                                       : [],
                                 ),
@@ -230,7 +275,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                                     Icon(
                                       Icons.male_rounded,
                                       size: 20,
-                                      color: selectedGender == 'Male'
+                                      color: selectedGender == 'male'
                                           ? colorScheme.onPrimary
                                           : colorScheme.onSurface.withOpacity(
                                               0.6,
@@ -240,10 +285,10 @@ class _SignUpBodyState extends State<SignUpBody> {
                                     Text(
                                       localeText.registerMale,
                                       style: AppFonts.labelLarge.copyWith(
-                                        color: selectedGender == 'Male'
+                                        color: selectedGender == 'male'
                                             ? colorScheme.onPrimary
                                             : colorScheme.onSurface,
-                                        fontWeight: selectedGender == 'Male'
+                                        fontWeight: selectedGender == 'male'
                                             ? FontWeight.w700
                                             : FontWeight.w500,
                                       ),
@@ -258,7 +303,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedGender = 'Female';
+                                  selectedGender = 'female';
                                   user.gender = selectedGender!;
                                   field.didChange(selectedGender);
                                 });
@@ -268,22 +313,22 @@ class _SignUpBodyState extends State<SignUpBody> {
                                   vertical: 14,
                                 ),
                                 decoration: BoxDecoration(
-                                  gradient: selectedGender == 'Female'
+                                  gradient: selectedGender == 'female'
                                       ? AppGradients.primaryGradient
                                       : null,
-                                  color: selectedGender == 'Female'
+                                  color: selectedGender == 'female'
                                       ? null
                                       : colorScheme.onSurface.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
-                                    color: selectedGender == 'Female'
+                                    color: selectedGender == 'female'
                                         ? Colors.transparent
                                         : colorScheme.onSurface.withOpacity(
                                             0.1,
                                           ),
                                     width: 1,
                                   ),
-                                  boxShadow: selectedGender == 'Female'
+                                  boxShadow: selectedGender == 'female'
                                       ? AppShadows.elevatedShadow
                                       : [],
                                 ),
@@ -293,7 +338,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                                     Icon(
                                       Icons.female_rounded,
                                       size: 20,
-                                      color: selectedGender == 'Female'
+                                      color: selectedGender == 'female'
                                           ? colorScheme.onPrimary
                                           : colorScheme.onSurface.withOpacity(
                                               0.6,
@@ -303,10 +348,10 @@ class _SignUpBodyState extends State<SignUpBody> {
                                     Text(
                                       localeText.registerFemale,
                                       style: AppFonts.labelLarge.copyWith(
-                                        color: selectedGender == 'Female'
+                                        color: selectedGender == 'female'
                                             ? colorScheme.onPrimary
                                             : colorScheme.onSurface,
-                                        fontWeight: selectedGender == 'Female'
+                                        fontWeight: selectedGender == 'female'
                                             ? FontWeight.w700
                                             : FontWeight.w500,
                                       ),
@@ -378,7 +423,7 @@ class _SignUpBodyState extends State<SignUpBody> {
             ],
             const SizedBox(height: 28),
             // Action button
-            CustomNextButton(context),
+            CustomNextButton(context, state),
             if (currentStep > 0) ...[
               const SizedBox(height: 12),
               CustomBackButton(context),
@@ -445,65 +490,83 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
   }
 
-  SizedBox CustomNextButton(BuildContext context) {
+  SizedBox CustomNextButton(BuildContext context, RegisterState state) {
     final localeText = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
+    final isLoading = state is RegisterLoading;
+
     return SizedBox(
       width: double.infinity,
       height: 56,
       child: ElevatedButton(
-        onPressed: () {
-          if (formKey.currentState?.validate() ?? false) {
-            if (currentStep < 2) {
-              setState(() {
-                currentStep++;
-              });
-            } else {
-              GoRouter.of(
-                context,
-              ).pushReplacement(AppRouter.kHomeScreen, extra: user.name);
-            }
-          }
-        },
+        onPressed: isLoading
+            ? null
+            : () {
+                // التأكد من صحة الحقول الموجودة في الخطوة الحالية فقط
+                if (formKey.currentState?.validate() ?? false) {
+                  if (currentStep < 2) {
+                    setState(() {
+                      currentStep++;
+                    });
+                  } else {
+                    // المزامنة النهائية لجميع الحقول مع كائن user
+                    _syncUserData();
+
+                    // إرسال البيانات للـ Cubit
+                    context.read<RegisterCubit>().registerUser(
+                      user: user,
+                      passportFile: uploadedPassportFile,
+                    );
+                  }
+                }
+              },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: colorScheme.onPrimary,
-
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              currentStep == 2
-                  ? localeText.registerVerify
-                  : localeText.registerNext,
-              style: AppFonts.labelLarge.copyWith(
-                color: colorScheme.onPrimary,
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
+        child: isLoading
+            ? const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.5,
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    currentStep == 2
+                        ? localeText.registerVerify
+                        : localeText.registerNext,
+                    style: AppFonts.labelLarge.copyWith(
+                      color: colorScheme.onPrimary,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: colorScheme.onPrimary.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      currentStep == 2
+                          ? Icons.check_rounded
+                          : Icons.arrow_forward_rounded,
+                      color: colorScheme.onPrimary,
+                      size: 16,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: colorScheme.onPrimary.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                currentStep == 2
-                    ? Icons.check_rounded
-                    : Icons.arrow_forward_rounded,
-                color: colorScheme.onPrimary,
-                size: 16,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -523,7 +586,7 @@ class _SignUpBodyState extends State<SignUpBody> {
       obscureText: obscureConfirmPassword,
       keyboardType: TextInputType.visiblePassword,
       onChanged: (data) {
-        user.confirm_password = data;
+        user.confirmPassword = data;
       },
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
@@ -591,9 +654,10 @@ class _SignUpBodyState extends State<SignUpBody> {
 
     return TextFormField(
       key: const ValueKey('signup_password'),
+      controller: passwordController,
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.left,
-      controller: passwordController,
+
       style: AppFonts.bodyMedium.copyWith(
         color: colorScheme.onSurface,
         letterSpacing: 0.5,
@@ -668,6 +732,7 @@ class _SignUpBodyState extends State<SignUpBody> {
     final localeText = AppLocalizations.of(context)!;
     return TextFormField(
       key: const ValueKey('signup_address'),
+      controller: addressController,
       style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
       onChanged: (data) {
         user.address = data;
@@ -828,13 +893,14 @@ class _SignUpBodyState extends State<SignUpBody> {
           Expanded(
             child: TextFormField(
               key: const ValueKey('signup_phone'),
+              controller: phoneController,
               textDirection: TextDirection.ltr,
               textAlign: TextAlign.left,
               style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
               keyboardType: TextInputType.phone,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               onChanged: (data) {
-                user.phone_number = int.tryParse(data) ?? 0;
+                user.phoneNumber = data.trim();
               },
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
@@ -901,6 +967,7 @@ class _SignUpBodyState extends State<SignUpBody> {
     final localeText = AppLocalizations.of(context)!;
     return TextFormField(
       key: const ValueKey('signup_email'),
+      controller: emailController,
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.left,
       style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),

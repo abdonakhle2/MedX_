@@ -4,7 +4,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/theme/cubit/theme_cubit.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_theme_mode_switch.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_theme_mode_switch.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key, this.onEditPressed});

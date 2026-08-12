@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_contact_row.dart';
-import 'package:project_1/features/profile/presentation/view/widgets/custom_section_header.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_contact_row.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_section_header.dart';
 import 'package:project_1/models/user.dart';
 
 class CustomContactCard extends StatelessWidget {
@@ -52,8 +52,8 @@ class CustomContactCard extends StatelessWidget {
           CustomContactRow(
             icon: Symbols.call,
             label: localeText.registerPhoneNumber,
-            value: user.phone_number != null
-                ? '\u200E+963 ${user.phone_number}'
+            value: user.phoneNumber != null
+                ? '\u200E+963 ${user.phoneNumber}'
                 : '',
           ),
         ],
