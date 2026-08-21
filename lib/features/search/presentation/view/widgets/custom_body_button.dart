@@ -1,89 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:project_1/constants/constants.dart';
-import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_1/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:project_1/features/search/presentation/view/widgets/custom_search_app_bar.dart';
+import 'package:project_1/features/search/presentation/view/widgets/custom_result_search_list.dart';
+import 'package:project_1/features/search/presentation/view/widgets/custom_search_bar.dart';
 
-class CustomBodyButton extends StatelessWidget {
-  CustomBodyButton({
-    super.key,
-    required this.isCenter,
-    required this.onChanged,
-  });
-  final bool isCenter;
-  final ValueChanged<bool> onChanged;
+class SearchBody extends StatefulWidget {
+  const SearchBody({super.key});
+
+  @override
+  State<SearchBody> createState() => _SearchBodyState();
+}
+
+class _SearchBodyState extends State<SearchBody> {
+  String searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // جلب العيادات فقط بدلاً من الأطباء
+      context.read<HomeCubit>().fetchClinics();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final localeText = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    return Container(
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        color: isDarkMode
-            ? colorScheme.surface
-            : colorScheme.onSurface.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: isDarkMode ? [] : AppShadows.softShadow,
-        border: Border.all(
-          color: colorScheme.onSurface.withOpacity(isDarkMode ? 0.1 : 0.05),
+    return CustomScrollView(
+      slivers: [
+        const CustomSearchAppBar(),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 24),
+                CustomSearchBar(
+                  onChanged: (value) {
+                    setState(() {
+                      searchQuery = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 24),
+                // عرض نتائج البحث الخاصة بالمراكز فقط
+                CustomResultSearchList(searchQuery: searchQuery),
+              ],
+            ),
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () => onChanged(true),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                decoration: BoxDecoration(
-                  gradient: isCenter ? AppGradients.primaryGradient : null,
-                  color: isCenter ? null : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Center(
-                  child: Text(
-                    localeText.searchCenter,
-                    style: AppFonts.labelLarge.copyWith(
-                      color: isCenter
-                          ? Colors.white
-                          : colorScheme.onSurface.withOpacity(0.6),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                onChanged(false);
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                decoration: BoxDecoration(
-                  gradient: !isCenter ? AppGradients.primaryGradient : null,
-                  color: !isCenter ? null : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Center(
-                  child: Text(
-                    localeText.searchDoctor,
-                    style: AppFonts.labelLarge.copyWith(
-                      color: !isCenter
-                          ? Colors.white
-                          : colorScheme.onSurface.withOpacity(0.6),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      ],
     );
   }
 }

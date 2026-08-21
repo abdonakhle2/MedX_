@@ -36,7 +36,7 @@ class CustomEmailTextField extends StatelessWidget {
         return null;
       },
       decoration: InputDecoration(
-        hintText: 'ahmad@example.com',
+        hintText: localeText.emailExampleLogin,
         hintTextDirection: TextDirection.ltr,
         hintStyle: AppFonts.bodyMedium.copyWith(
           color: colorScheme.onSurface.withOpacity(0.4),

@@ -151,6 +151,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerInvalidPhone => 'Enter a valid phone number';
 
   @override
+  String get phoneStartWith9 => 'Phone number must start with 9';
+
+  @override
   String get registerInvalidFirstName => 'Please enter a valid first name';
 
   @override
@@ -211,7 +214,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookingsTime => 'Time';
 
   @override
-  String get bookingsReschedule => 'Reschedule';
+  String get updateNote => 'Update Note';
 
   @override
   String get bookingsCancel => 'Cancel';
@@ -251,6 +254,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failedToLoadFavorites => 'Failed to load favorites';
 
   @override
+  String get favoritesAdded => 'Added to favorites';
+
+  @override
+  String get favoritesRemoved => 'Removed from favorites';
+
+  @override
   String get searchCenter => 'Center';
 
   @override
@@ -260,7 +269,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchLabel => 'Search';
 
   @override
-  String get searchHint => 'Search for doctors or centers';
+  String get searchHint => 'Search for centers';
+
+  @override
+  String get noResultSearch => 'there are no result';
 
   @override
   String get navHome => 'Home';
@@ -323,6 +335,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profilePassportFile => 'PASSPORT FILE';
 
   @override
+  String get profileNoPassportImage => 'No image';
+
+  @override
   String get profileStartDate => 'START DATE';
 
   @override
@@ -341,10 +356,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmButton => 'Confirm';
 
   @override
-  String get editProfileUpdateSuccess => 'Profile updated successfully!';
+  String get editProfileUpdateSuccess => 'Update';
 
   @override
-  String get homeMedicalCenters => 'Medical Centers';
+  String get homeMedicalCenters => 'Medical Centers : ';
 
   @override
   String get homeHeaderTitle => 'Prioritize Your\nHealth Today';
@@ -357,6 +372,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeBookAppointment => 'Book Appointment';
 
   @override
+  String get homeUpcomingAppointment => 'Your Upcoming Appointment';
+
+  @override
   String get homeOurNetwork => 'OUR NETWORK';
 
   @override
@@ -366,13 +384,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeDistricts => 'DISTRICTS';
 
   @override
+  String get homeCentersCount => 'CENTERS';
+
+  @override
   String get homeAvgRating => 'AVG RATING';
 
   @override
   String get homeSupport => 'SUPPORT';
 
   @override
-  String get homeTopRatedDoctors => 'Top Rated Doctors';
+  String get homeDoctorsCount => 'DOCTORS';
+
+  @override
+  String get homeGetDoctorsByDepartment => 'Get Doctors By Department';
 
   @override
   String get centerAboutTitle => 'About the Institute';
@@ -382,6 +406,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get centerDoctors => 'Doctors';
+
+  @override
+  String get noDoctorsFound => 'No doctors found in this department.';
 
   @override
   String get centerExperience => 'EXPERIENCE';
@@ -509,4 +536,216 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookingPickCustomDateTime => 'Pick a custom date/time';
+
+  @override
+  String get bookingDetailsTitle => 'Booking Details';
+
+  @override
+  String get bookingCaseDescription => 'Case Description';
+
+  @override
+  String get bookingCaseDescriptionDummy =>
+      'Regular checkup for blood pressure and heart monitoring. An ECG was performed and new medications were prescribed to control blood pressure.';
+
+  @override
+  String get bookingClose => 'Close';
+
+  @override
+  String get errorSomethingWentWrong => 'Something went wrong';
+
+  @override
+  String get errorFailedToLoadProfile => 'Failed to Load Profile';
+
+  @override
+  String get errorRetry => 'Retry';
+
+  @override
+  String get homeEmptyCentersTitle => 'No Centers Available';
+
+  @override
+  String get homeEmptyCentersSubtitle =>
+      'We couldn\'t find any medical centers at the moment.';
+
+  @override
+  String get profileHelpCenter => 'Help Center';
+
+  @override
+  String get profileHelpCenterSubtitle =>
+      'Get help and learn more about the app';
+
+  @override
+  String get helpScreenTitle => 'Help Center';
+
+  @override
+  String get helpHowToBookTitle => 'How to Book';
+
+  @override
+  String get helpHowToBookDesc =>
+      'You can search for a doctor or center, choose an available time slot, and confirm your booking easily.';
+
+  @override
+  String get helpReviewBookingTitle => 'Reviewing Bookings';
+
+  @override
+  String get helpReviewBookingDesc =>
+      'You can check all your pending and completed bookings in the Bookings tab. You can also reschedule or cancel them.';
+
+  @override
+  String get helpAppInfoTitle => 'About the App';
+
+  @override
+  String get helpAppInfoDesc =>
+      'MedX provides a seamless healthcare experience, connecting you with top professionals to prioritize your health.';
+
+  @override
+  String get helpRescheduleTitle => 'Rescheduling Bookings';
+
+  @override
+  String get helpRescheduleDesc =>
+      'If your plans change, you can easily reschedule your booking from the Bookings tab by selecting a new available date and time.';
+
+  @override
+  String get helpBookingDetailsTitle => 'Reviewing Booking Details';
+
+  @override
+  String get helpBookingDetailsDesc =>
+      'You can view the full details of any upcoming or past appointment, including doctor notes, clinic location, and payment status, directly from your Bookings list.';
+
+  @override
+  String get helpContactSupportTitle => 'Contact Support';
+
+  @override
+  String get helpContactSupportDesc =>
+      'If you face any issues, our support team is available 24/7 to assist you with your bookings and inquiries.';
+
+  @override
+  String get helpManageFavoritesTitle => 'Managing Favorites';
+
+  @override
+  String get helpManageFavoritesDesc =>
+      'You can save your preferred doctors and medical centers to your favorites for quick and easy access later.';
+
+  @override
+  String get sessionExpiredMessage => 'Session expired, please login again.';
+
+  @override
+  String get onboardingWelcomeTitle => 'Welcome to MedX';
+
+  @override
+  String get onboardingWelcomeDesc =>
+      'Book your medical appointments easily and track your health with a click.';
+
+  @override
+  String get onboardingBestDoctorsTitle => 'Best Doctors';
+
+  @override
+  String get onboardingBestDoctorsDesc =>
+      'Connect with the best doctors in various specialties.';
+
+  @override
+  String get onboardingSafeRecordsTitle => 'Your Records are Safe';
+
+  @override
+  String get onboardingSafeRecordsDesc =>
+      'We care about your privacy and keep your medical records securely.';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingStart => 'Start';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get searchDoctorByDepartmentHint => 'Search by department...';
+
+  @override
+  String get centerNoDepartments => 'No departments available for this clinic.';
+
+  @override
+  String get notAvailable => 'N/A';
+
+  @override
+  String get logoutSuccess => 'Logged out successfully';
+
+  @override
+  String get errorNoAuthToken => 'No auth token found. Please login again.';
+
+  @override
+  String get errorConnectionTimeout => 'Connection timeout with ApiServer';
+
+  @override
+  String get errorSendTimeout => 'Send timeout with ApiServer';
+
+  @override
+  String get errorReceiveTimeout => 'Receive timeout with ApiServer';
+
+  @override
+  String get errorBadCertificate => 'Bad certificate with ApiServer';
+
+  @override
+  String get errorRequestCanceled => 'Request to ApiServer was canceled';
+
+  @override
+  String get errorNoInternet => 'No Internet Connection';
+
+  @override
+  String get errorUnexpected => 'Unexpected Error, Please try again!';
+
+  @override
+  String get errorOops => 'Opps, There was an Error, Please try again';
+
+  @override
+  String get errorUnauthorized => 'Unauthorized / Forbidden access';
+
+  @override
+  String get errorNotFound => 'Request not found, Please try later!';
+
+  @override
+  String get errorInternalServer => 'Internal server error, Please try later!';
+
+  @override
+  String get errorValidation => 'Validation Error, Please check your inputs.';
+
+  @override
+  String get errorStatusCode => 'Opps, There was an Error, Status Code:';
+
+  @override
+  String get bookingEarliestSubtitle => 'Today at 4:30 PM';
+
+  @override
+  String get noAvailableTimes => 'No available times after the current time';
+
+  @override
+  String get bookingErrorMessage =>
+      'Please make sure to select the correct date and time for the appointment';
+
+  @override
+  String get earliestAvailable => 'Earliest Available';
+
+  @override
+  String get todayAt => 'Today At ';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get doctorsSchedule => 'Doctor\'s Schedule';
+
+  @override
+  String get pickACustomDate => 'pick a custom date';
+
+  @override
+  String get notifications => 'My Notifications';
+
+  @override
+  String get doctorNote => 'Doctor\'s Notes';
+
+  @override
+  String get userNote => 'My Notes';
+
+  @override
+  String get noNotes => 'There are no notes';
 }

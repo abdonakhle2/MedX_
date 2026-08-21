@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/update_cubit.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/edit_profile_widgets/edit_profile_name_dialog.dart';
 import 'package:project_1/models/user.dart';
 
 class CustomProfileHeader extends StatelessWidget {
@@ -39,14 +43,24 @@ class CustomProfileHeader extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 20),
-        Text(
-          user.name ?? '',
-          style: AppFonts.headlineLarge.copyWith(
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.w800,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              user.name ?? '',
+              style: AppFonts.headlineLarge.copyWith(
+                color: colorScheme.onSurface,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              onPressed: () => _showEditNameDialog(context),
+              icon: Icon(Symbols.edit, color: colorScheme.primary, size: 28),
+            ),
+          ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -107,6 +121,19 @@ class CustomProfileHeader extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+
+  void _showEditNameDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: context.read<UpdateCubit>()),
+          BlocProvider.value(value: context.read<ProfileCubit>()),
+        ],
+        child: EditProfileNameDialog(user: user),
+      ),
     );
   }
 }

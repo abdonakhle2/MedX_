@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/update_cubit.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/edit_profile_widgets/edit_profile_address_dialog.dart';
 import 'package:project_1/models/user.dart';
 
 class CustomResidentialCard extends StatelessWidget {
@@ -25,13 +29,22 @@ class CustomResidentialCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            localeText.profileResidential,
-            style: AppFonts.labelSmall.copyWith(
-              color: colorScheme.onPrimary.withOpacity(0.75),
-              fontWeight: FontWeight.w700,
-              letterSpacing: 2.0,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                localeText.profileResidential,
+                style: AppFonts.labelSmall.copyWith(
+                  color: colorScheme.onPrimary.withOpacity(0.75),
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 2.0,
+                ),
+              ),
+              IconButton(
+                onPressed: () => _showEditAddressDialog(context),
+                icon: Icon(Symbols.edit, color: colorScheme.onPrimary),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
           Row(
@@ -65,6 +78,19 @@ class CustomResidentialCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
         ],
+      ),
+    );
+  }
+
+  void _showEditAddressDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: context.read<UpdateCubit>()),
+          BlocProvider.value(value: context.read<ProfileCubit>()),
+        ],
+        child: EditProfileAddressDialog(user: user),
       ),
     );
   }

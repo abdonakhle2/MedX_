@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
-import 'package:project_1/features/favorites/presentation/view/widgets/custom_app_bar.dart';
+import 'package:project_1/features/favorites/presentation/view/widgets/custom_favorites_app_bar.dart';
 import 'package:project_1/core/widgets/card_clinic.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_state.dart';
+import 'package:project_1/core/widgets/custom_error_widget.dart';
 
 class FavoritesBody extends StatelessWidget {
   const FavoritesBody({super.key});
@@ -19,14 +21,36 @@ class FavoritesBody extends StatelessWidget {
       child: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
           if (state is FavoritesLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return CustomScrollView(
+              slivers: [
+                const CustomFavoritesAppBar(),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Shimmer.fromColors(
+                        baseColor: colorScheme.surfaceContainerHighest,
+                        highlightColor: colorScheme.surface,
+                        child: Container(
+                          height: 140, // Approximate height of CardClinic
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    );
+                  }, childCount: 6),
+                ),
+              ],
+            );
           } else if (state is FavoritesLoaded) {
             final favoriteClinics = state.favoriteClinics;
 
             if (favoriteClinics.isEmpty) {
               return CustomScrollView(
                 slivers: [
-                  const CustomAppBar(),
+                  const CustomFavoritesAppBar(),
                   SliverFillRemaining(
                     hasScrollBody: false,
                     child: Center(
@@ -60,7 +84,7 @@ class FavoritesBody extends StatelessWidget {
 
             return CustomScrollView(
               slivers: [
-                const CustomAppBar(),
+                const CustomFavoritesAppBar(),
                 SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     return Padding(
@@ -72,11 +96,22 @@ class FavoritesBody extends StatelessWidget {
               ],
             );
           } else if (state is FavoritesError) {
-            return Center(
-              child: Text(
-                state.message,
-                style: TextStyle(color: colorScheme.error),
-              ),
+            return CustomScrollView(
+              slivers: [
+                const CustomFavoritesAppBar(),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CustomErrorWidget(
+                      errorMessage: state.message,
+                      onRetry: () {
+                        context.read<FavoritesCubit>().loadFavorites();
+                      },
+                    ),
+                  ),
+                ),
+              ],
             );
           }
 

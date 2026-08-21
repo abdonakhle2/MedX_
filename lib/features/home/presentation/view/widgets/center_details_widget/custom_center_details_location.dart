@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
-import 'package:project_1/core/utils/function/launch_url.dart';
+import 'package:project_1/models/clinic.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class CustomCenterDetailsLocation extends StatelessWidget {
-  const CustomCenterDetailsLocation({super.key});
+  final ClinicModel clinic;
+  const CustomCenterDetailsLocation({super.key, required this.clinic});
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +32,12 @@ class CustomCenterDetailsLocation extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withOpacity(0.15),
+                  color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
                   Icons.location_on_rounded,
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: theme.colorScheme.onPrimary,
                   size: 22,
                 ),
               ),
@@ -44,7 +45,7 @@ class CustomCenterDetailsLocation extends StatelessWidget {
               Text(
                 localeText.centerLocation,
                 style: AppFonts.headlineSmall.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: theme.colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -52,76 +53,61 @@ class CustomCenterDetailsLocation extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            '4221 Medical District Plaza, WA 98101',
+            Localizations.localeOf(context).languageCode == 'ar' &&
+                    clinic.location_ar.isNotEmpty
+                ? clinic.location_ar
+                : clinic.location_en.isNotEmpty
+                ? clinic.location_en
+                : 'No location provided.',
             style: AppFonts.bodyMedium.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.85),
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
               height: 1.4,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 18),
-          SizedBox(
+          Container(
+            height: 220,
             width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: () {
-                _openGoogleMaps(
-                  latitude: 47.6062,
-                  longitude: -122.3321,
-                  context: context,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
+                width: 1,
+              ),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: FlutterMap(
+              options: MapOptions(
+                initialCenter: LatLng(clinic.lat, clinic.log),
+                initialZoom: 15.0,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.medx.project1',
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.directions_rounded,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    localeText.centerGetDirections,
-                    style: AppFonts.labelLarge.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: LatLng(clinic.lat, clinic.log),
+                      width: 40,
+                      height: 40,
+                      child: const Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                        size: 40,
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  Future<void> _openGoogleMaps({
-    required double latitude,
-    required double longitude,
-    required BuildContext context,
-  }) async {
-    try {
-      // final Uri webUrl = Uri.parse(
-      //   'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
-      // );
-      // if (await canLaunchUrl(webUrl)) {
-      //   await launchUrl(webUrl, mode: LaunchMode.externalApplication);
-      // }
-      launchCustomer(
-        url:
-            'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
-        context: context,
-      );
-    } catch (_) {}
   }
 }

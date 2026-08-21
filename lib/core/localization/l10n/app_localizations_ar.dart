@@ -152,6 +152,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get registerInvalidPhone => 'أدخل رقم هاتف صالح';
 
   @override
+  String get phoneStartWith9 => 'يجب أن يبدأ رقم الهاتف بـ 9';
+
+  @override
   String get registerInvalidFirstName => 'يرجى إدخال اسم أول صالح';
 
   @override
@@ -212,7 +215,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingsTime => 'الوقت';
 
   @override
-  String get bookingsReschedule => 'إعادة جدولة';
+  String get updateNote => 'تحديث الملاحظة';
 
   @override
   String get bookingsCancel => 'إلغاء';
@@ -252,6 +255,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failedToLoadFavorites => 'فشل تحميل قائمة المفضلة';
 
   @override
+  String get favoritesAdded => 'تمت الإضافة للمفضلة';
+
+  @override
+  String get favoritesRemoved => 'تمت الإزالة من المفضلة';
+
+  @override
   String get searchCenter => 'المركز';
 
   @override
@@ -261,7 +270,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get searchLabel => 'البحث';
 
   @override
-  String get searchHint => 'ابحث عن أطباء أو مراكز طبية';
+  String get searchHint => 'ابحث عن  مراكز طبية';
+
+  @override
+  String get noResultSearch => 'لا توجد نتائج';
 
   @override
   String get navHome => 'الرئيسية';
@@ -324,6 +336,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profilePassportFile => 'ملف جواز السفر';
 
   @override
+  String get profileNoPassportImage => 'لا توجد صورة';
+
+  @override
   String get profileStartDate => 'تاريخ البداية';
 
   @override
@@ -342,10 +357,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmButton => 'تأكيد';
 
   @override
-  String get editProfileUpdateSuccess => '!تم تحديث الملف الشخصي بنجاح';
+  String get editProfileUpdateSuccess => 'تحديث';
 
   @override
-  String get homeMedicalCenters => 'المراكز الطبية';
+  String get homeMedicalCenters => '  : المراكز الطبية';
 
   @override
   String get homeHeaderTitle => 'اجعل صحتك\nأولويتك اليوم';
@@ -358,6 +373,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeBookAppointment => 'حجز موعد';
 
   @override
+  String get homeUpcomingAppointment => 'حجزك القادم';
+
+  @override
   String get homeOurNetwork => 'شبكتنا';
 
   @override
@@ -367,13 +385,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeDistricts => 'المناطق';
 
   @override
+  String get homeCentersCount => 'عدد المراكز';
+
+  @override
   String get homeAvgRating => 'متوسط التقييم';
 
   @override
   String get homeSupport => 'الدعم';
 
   @override
-  String get homeTopRatedDoctors => 'الأطباء الأعلى تقييماً';
+  String get homeDoctorsCount => 'عدد الأطباء';
+
+  @override
+  String get homeGetDoctorsByDepartment => 'احصل على الأطباء حسب القسم';
 
   @override
   String get centerAboutTitle => 'عن المركز الطبي';
@@ -383,6 +407,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get centerDoctors => 'الأطباء';
+
+  @override
+  String get noDoctorsFound => 'لم يتم العثور على أطباء في هذا القسم.';
 
   @override
   String get centerExperience => 'الخبرة';
@@ -509,4 +536,217 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get bookingPickCustomDateTime => 'اختر تاريخاً/وقتين مخصصين';
+
+  @override
+  String get bookingDetailsTitle => 'تفاصيل الحجز';
+
+  @override
+  String get bookingCaseDescription => 'وصف الحالة';
+
+  @override
+  String get bookingCaseDescriptionDummy =>
+      'مراجعة دورية لضغط الدم ومتابعة حالة القلب. تم إجراء تخطيط قلب (ECG) ووصف أدوية جديدة للتحكم في الضغط.';
+
+  @override
+  String get bookingClose => 'إغلاق';
+
+  @override
+  String get errorSomethingWentWrong => 'حدث خطأ ما';
+
+  @override
+  String get errorFailedToLoadProfile => 'فشل في تحميل الملف الشخصي';
+
+  @override
+  String get errorRetry => 'إعادة المحاولة';
+
+  @override
+  String get homeEmptyCentersTitle => 'لا توجد مراكز متاحة';
+
+  @override
+  String get homeEmptyCentersSubtitle =>
+      'لم نتمكن من العثور على أي مراكز طبية في الوقت الحالي.';
+
+  @override
+  String get profileHelpCenter => 'مركز المساعدة';
+
+  @override
+  String get profileHelpCenterSubtitle => 'احصل على المساعدة وتعرف على التطبيق';
+
+  @override
+  String get helpScreenTitle => 'مركز المساعدة';
+
+  @override
+  String get helpHowToBookTitle => 'كيفية الحجز';
+
+  @override
+  String get helpHowToBookDesc =>
+      'يمكنك البحث عن طبيب أو مركز، اختيار موعد متاح، وتأكيد حجزك بسهولة.';
+
+  @override
+  String get helpReviewBookingTitle => 'مراجعة الحجوزات';
+
+  @override
+  String get helpReviewBookingDesc =>
+      'يمكنك التحقق من كافة حجوزاتك القادمة والسابقة في قسم الحجوزات، ويمكنك أيضاً إلغاء أو إعادة جدولة المواعيد.';
+
+  @override
+  String get helpAppInfoTitle => 'عن التطبيق';
+
+  @override
+  String get helpAppInfoDesc =>
+      'يوفر لك التطبيق تجربة رعاية صحية سلسة لربطك بأفضل المتخصصين للاهتمام بصحتك.';
+
+  @override
+  String get helpRescheduleTitle => 'إعادة جدولة الحجز';
+
+  @override
+  String get helpRescheduleDesc =>
+      'إذا تغيرت خططك، يمكنك بكل سهولة تغيير موعد الحجز من قسم الحجوزات عبر اختيار تاريخ ووقت جديد متاح.';
+
+  @override
+  String get helpBookingDetailsTitle => 'مراجعة تفاصيل الحجز';
+
+  @override
+  String get helpBookingDetailsDesc =>
+      'يمكنك استعراض كافة تفاصيل حجوزاتك القادمة أو السابقة، بما في ذلك ملاحظات الطبيب وموقع المركز وحالة الدفع من قائمة الحجوزات.';
+
+  @override
+  String get helpContactSupportTitle => 'التواصل مع الدعم';
+
+  @override
+  String get helpContactSupportDesc =>
+      'في حال واجهتك أي مشكلة، فريق الدعم الفني متاح على مدار الساعة لمساعدتك في حجوزاتك واستفساراتك.';
+
+  @override
+  String get helpManageFavoritesTitle => 'إدارة المفضلة';
+
+  @override
+  String get helpManageFavoritesDesc =>
+      'يمكنك حفظ أطبائك ومراكزك الطبية المفضلة للوصول إليها بسهولة وسرعة في أي وقت لاحق.';
+
+  @override
+  String get sessionExpiredMessage =>
+      'انتهت صلاحية الجلسة، الرجاء تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get onboardingWelcomeTitle => 'أهلاً بك في تطبيقنا';
+
+  @override
+  String get onboardingWelcomeDesc =>
+      'احجز مواعيدك الطبية بسهولة وتابع صحتك بضغطة زر.';
+
+  @override
+  String get onboardingBestDoctorsTitle => 'أفضل الأطباء';
+
+  @override
+  String get onboardingBestDoctorsDesc =>
+      'تواصل مع نخبة من أفضل الأطباء في مختلف التخصصات.';
+
+  @override
+  String get onboardingSafeRecordsTitle => 'سجلاتك آمنة';
+
+  @override
+  String get onboardingSafeRecordsDesc =>
+      'نحن نهتم بخصوصيتك ونحفظ بياناتك الطبية بشكل آمن تماماً.';
+
+  @override
+  String get onboardingSkip => 'تخطي';
+
+  @override
+  String get onboardingStart => 'ابدأ';
+
+  @override
+  String get onboardingNext => 'التالي';
+
+  @override
+  String get searchDoctorByDepartmentHint => 'ابحث عن طبيب حسب القسم...';
+
+  @override
+  String get centerNoDepartments => 'لا توجد أقسام متاحة لهذا المركز.';
+
+  @override
+  String get notAvailable => 'غير متوفر';
+
+  @override
+  String get logoutSuccess => 'تم تسجيل الخروج بنجاح';
+
+  @override
+  String get errorNoAuthToken =>
+      'لم يتم العثور على توكن مصادقة. يرجى تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get errorConnectionTimeout => 'انتهى وقت الاتصال بالخادم';
+
+  @override
+  String get errorSendTimeout => 'انتهى وقت الإرسال إلى الخادم';
+
+  @override
+  String get errorReceiveTimeout => 'انتهى وقت الاستقبال من الخادم';
+
+  @override
+  String get errorBadCertificate => 'شهادة أمان غير صالحة';
+
+  @override
+  String get errorRequestCanceled => 'تم إلغاء الطلب';
+
+  @override
+  String get errorNoInternet => 'لا يوجد اتصال بالإنترنت';
+
+  @override
+  String get errorUnexpected => 'حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى!';
+
+  @override
+  String get errorOops => 'عذراً، حدث خطأ، يرجى المحاولة مرة أخرى';
+
+  @override
+  String get errorUnauthorized => 'وصول غير مصرح به / ممنوع';
+
+  @override
+  String get errorNotFound => 'الطلب غير موجود، يرجى المحاولة لاحقاً!';
+
+  @override
+  String get errorInternalServer =>
+      'خطأ في الخادم الداخلي، يرجى المحاولة لاحقاً!';
+
+  @override
+  String get errorValidation => 'خطأ في التحقق، يرجى مراجعة البيانات المدخلة.';
+
+  @override
+  String get errorStatusCode => 'عذراً، حدث خطأ، رمز الحالة:';
+
+  @override
+  String get bookingEarliestSubtitle => 'اليوم الساعة 4:30 مساءً';
+
+  @override
+  String get noAvailableTimes => 'لا يوجد أوقات متاحة بعد الوقت الحالي';
+
+  @override
+  String get bookingErrorMessage => 'الرجاء التأكد من اختيار تاريخ ووقت الحجز';
+
+  @override
+  String get earliestAvailable => 'اقرب وقت';
+
+  @override
+  String get todayAt => 'اليوم في';
+
+  @override
+  String get loading => 'جاري التحميل...';
+
+  @override
+  String get doctorsSchedule => 'مواعيد الطبيب';
+
+  @override
+  String get pickACustomDate => 'اختر التاريخ';
+
+  @override
+  String get notifications => 'اشعاراتي';
+
+  @override
+  String get doctorNote => 'ملاحظات الطبيب';
+
+  @override
+  String get userNote => 'ملاحظاتي';
+
+  @override
+  String get noNotes => 'لا توجد ملاحظات';
 }

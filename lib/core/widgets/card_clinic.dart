@@ -80,14 +80,20 @@ class _CardClinicState extends State<CardClinic> {
                           fit: StackFit.expand,
                           children: [
                             Image.network(
-                              _getClinicImageUrl(widget.clinic),
+                              widget.clinic.logo.isNotEmpty
+                                  ? Uri.encodeFull(widget.clinic.logo)
+                                  : _getClinicImageUrl(widget.clinic),
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
-                                color: AppColors.primary.withOpacity(0.12),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.local_hospital_rounded,
-                                    size: 44,
+                              errorBuilder: (_, __, ___) => Image.network(
+                                _getClinicImageUrl(widget.clinic),
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => Container(
+                                  color: AppColors.primary.withOpacity(0.12),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.local_hospital_rounded,
+                                      size: 44,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -101,20 +107,6 @@ class _CardClinicState extends State<CardClinic> {
                                   ],
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.18),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.local_hospital_rounded,
-                                  size: 44,
-                                  color: Colors.white.withOpacity(0.9),
                                 ),
                               ),
                             ),
@@ -241,7 +233,7 @@ class _CardClinicState extends State<CardClinic> {
                                   ),
                                   const SizedBox(width: 3),
                                   Text(
-                                    "4.9",
+                                    widget.clinic.rating.toString(),
                                     style: AppFonts.labelMedium.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.amber,
@@ -256,7 +248,11 @@ class _CardClinicState extends State<CardClinic> {
 
                         // Hospital name
                         Text(
-                          widget.clinic.name_en,
+                          Localizations.localeOf(context).languageCode ==
+                                      'ar' &&
+                                  widget.clinic.name_ar.isNotEmpty
+                              ? widget.clinic.name_ar
+                              : widget.clinic.name_en,
                           style: theme.textTheme.headlineSmall?.copyWith(
                             letterSpacing: -0.3,
                             fontWeight: FontWeight.bold,
@@ -266,7 +262,11 @@ class _CardClinicState extends State<CardClinic> {
 
                         // Description
                         Text(
-                          widget.clinic.description,
+                          Localizations.localeOf(context).languageCode ==
+                                      'ar' &&
+                                  widget.clinic.description_ar.isNotEmpty
+                              ? widget.clinic.description_ar
+                              : widget.clinic.description_en,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             height: 1.5,
                           ),
@@ -295,7 +295,11 @@ class _CardClinicState extends State<CardClinic> {
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              widget.clinic.location,
+                              Localizations.localeOf(context).languageCode ==
+                                          'ar' &&
+                                      widget.clinic.location_ar.isNotEmpty
+                                  ? widget.clinic.location_ar
+                                  : widget.clinic.location_en,
                               style: theme.textTheme.bodySmall?.copyWith(
                                 fontWeight: FontWeight.w500,
                               ),

@@ -1,4 +1,29 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/core/utils/app_router.dart';
+
+void handleUnauthorizedError() async {
+  const secureStorage = FlutterSecureStorage();
+  await secureStorage.delete(key: 'auth_token');
+
+  final context = AppRouter.scaffoldMessengerKey.currentContext;
+  final localeText = context != null ? AppLocalizations.of(context) : null;
+  final message =
+      localeText?.sessionExpiredMessage ??
+      'Session expired. Please login again.';
+
+  AppRouter.scaffoldMessengerKey.currentState?.showSnackBar(
+    SnackBar(
+      content: Text(message, style: const TextStyle(fontFamily: 'Cairo')),
+      backgroundColor: Colors.redAccent,
+      duration: const Duration(seconds: 4),
+    ),
+  );
+
+  AppRouter.router.go(AppRouter.kLogInScreen);
+}
 
 abstract class Failure {
   final String errorMessage;
@@ -8,20 +33,33 @@ abstract class Failure {
 class ServerFailure extends Failure {
   const ServerFailure(super.errorMessage);
 
-  // استخدام DioException بدلاً من DioError القديمة
   factory ServerFailure.fromDioException(DioException dioException) {
+    final context = AppRouter.scaffoldMessengerKey.currentContext;
+    final localeText = context != null ? AppLocalizations.of(context) : null;
+
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
-        return const ServerFailure('Connection timeout with ApiServer');
+        return ServerFailure(
+          localeText?.errorConnectionTimeout ??
+              'Connection timeout with API server',
+        );
 
       case DioExceptionType.sendTimeout:
-        return const ServerFailure('Send timeout with ApiServer');
+        return ServerFailure(
+          localeText?.errorSendTimeout ??
+              'Send timeout in connection with API server',
+        );
 
       case DioExceptionType.receiveTimeout:
-        return const ServerFailure('Receive timeout with ApiServer');
+        return ServerFailure(
+          localeText?.errorReceiveTimeout ??
+              'Receive timeout in connection with API server',
+        );
 
       case DioExceptionType.badCertificate:
-        return const ServerFailure('Bad certificate with ApiServer');
+        return ServerFailure(
+          localeText?.errorBadCertificate ?? 'Bad certificate',
+        );
 
       case DioExceptionType.badResponse:
         return ServerFailure.fromResponse(
@@ -30,34 +68,72 @@ class ServerFailure extends Failure {
         );
 
       case DioExceptionType.cancel:
-        return const ServerFailure('Request to ApiServer was canceled');
+        return ServerFailure(
+          localeText?.errorRequestCanceled ??
+              'Request to API server was cancelled',
+        );
 
       case DioExceptionType.connectionError:
-        return const ServerFailure('No Internet Connection / Connection Error');
+        return ServerFailure(
+          localeText?.errorNoInternet ?? 'No internet connection',
+        );
 
       case DioExceptionType.unknown:
-        // التحقق الآمن من الرسالة لتجنب Null Error
         if (dioException.message != null &&
             dioException.message!.contains('SocketException')) {
-          return const ServerFailure('No Internet Connection');
+          return ServerFailure(
+            localeText?.errorNoInternet ?? 'No internet connection',
+          );
         }
-        return const ServerFailure('Unexpected Error, Please try again!');
+        return ServerFailure(
+          localeText?.errorUnexpected ?? 'Unexpected error occurred',
+        );
 
       default:
-        return const ServerFailure(
-          'Opps, There was an Error, Please try again',
+        return ServerFailure(
+          localeText?.errorOops ?? 'Oops, There was an error, Please try again',
         );
     }
   }
+
   factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
-    // 1. إذا كانت الاستجابة عبارة عن Map (JSON)
+    final context = AppRouter.scaffoldMessengerKey.currentContext;
+    final localeText = context != null ? AppLocalizations.of(context) : null;
+
+    if (statusCode == 401 || statusCode == 403) {
+      handleUnauthorizedError();
+      if (response is Map<String, dynamic> &&
+          response.containsKey('message') &&
+          response['message'] != null) {
+        return ServerFailure(response['message'].toString());
+      }
+      return ServerFailure(
+        localeText?.errorUnauthorized ?? 'Unauthorized access',
+      );
+    }
+
+    if (statusCode == 404) {
+      return ServerFailure(
+        localeText?.errorNotFound ??
+            'Your request was not found, Please try later!',
+      );
+    } else if (statusCode == 500) {
+      return ServerFailure(
+        localeText?.errorInternalServer ??
+            'Internal server error, Please try later',
+      );
+    } else if (statusCode == 422) {
+      if (response is Map<String, dynamic> && response['message'] != null) {
+        return ServerFailure(response['message'].toString());
+      }
+      return ServerFailure(localeText?.errorValidation ?? 'Validation error');
+    }
+
     if (response is Map<String, dynamic>) {
-      // التحقق من وجود مفتاح 'message' مباشرة (مثل أخطاء الـ Validation في لاراول)
       if (response.containsKey('message') && response['message'] != null) {
         return ServerFailure(response['message'].toString());
       }
 
-      // التحقق من وجود مفتاح 'error' إذا كان يحتوي على رسالة نصية
       if (response.containsKey('error')) {
         final errorField = response['error'];
         if (errorField is String) {
@@ -68,26 +144,13 @@ class ServerFailure extends Failure {
       }
     }
 
-    // 2. التعامل مع الأكواد الشهيرة بشكل آمن
-    if (statusCode == 401 || statusCode == 403) {
-      return const ServerFailure('Unauthorized / Forbidden access');
-    } else if (statusCode == 404) {
-      return const ServerFailure('Request not found, Please try later!');
-    } else if (statusCode == 422) {
-      // أخطاء التحقق (Validation Errors) غالباً ما ترسل رسالة في 'message' أو الأخطاء مباشرة
-      if (response is Map<String, dynamic> && response['message'] != null) {
-        return ServerFailure(response['message'].toString());
-      }
-      return const ServerFailure('Validation Error, Please check your inputs.');
-    } else if (statusCode == 500) {
-      return const ServerFailure('Internal server error, Please try later!');
-    } else {
-      // 3. الحل الاحتياطي النهائي في حال لم تطابق أي شروط
-      return ServerFailure(
-        response is Map && response.containsKey('message')
-            ? response['message'].toString()
-            : 'Opps, There was an Error, Status Code: $statusCode',
-      );
-    }
+    final statusCodeText =
+        localeText?.errorStatusCode ??
+        'Opps There was an Error, Please try again with status code';
+    return ServerFailure(
+      response is Map && response.containsKey('message')
+          ? response['message'].toString()
+          : '$statusCodeText $statusCode',
+    );
   }
 }

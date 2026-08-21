@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/features/home/presentation/view/widgets/center_details_widget/custom_center_details_app_bar.dart';
 import 'package:project_1/features/home/presentation/view/widgets/center_details_widget/custom_center_details_body.dart';
+import 'package:project_1/models/clinic.dart';
 
 class CenterDetailsBody extends StatelessWidget {
-  const CenterDetailsBody({super.key});
+  final ClinicModel clinic;
+  const CenterDetailsBody({super.key, required this.clinic});
 
   @override
   Widget build(BuildContext context) {
-    return const CustomScrollView(
-      slivers: [CustomCenterDetailsAppBar(), CustomCenterDetailsBody()],
+    return CustomScrollView(
+      slivers: [
+        CustomCenterDetailsAppBar(clinic: clinic),
+        CustomCenterDetailsBody(clinic: clinic),
+      ],
     );
   }
 }

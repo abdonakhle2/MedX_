@@ -1,36 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_1/core/widgets/card_clinic.dart';
-import 'package:project_1/core/widgets/doctor_card.dart';
-import 'package:project_1/models/clinic.dart';
-import 'package:project_1/models/doctor.dart';
+import 'package:project_1/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:project_1/features/home/presentation/manager/home_cubit/home_state.dart';
+import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/core/widgets/custom_error_widget.dart';
+import 'package:project_1/core/widgets/shimmer_clinic.dart';
 
 class CustomResultSearchList extends StatelessWidget {
-  const CustomResultSearchList({super.key, required this.isCenter});
-  final bool isCenter;
+  const CustomResultSearchList({super.key, required this.searchQuery});
+
+  final String searchQuery;
+
   @override
   Widget build(BuildContext context) {
-    return isCenter
-        ? ListView.builder(
+    final localeText = AppLocalizations.of(context)!;
+
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoading) {
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return const ShimmerClinic();
+            },
+          );
+        } else if (state is HomeSuccess) {
+          final filteredClinics = state.clinics.where((clinic) {
+            final queryWithoutSpaces = searchQuery.toLowerCase().replaceAll(
+              ' ',
+              '',
+            );
+
+            final nameEn = clinic.name_en.toLowerCase().replaceAll(' ', '');
+            final nameAr = clinic.name_ar.toLowerCase().replaceAll(' ', '');
+            final locEn = clinic.location_en.toLowerCase().replaceAll(' ', '');
+            final locAr = clinic.location_ar.toLowerCase().replaceAll(' ', '');
+
+            return nameEn.contains(queryWithoutSpaces) ||
+                nameAr.contains(queryWithoutSpaces) ||
+                locEn.contains(queryWithoutSpaces) ||
+                locAr.contains(queryWithoutSpaces);
+          }).toList();
+
+          if (filteredClinics.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Center(
+                child: Text(
+                  localeText.homeEmptyCentersSubtitle,
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ),
+            );
+          }
+
+          return ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
-            itemCount: 4,
+            itemCount: filteredClinics.length,
             itemBuilder: (context, index) {
-              final dummyClinic = ClinicModel(
-                clinic_id: 'search_clinic_$index',
-                name_en: 'Search Clinic Center ${index + 1}',
-                name_ar: 'مركز عيادات البحث ${index + 1}',
-                description:
-                    'A cornerstone of regional health, providing comprehensive emergency care, surgery, and advanced diagnostics.',
-                location: '${0.5 + index * 0.4} miles away',
-                work_hours: 8,
-                phone_number: '987654321',
-                logo: '',
-                lat: 0.0,
-                log: 0.0,
-                is_24h: false,
-                pictures: [],
-                Departments: [],
-              );
+              final clinic = filteredClinics[index];
 
               return TweenAnimationBuilder<double>(
                 tween: Tween(begin: 0.0, end: 1.0),
@@ -45,69 +77,24 @@ class CustomResultSearchList extends StatelessWidget {
                     ),
                   );
                 },
-                child: isCenter
-                    ? CardClinic(clinic: dummyClinic)
-                    : buildDoctorCard(
-                        context,
-                        Doctor(
-                          doc_id: '1',
-                          name_en: 'ali ahmad',
-                          name_ar: 'علي احمد',
-                          birthdate: '2/3/2000',
-                          id_passport: '12',
-                          photo: '',
-                          hourly_rate: 12,
-                          work_hours: '4',
-                          specialization: 'cardiology',
-                          appointments: [],
-                        ),
-                      ),
-              );
-            },
-          )
-        : GridView.builder(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: 4,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 0.72,
-            ),
-            itemBuilder: (context, index) {
-              return TweenAnimationBuilder<double>(
-                key: ValueKey('doctor_$index'),
-                tween: Tween(begin: 0.0, end: 1.0),
-                duration: Duration(milliseconds: 300 + (index * 100)),
-                curve: Curves.easeOut,
-                builder: (context, value, child) {
-                  return Opacity(
-                    opacity: value,
-                    child: Transform.translate(
-                      offset: Offset(0, 15 * (1 - value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: buildDoctorCard(
-                  context,
-                  Doctor(
-                    doc_id: '1',
-                    name_en: 'ali ahmad',
-                    name_ar: 'علي احمد',
-                    birthdate: '2/3/2000',
-                    id_passport: '12',
-                    photo: '',
-                    hourly_rate: 12,
-                    work_hours: '4',
-                    specialization: 'cardiology',
-                    appointments: [],
-                  ),
-                  isGridView: true,
-                ),
+                child: CardClinic(clinic: clinic),
               );
             },
           );
+        } else if (state is HomeFailure) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: CustomErrorWidget(
+              errorMessage: state.errorMessage,
+              onRetry: () {
+                context.read<HomeCubit>().fetchClinics();
+              },
+            ),
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
   }
 }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/update_cubit.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/edit_profile_widgets/edit_profile_identity_dialog.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_identity_item.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_section_header.dart';
 import 'package:project_1/models/user.dart';
@@ -32,9 +36,18 @@ class CustomIdentityCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomSectionHeader(
-            title: localeText.profilePersonalIdentity,
-            icon: Symbols.manage_accounts,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomSectionHeader(
+                title: localeText.profilePersonalIdentity,
+                icon: Symbols.manage_accounts,
+              ),
+              IconButton(
+                onPressed: () => _showEditIdentityDialog(context),
+                icon: Icon(Symbols.edit, color: colorScheme.primary),
+              ),
+            ],
           ),
           const SizedBox(height: 24),
           Row(
@@ -75,6 +88,19 @@ class CustomIdentityCard extends StatelessWidget {
             icon: Symbols.calendar_month,
           ),
         ],
+      ),
+    );
+  }
+
+  void _showEditIdentityDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: context.read<UpdateCubit>()),
+          BlocProvider.value(value: context.read<ProfileCubit>()),
+        ],
+        child: EditProfileIdentityDialog(user: user),
       ),
     );
   }

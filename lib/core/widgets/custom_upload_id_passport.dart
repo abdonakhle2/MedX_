@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -140,35 +141,69 @@ class _CustomUploadIdPassportFileState
 
   Widget _buildFilePreview(PlatformFile file) {
     final colorScheme = Theme.of(context).colorScheme;
-    final extension = file.extension?.toLowerCase();
+    final extension = file.name.split('.').last.toLowerCase();
 
     if (extension == 'pdf') {
-      return SfPdfViewer.memory(
-        file.bytes!,
-        canShowScrollHead: false,
-        canShowScrollStatus: false,
-      );
-    } else if (extension == 'jpg' ||
-        extension == 'jpeg' ||
-        extension == 'png') {
-      return Image.memory(
-        file.bytes!,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: 200,
-      );
-    } else {
-      return Container(
-        color: colorScheme.onSurface.withOpacity(0.08),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.insert_drive_file_rounded, color: colorScheme.primary),
-            const SizedBox(width: 8),
-            Text(file.name, style: TextStyle(color: colorScheme.onSurface)),
-          ],
-        ),
-      );
+      if (file.bytes != null) {
+        return SfPdfViewer.memory(
+          file.bytes!,
+          canShowScrollHead: false,
+          canShowScrollStatus: false,
+        );
+      } else if (file.path != null && (file.path!.startsWith('http://') || file.path!.startsWith('https://'))) {
+        return SfPdfViewer.network(
+          file.path!,
+          canShowScrollHead: false,
+          canShowScrollStatus: false,
+        );
+      } else if (file.path != null) {
+        return SfPdfViewer.file(
+          File(file.path!),
+          canShowScrollHead: false,
+          canShowScrollStatus: false,
+        );
+      }
+    } else if (extension == 'jpg' || extension == 'jpeg' || extension == 'png') {
+      if (file.bytes != null) {
+        return Image.memory(
+          file.bytes!,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: 200,
+        );
+      } else if (file.path != null && (file.path!.startsWith('http://') || file.path!.startsWith('https://'))) {
+        return Image.network(
+          file.path!,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: 200,
+        );
+      } else if (file.path != null) {
+        return Image.file(
+          File(file.path!),
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: 200,
+        );
+      }
     }
+    
+    return Container(
+      color: colorScheme.onSurface.withOpacity(0.08),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.insert_drive_file_rounded, color: colorScheme.primary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              file.name,
+              style: TextStyle(color: colorScheme.onSurface),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

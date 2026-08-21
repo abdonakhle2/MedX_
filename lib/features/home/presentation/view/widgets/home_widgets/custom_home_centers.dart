@@ -3,7 +3,7 @@ import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_home_list.dart';
 import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_home_stats.dart';
-import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_top_rated_doctors.dart';
+import 'package:project_1/features/home/presentation/view/widgets/home_widgets/custom_get_doctors_by_department.dart';
 
 class CustomHomeCenters extends StatelessWidget {
   const CustomHomeCenters({super.key});
@@ -18,7 +18,7 @@ class CustomHomeCenters extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CustomTopRatedDoctors(),
+          // const CustomGetDoctorsByDept(),
           const SizedBox(height: 24),
           Text(
             localeText.homeMedicalCenters,

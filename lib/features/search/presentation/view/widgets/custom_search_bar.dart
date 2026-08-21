@@ -3,7 +3,9 @@ import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  const CustomSearchBar({super.key});
+  const CustomSearchBar({super.key, this.onChanged});
+  
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class CustomSearchBar extends StatelessWidget {
         ),
       ),
       child: TextField(
+        onChanged: onChanged,
         style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
         decoration: InputDecoration(
           prefixIcon: Padding(

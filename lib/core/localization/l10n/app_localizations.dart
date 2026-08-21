@@ -380,6 +380,12 @@ abstract class AppLocalizations {
   /// **'Enter a valid phone number'**
   String get registerInvalidPhone;
 
+  /// No description provided for @phoneStartWith9.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number must start with 9'**
+  String get phoneStartWith9;
+
   /// No description provided for @registerInvalidFirstName.
   ///
   /// In en, this message translates to:
@@ -500,11 +506,11 @@ abstract class AppLocalizations {
   /// **'Time'**
   String get bookingsTime;
 
-  /// No description provided for @bookingsReschedule.
+  /// No description provided for @updateNote.
   ///
   /// In en, this message translates to:
-  /// **'Reschedule'**
-  String get bookingsReschedule;
+  /// **'Update Note'**
+  String get updateNote;
 
   /// No description provided for @bookingsCancel.
   ///
@@ -578,6 +584,18 @@ abstract class AppLocalizations {
   /// **'Failed to load favorites'**
   String get failedToLoadFavorites;
 
+  /// No description provided for @favoritesAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to favorites'**
+  String get favoritesAdded;
+
+  /// No description provided for @favoritesRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from favorites'**
+  String get favoritesRemoved;
+
   /// No description provided for @searchCenter.
   ///
   /// In en, this message translates to:
@@ -599,8 +617,14 @@ abstract class AppLocalizations {
   /// No description provided for @searchHint.
   ///
   /// In en, this message translates to:
-  /// **'Search for doctors or centers'**
+  /// **'Search for centers'**
   String get searchHint;
+
+  /// No description provided for @noResultSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'there are no result'**
+  String get noResultSearch;
 
   /// No description provided for @navHome.
   ///
@@ -722,6 +746,12 @@ abstract class AppLocalizations {
   /// **'PASSPORT FILE'**
   String get profilePassportFile;
 
+  /// No description provided for @profileNoPassportImage.
+  ///
+  /// In en, this message translates to:
+  /// **'No image'**
+  String get profileNoPassportImage;
+
   /// No description provided for @profileStartDate.
   ///
   /// In en, this message translates to:
@@ -761,13 +791,13 @@ abstract class AppLocalizations {
   /// No description provided for @editProfileUpdateSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Profile updated successfully!'**
+  /// **'Update'**
   String get editProfileUpdateSuccess;
 
   /// No description provided for @homeMedicalCenters.
   ///
   /// In en, this message translates to:
-  /// **'Medical Centers'**
+  /// **'Medical Centers : '**
   String get homeMedicalCenters;
 
   /// No description provided for @homeHeaderTitle.
@@ -788,6 +818,12 @@ abstract class AppLocalizations {
   /// **'Book Appointment'**
   String get homeBookAppointment;
 
+  /// No description provided for @homeUpcomingAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Upcoming Appointment'**
+  String get homeUpcomingAppointment;
+
   /// No description provided for @homeOurNetwork.
   ///
   /// In en, this message translates to:
@@ -806,6 +842,12 @@ abstract class AppLocalizations {
   /// **'DISTRICTS'**
   String get homeDistricts;
 
+  /// No description provided for @homeCentersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'CENTERS'**
+  String get homeCentersCount;
+
   /// No description provided for @homeAvgRating.
   ///
   /// In en, this message translates to:
@@ -818,11 +860,17 @@ abstract class AppLocalizations {
   /// **'SUPPORT'**
   String get homeSupport;
 
-  /// No description provided for @homeTopRatedDoctors.
+  /// No description provided for @homeDoctorsCount.
   ///
   /// In en, this message translates to:
-  /// **'Top Rated Doctors'**
-  String get homeTopRatedDoctors;
+  /// **'DOCTORS'**
+  String get homeDoctorsCount;
+
+  /// No description provided for @homeGetDoctorsByDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Doctors By Department'**
+  String get homeGetDoctorsByDepartment;
 
   /// No description provided for @centerAboutTitle.
   ///
@@ -841,6 +889,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Doctors'**
   String get centerDoctors;
+
+  /// No description provided for @noDoctorsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No doctors found in this department.'**
+  String get noDoctorsFound;
 
   /// No description provided for @centerExperience.
   ///
@@ -1093,6 +1147,402 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pick a custom date/time'**
   String get bookingPickCustomDateTime;
+
+  /// No description provided for @bookingDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Details'**
+  String get bookingDetailsTitle;
+
+  /// No description provided for @bookingCaseDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Case Description'**
+  String get bookingCaseDescription;
+
+  /// No description provided for @bookingCaseDescriptionDummy.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular checkup for blood pressure and heart monitoring. An ECG was performed and new medications were prescribed to control blood pressure.'**
+  String get bookingCaseDescriptionDummy;
+
+  /// No description provided for @bookingClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get bookingClose;
+
+  /// No description provided for @errorSomethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorSomethingWentWrong;
+
+  /// No description provided for @errorFailedToLoadProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to Load Profile'**
+  String get errorFailedToLoadProfile;
+
+  /// No description provided for @errorRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get errorRetry;
+
+  /// No description provided for @homeEmptyCentersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Centers Available'**
+  String get homeEmptyCentersTitle;
+
+  /// No description provided for @homeEmptyCentersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find any medical centers at the moment.'**
+  String get homeEmptyCentersSubtitle;
+
+  /// No description provided for @profileHelpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get profileHelpCenter;
+
+  /// No description provided for @profileHelpCenterSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get help and learn more about the app'**
+  String get profileHelpCenterSubtitle;
+
+  /// No description provided for @helpScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get helpScreenTitle;
+
+  /// No description provided for @helpHowToBookTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Book'**
+  String get helpHowToBookTitle;
+
+  /// No description provided for @helpHowToBookDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You can search for a doctor or center, choose an available time slot, and confirm your booking easily.'**
+  String get helpHowToBookDesc;
+
+  /// No description provided for @helpReviewBookingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviewing Bookings'**
+  String get helpReviewBookingTitle;
+
+  /// No description provided for @helpReviewBookingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You can check all your pending and completed bookings in the Bookings tab. You can also reschedule or cancel them.'**
+  String get helpReviewBookingDesc;
+
+  /// No description provided for @helpAppInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About the App'**
+  String get helpAppInfoTitle;
+
+  /// No description provided for @helpAppInfoDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'MedX provides a seamless healthcare experience, connecting you with top professionals to prioritize your health.'**
+  String get helpAppInfoDesc;
+
+  /// No description provided for @helpRescheduleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rescheduling Bookings'**
+  String get helpRescheduleTitle;
+
+  /// No description provided for @helpRescheduleDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'If your plans change, you can easily reschedule your booking from the Bookings tab by selecting a new available date and time.'**
+  String get helpRescheduleDesc;
+
+  /// No description provided for @helpBookingDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviewing Booking Details'**
+  String get helpBookingDetailsTitle;
+
+  /// No description provided for @helpBookingDetailsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You can view the full details of any upcoming or past appointment, including doctor notes, clinic location, and payment status, directly from your Bookings list.'**
+  String get helpBookingDetailsDesc;
+
+  /// No description provided for @helpContactSupportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get helpContactSupportTitle;
+
+  /// No description provided for @helpContactSupportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'If you face any issues, our support team is available 24/7 to assist you with your bookings and inquiries.'**
+  String get helpContactSupportDesc;
+
+  /// No description provided for @helpManageFavoritesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Managing Favorites'**
+  String get helpManageFavoritesTitle;
+
+  /// No description provided for @helpManageFavoritesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You can save your preferred doctors and medical centers to your favorites for quick and easy access later.'**
+  String get helpManageFavoritesDesc;
+
+  /// No description provided for @sessionExpiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Session expired, please login again.'**
+  String get sessionExpiredMessage;
+
+  /// No description provided for @onboardingWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to MedX'**
+  String get onboardingWelcomeTitle;
+
+  /// No description provided for @onboardingWelcomeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Book your medical appointments easily and track your health with a click.'**
+  String get onboardingWelcomeDesc;
+
+  /// No description provided for @onboardingBestDoctorsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Doctors'**
+  String get onboardingBestDoctorsTitle;
+
+  /// No description provided for @onboardingBestDoctorsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with the best doctors in various specialties.'**
+  String get onboardingBestDoctorsDesc;
+
+  /// No description provided for @onboardingSafeRecordsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Records are Safe'**
+  String get onboardingSafeRecordsTitle;
+
+  /// No description provided for @onboardingSafeRecordsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'We care about your privacy and keep your medical records securely.'**
+  String get onboardingSafeRecordsDesc;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get onboardingStart;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @searchDoctorByDepartmentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by department...'**
+  String get searchDoctorByDepartmentHint;
+
+  /// No description provided for @centerNoDepartments.
+  ///
+  /// In en, this message translates to:
+  /// **'No departments available for this clinic.'**
+  String get centerNoDepartments;
+
+  /// No description provided for @notAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get notAvailable;
+
+  /// No description provided for @logoutSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged out successfully'**
+  String get logoutSuccess;
+
+  /// No description provided for @errorNoAuthToken.
+  ///
+  /// In en, this message translates to:
+  /// **'No auth token found. Please login again.'**
+  String get errorNoAuthToken;
+
+  /// No description provided for @errorConnectionTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timeout with ApiServer'**
+  String get errorConnectionTimeout;
+
+  /// No description provided for @errorSendTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Send timeout with ApiServer'**
+  String get errorSendTimeout;
+
+  /// No description provided for @errorReceiveTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive timeout with ApiServer'**
+  String get errorReceiveTimeout;
+
+  /// No description provided for @errorBadCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Bad certificate with ApiServer'**
+  String get errorBadCertificate;
+
+  /// No description provided for @errorRequestCanceled.
+  ///
+  /// In en, this message translates to:
+  /// **'Request to ApiServer was canceled'**
+  String get errorRequestCanceled;
+
+  /// No description provided for @errorNoInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Internet Connection'**
+  String get errorNoInternet;
+
+  /// No description provided for @errorUnexpected.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected Error, Please try again!'**
+  String get errorUnexpected;
+
+  /// No description provided for @errorOops.
+  ///
+  /// In en, this message translates to:
+  /// **'Opps, There was an Error, Please try again'**
+  String get errorOops;
+
+  /// No description provided for @errorUnauthorized.
+  ///
+  /// In en, this message translates to:
+  /// **'Unauthorized / Forbidden access'**
+  String get errorUnauthorized;
+
+  /// No description provided for @errorNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Request not found, Please try later!'**
+  String get errorNotFound;
+
+  /// No description provided for @errorInternalServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Internal server error, Please try later!'**
+  String get errorInternalServer;
+
+  /// No description provided for @errorValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Validation Error, Please check your inputs.'**
+  String get errorValidation;
+
+  /// No description provided for @errorStatusCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Opps, There was an Error, Status Code:'**
+  String get errorStatusCode;
+
+  /// No description provided for @bookingEarliestSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today at 4:30 PM'**
+  String get bookingEarliestSubtitle;
+
+  /// No description provided for @noAvailableTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'No available times after the current time'**
+  String get noAvailableTimes;
+
+  /// No description provided for @bookingErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please make sure to select the correct date and time for the appointment'**
+  String get bookingErrorMessage;
+
+  /// No description provided for @earliestAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Earliest Available'**
+  String get earliestAvailable;
+
+  /// No description provided for @todayAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Today At '**
+  String get todayAt;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @doctorsSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor\'s Schedule'**
+  String get doctorsSchedule;
+
+  /// No description provided for @pickACustomDate.
+  ///
+  /// In en, this message translates to:
+  /// **'pick a custom date'**
+  String get pickACustomDate;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'My Notifications'**
+  String get notifications;
+
+  /// No description provided for @doctorNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor\'s Notes'**
+  String get doctorNote;
+
+  /// No description provided for @userNote.
+  ///
+  /// In en, this message translates to:
+  /// **'My Notes'**
+  String get userNote;
+
+  /// No description provided for @noNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no notes'**
+  String get noNotes;
 }
 
 class _AppLocalizationsDelegate

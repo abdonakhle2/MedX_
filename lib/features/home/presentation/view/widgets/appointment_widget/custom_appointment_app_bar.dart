@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/core/utils/app_router.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -67,6 +69,33 @@ class CustomAppBar extends StatelessWidget {
           ),
         ),
       ),
+      // 🟢 إضافة زر الإشعارات هنا للانتقال لشاشة الإشعارات
+      actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: IconButton(
+            icon: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: isDarkMode
+                    ? const Color(0xFF1E293B)
+                    : AppColors.greyLight,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                Icons.notifications_outlined,
+                color: isDarkMode
+                    ? colorScheme.primaryContainer
+                    : colorScheme.primary,
+                size: 22,
+              ),
+            ),
+            onPressed: () {
+              context.push(AppRouter.kNotificationsScreen);
+            },
+          ),
+        ),
+      ],
     );
   }
 }

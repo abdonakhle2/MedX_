@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/models/clinic.dart';
 
 class CustomCenterDetailsAbout extends StatelessWidget {
-  const CustomCenterDetailsAbout({super.key});
+  final ClinicModel clinic;
+  const CustomCenterDetailsAbout({super.key, required this.clinic});
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +61,27 @@ class CustomCenterDetailsAbout extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'At Harborview, we redefine clinical excellence through an editorial lens. Our facility combines state-of-the-art diagnostic technology...',
+            Localizations.localeOf(context).languageCode == 'ar' &&
+                    clinic.description_ar.isNotEmpty
+                ? clinic.description_ar
+                : clinic.description_en.isNotEmpty
+                ? clinic.description_en
+                : 'No description available.',
             style: AppFonts.bodyMedium.copyWith(
               color: isDarkMode ? const Color(0xFF94A3B8) : AppColors.secondary,
               height: 1.6,
             ),
+          ),
+          SizedBox(height: 14),
+          Row(
+            children: [
+              Icon(Icons.phone, color: colorScheme.primary),
+              SizedBox(width: 8),
+              Text(
+                clinic.phone_number,
+                style: AppFonts.bodyMedium.copyWith(color: colorScheme.primary),
+              ),
+            ],
           ),
         ],
       ),

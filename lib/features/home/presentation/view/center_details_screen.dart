@@ -4,8 +4,11 @@ import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/home/presentation/view/widgets/center_details_widget/center_details_body.dart';
 import 'package:project_1/core/widgets/bottom_nav_bar.dart';
 
+import 'package:project_1/models/clinic.dart';
+
 class CenterDetailsScreen extends StatefulWidget {
-  const CenterDetailsScreen({super.key});
+  final ClinicModel clinic;
+  const CenterDetailsScreen({super.key, required this.clinic});
 
   @override
   State<CenterDetailsScreen> createState() => _CenterDetailsScreenState();
@@ -36,7 +39,7 @@ class _CenterDetailsScreenState extends State<CenterDetailsScreen> {
         currentIndex: _navIndex,
         onTap: _onNavTap,
       ),
-      body: CenterDetailsBody(),
+      body: CenterDetailsBody(clinic: widget.clinic),
     );
   }
 }

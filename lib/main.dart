@@ -1,19 +1,75 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:project_1/core/localization/cubit/loacale_cubit.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/constants/constants.dart';
-
 import 'package:project_1/core/theme/cubit/theme_cubit.dart';
 import 'package:project_1/core/utils/app_router.dart';
-
+import 'package:project_1/core/utils/function/locale_notifications_service.dart';
+import 'package:project_1/features/booking/data/booking_repo_imp.dart';
+import 'package:project_1/features/booking/presentation/manager/appointment_cubit/user_appoinment_cubit.dart';
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:project_1/features/home/data/repo/home_repo/home_repo_impl.dart';
+import 'package:project_1/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:project_1/features/favorites/data/repos/favorites_repo_impl.dart';
+import 'package:project_1/features/notifications/data/repos/notifications_repo_impl.dart';
+import 'package:project_1/features/notifications/presentation/manager/cubit/notifications_cubit.dart';
 import 'package:project_1/features/profile/data/repos/profile_repo/profile_repo_imp.dart';
 import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
+import 'package:project_1/firebase_options.dart';
 
-void main() {
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print("تم استقبال إشعار في الخلفية: ${message.notification?.title}");
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp app = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // 1. تهيئة الإشعارات المحلية
+  LocalNotificationService.initialize();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await FirebaseMessaging.instance.requestPermission();
+
+  String? fcmToken;
+  try {
+    fcmToken = await FirebaseMessaging.instance.getToken();
+    print("FCM Token: $fcmToken");
+  } catch (e) {
+    print("خطأ في جلب التوكن: $e");
+  }
+
+  const secureStorage = FlutterSecureStorage();
+  String? token = await secureStorage.read(key: 'auth_token');
+  bool isLoggedIn = token != null && token.isNotEmpty;
+
+  if (isLoggedIn && fcmToken != null) {
+    try {
+      await NotificationsRepoImpl(Dio()).sendFcmToken(fcmToken);
+    } catch (e) {
+      print("خطأ في إرسال الـ FCM Token: $e");
+    }
+  }
+
+  // 2. تفعيل ظهور الإشعار المنبثق مع الصوت أثناء فتح التطبيق
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print(
+      'تم استلام إشعار في الواجهة الأمامية: ${message.notification?.title}',
+    );
+    LocalNotificationService.showNotification(message);
+  });
+
+  AppRouter.setupRouter(isLoggedIn);
   runApp(const TheApp());
 }
 
@@ -26,9 +82,16 @@ class TheApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => LocaleCubit()),
         BlocProvider(create: (context) => ThemeCubit()),
-        BlocProvider(create: (context) => FavoritesCubit()..loadFavorites()),
         BlocProvider(
-          create: (context) => ProfileCubit(ProfileRepoImpl(Dio()))..loadProfile(),
+          create: (context) => FavoritesCubit(FavoritesRepoImpl(Dio())),
+        ),
+        BlocProvider(create: (context) => HomeCubit(HomeRepoImpl(Dio()))),
+        BlocProvider(create: (context) => ProfileCubit(ProfileRepoImpl(Dio()))),
+        BlocProvider(
+          create: (context) => UserAppointmentsCubit(BookingRepoImpl(Dio())),
+        ),
+        BlocProvider(
+          create: (context) => NotificationsCubit(NotificationsRepoImpl(Dio())),
         ),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
@@ -37,6 +100,7 @@ class TheApp extends StatelessWidget {
             builder: (context, themeMode) {
               return MaterialApp.router(
                 debugShowCheckedModeBanner: false,
+                scaffoldMessengerKey: AppRouter.scaffoldMessengerKey,
                 routerConfig: AppRouter.router,
                 themeMode: themeMode,
 

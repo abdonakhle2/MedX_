@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
 import 'package:project_1/core/utils/app_router.dart';
+import 'package:project_1/features/booking/data/booking_repo_imp.dart';
+import 'package:project_1/features/booking/presentation/manager/appointment_cubit/user_appoinment_cubit.dart';
 import 'package:project_1/features/booking/presentation/view/widgets/booking_body.dart';
-
 import 'package:project_1/core/widgets/bottom_nav_bar.dart';
 
-class BookingScreen extends StatefulWidget {
+class BookingScreen extends StatelessWidget {
   const BookingScreen({super.key});
 
-  @override
-  State<BookingScreen> createState() => _BookingScreenState();
-}
-
-class _BookingScreenState extends State<BookingScreen> {
   final int _navIndex = 3;
 
-  void _onNavTap(int index) {
+  void _onNavTap(BuildContext context, int index) {
     if (index == _navIndex) return;
 
     final routes = [
@@ -25,7 +23,6 @@ class _BookingScreenState extends State<BookingScreen> {
       AppRouter.kBookingScreen,
       AppRouter.kProfileScreen,
     ];
-    // Navigator.pushReplacementNamed(context, routes[index]);
     GoRouter.of(context).pushReplacement(routes[index]);
   }
 
@@ -33,13 +30,18 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        extendBody: true,
-        bottomNavigationBar: BottomNavBar(
-          currentIndex: _navIndex,
-          onTap: _onNavTap,
+      child: BlocProvider(
+        create: (context) =>
+            UserAppointmentsCubit(BookingRepoImpl(Dio()))
+              ..fetchUserAppointments(),
+        child: Scaffold(
+          extendBody: true,
+          bottomNavigationBar: BottomNavBar(
+            currentIndex: _navIndex,
+            onTap: (index) => _onNavTap(context, index),
+          ),
+          body: const BookingBody(),
         ),
-        body: const BookingBody(),
       ),
     );
   }

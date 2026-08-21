@@ -5,49 +5,50 @@ import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;
+  User? cachedUser;
 
   ProfileCubit(this.profileRepo) : super(ProfileInitial());
 
   Future<void> loadProfile() async {
+    if (cachedUser != null) {
+      emit(ProfileLoaded(cachedUser!));
+      return;
+    }
+
     emit(ProfileLoading());
 
     try {
       final result = await profileRepo.getUserProfile();
 
-      result.fold(
-        (failure) => emit(ProfileError(failure.errorMessage)),
-        (user) => emit(ProfileLoaded(user)),
-      );
+      result.fold((failure) => emit(ProfileError(failure.errorMessage)), (
+        user,
+      ) {
+        cachedUser = user;
+        emit(ProfileLoaded(user));
+      });
     } catch (e) {
       emit(ProfileError('Failed to load profile data.'));
     }
   }
 
-  void updateProfile({
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String? phone,
-    required DateTime? birthdate,
-    required String address,
-    required String? idPassport,
-  }) {
-    emit(ProfileUpdating());
-    try {
-      // Simulate network request or perform update locally
-      User.currentUser.firstName = firstName;
-      User.currentUser.lastName = lastName;
-      User.currentUser.email = email;
-      User.currentUser.phoneNumber = phone;
-      User.currentUser.birthdate = birthdate;
-      User.currentUser.address = address;
-      User.currentUser.idPassport = idPassport;
+  // Helper method to clear cache if needed (e.g. on logout)
+  void clearCache() {
+    cachedUser = null;
+    emit(ProfileInitial());
+  }
 
-      emit(ProfileUpdateSuccess(User.currentUser));
-      // Re-emit loaded so current state is accurate
-      emit(ProfileLoaded(User.currentUser));
-    } catch (e) {
-      emit(ProfileError("Failed to update profile data."));
-    }
+  Future<void> refreshProfile() async {
+    emit(ProfileLoading());
+    final result = await profileRepo.getUserProfile();
+
+    result.fold((failure) => emit(ProfileError(failure.errorMessage)), (user) {
+      cachedUser = user;
+      emit(ProfileLoaded(user));
+    });
+  }
+
+  void updateUserCache(User updatedUser) {
+    cachedUser = updatedUser;
+    emit(ProfileLoaded(updatedUser));
   }
 }

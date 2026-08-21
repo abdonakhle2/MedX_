@@ -7,17 +7,12 @@ import 'package:project_1/models/doctor.dart';
 
 String _getDoctorImageUrl(Doctor doctor) {
   if (doctor.photo.isNotEmpty) {
-    return doctor.photo;
+    if (doctor.photo.startsWith('http')) {
+      return doctor.photo;
+    }
+    return 'https://medx.sy/storage/${doctor.photo}';
   }
-
-  final urls = [
-    'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80',
-  ];
-  final index = doctor.name_en.hashCode.abs() % urls.length;
-  return urls[index];
+  return '';
 }
 
 Widget buildDoctorCard(
@@ -29,6 +24,8 @@ Widget buildDoctorCard(
   final localeText = AppLocalizations.of(context)!;
   final colorScheme = theme.colorScheme;
   final isDarkMode = theme.brightness == Brightness.dark;
+  final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+
   return Card(
     margin: EdgeInsets.zero,
     clipBehavior: Clip.antiAlias,
@@ -40,12 +37,26 @@ Widget buildDoctorCard(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Theme.of(context).colorScheme.surface,
-        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
+        boxShadow: isDarkMode
+            ? [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ]
+            : [
+                BoxShadow(
+                  color: colorScheme.primary.withOpacity(0.08),
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
+                ),
+              ],
         border: Border.all(
           color: isDarkMode
-              ? Theme.of(context).colorScheme.onSurface.withOpacity(0.1)
-              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.15),
-          width: 1.5,
+              ? Colors.white.withOpacity(0.05)
+              : colorScheme.primary.withOpacity(0.1),
+          width: 1.0,
         ),
       ),
       child: Column(
@@ -75,20 +86,37 @@ Widget buildDoctorCard(
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.network(
-                      _getDoctorImageUrl(doctor),
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: colorScheme.primary.withValues(alpha: 0.08),
-                        child: Center(
-                          child: Icon(
-                            Icons.person_rounded,
-                            size: isGridView ? 32 : 40,
-                            color: colorScheme.primary.withValues(alpha: 0.3),
+                    _getDoctorImageUrl(doctor).isNotEmpty
+                        ? Image.network(
+                            _getDoctorImageUrl(doctor),
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(
+                              color: colorScheme.primary.withValues(
+                                alpha: 0.08,
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.person_rounded,
+                                  size: isGridView ? 32 : 40,
+                                  color: colorScheme.primary.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            color: colorScheme.primary.withValues(alpha: 0.08),
+                            child: Center(
+                              child: Icon(
+                                Icons.person_rounded,
+                                size: isGridView ? 32 : 40,
+                                color: colorScheme.primary.withValues(
+                                  alpha: 0.3,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -110,9 +138,17 @@ Widget buildDoctorCard(
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: colorScheme.surface,
+                          color: isDarkMode
+                              ? Colors.black.withOpacity(0.6)
+                              : Colors.white.withOpacity(0.85),
                           borderRadius: BorderRadius.circular(12),
-                          boxShadow: isDarkMode ? [] : AppShadows.softShadow,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -120,15 +156,15 @@ Widget buildDoctorCard(
                             Icon(
                               Icons.star_rounded,
                               color: AppColors.amber,
-                              size: 12,
+                              size: 14,
                             ),
-                            const SizedBox(width: 2),
+                            const SizedBox(width: 4),
                             Text(
-                              "4.9",
+                              doctor.rating.toString(),
                               style: AppFonts.labelSmall.copyWith(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 color: colorScheme.onSurface,
-                                fontSize: 10,
+                                fontSize: 11,
                               ),
                             ),
                           ],
@@ -149,11 +185,12 @@ Widget buildDoctorCard(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    doctor.name_en,
+                    isArabic ? doctor.name_ar : doctor.name_en,
                     style: AppFonts.labelLarge.copyWith(
                       color: colorScheme.onSurface,
                       fontWeight: FontWeight.w800,
                       fontSize: isGridView ? 14 : 16,
+                      letterSpacing: -0.3,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -171,42 +208,46 @@ Widget buildDoctorCard(
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      doctor.specialization,
+                      isArabic
+                          ? doctor.specialization_ar
+                          : doctor.specialization_en,
                       style: AppFonts.labelSmall.copyWith(
                         color: isDarkMode
                             ? AppColors.primaryLight
                             : colorScheme.primary,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         fontSize: 10,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Text(
-                        '\$${doctor.hourly_rate}',
-                        style: AppFonts.labelLarge.copyWith(
-                          color: isDarkMode
-                              ? AppColors.primaryLight
-                              : colorScheme.primary,
-                          fontWeight: FontWeight.w800,
-                          fontSize: isGridView ? 14 : 16,
-                        ),
+                  SizedBox(height: 2),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withValues(
+                        alpha: isDarkMode ? 0.15 : 0.08,
                       ),
-                      Text(
-                        localeText.doctorHourlySuffix,
-                        style: AppFonts.labelSmall.copyWith(
-                          color: isDarkMode
-                              ? const Color(0xFF94A3B8)
-                              : AppColors.black,
-                          fontSize: 12,
-                        ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      "\$${doctor.fee.toString()} / hr",
+                      style: AppFonts.labelSmall.copyWith(
+                        color: isDarkMode
+                            ? AppColors.primaryLight
+                            : colorScheme.primary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 10,
                       ),
-                    ],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
+                  const SizedBox(height: 2),
                   const Spacer(),
                   SizedBox(
                     width: double.infinity,
@@ -230,17 +271,19 @@ Widget buildDoctorCard(
                             padding: EdgeInsets.zero,
                             backgroundColor: colorScheme.primary,
                             foregroundColor: AppColors.neutral,
-                            elevation: 0,
+                            elevation: 2,
+                            shadowColor: colorScheme.primary.withOpacity(0.3),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
                           child: Text(
                             localeText.doctorBookButton,
                             style: AppFonts.labelMedium.copyWith(
                               color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w800,
                               fontSize: isGridView ? 12 : 14,
+                              letterSpacing: 0.2,
                             ),
                           ),
                         );

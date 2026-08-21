@@ -27,7 +27,6 @@ class AuthRepoImpl implements AuthRepo {
       print("Gender: ${user.gender}");
       print("Address: ${user.address}");
 
-      // 📝 إرسال جميع البيانات مباشرة بدون أي شروط (Optional Checks)
       Map<String, dynamic> mapData = {
         'first_name': user.firstName,
         'last_name': user.lastName,
@@ -40,14 +39,17 @@ class AuthRepoImpl implements AuthRepo {
         'birthdate': user.birthdate != null
             ? "${user.birthdate!.year}-${user.birthdate!.month.toString().padLeft(2, '0')}-${user.birthdate!.day.toString().padLeft(2, '0')}"
             : null,
-        // 'id_passport': user.idPassport,
       };
+
+      // 2. إنشاء الـ FormData
       FormData formData = FormData.fromMap(mapData);
+
+      // 3. إضافة الملف بشكل صحيح إذا كان موجوداً
       if (passportFile != null) {
         if (passportFile.bytes != null) {
           formData.files.add(
             MapEntry(
-              'id_passport', // اسم الحقل الذي يطلبه الباك اند
+              'id_passport',
               MultipartFile.fromBytes(
                 passportFile.bytes!,
                 filename: passportFile.name,
@@ -66,7 +68,6 @@ class AuthRepoImpl implements AuthRepo {
           );
         }
       }
-
       var response = await dio.post(
         'https://medx.sy/api/auth/register',
         data: formData,

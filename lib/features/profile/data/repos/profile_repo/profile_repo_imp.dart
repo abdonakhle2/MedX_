@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // استدعاء المكتبة مباشرة
 import 'package:project_1/core/errors/failure.dart';
+import 'package:project_1/features/notifications/data/repos/notifications_repo_impl.dart';
 import 'package:project_1/models/user.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
-import 'package:project_1/core/utils/function/passport_image.dart';
 import 'profile_repo.dart';
 
 class ProfileRepoImpl implements ProfileRepo {
@@ -50,10 +51,10 @@ class ProfileRepoImpl implements ProfileRepo {
           ? response.data
           : response.data['user'] ?? response.data;
 
-      final user = User.fromJson(userData);
-      if (user.id != null) {
-        final cached = await PassportImageCache.load(user.id!);
       return Right(User.fromJson(userData));
+    } on DioException catch (e) {
+      return Left(ServerFailure.fromDioException(e));
+    } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
   }
@@ -82,7 +83,17 @@ class ProfileRepoImpl implements ProfileRepo {
           'Logout request failed, but the app will still log the user out locally: $e',
         );
       }
+      String? fcmToken;
+      try {
+        fcmToken = await FirebaseMessaging.instance.getToken();
+      } catch (e) {
+        print("خطأ في جلب التوكن: $e");
+      }
 
+      if (fcmToken != null) {
+        // 2. نحذف التوكن من السيرفر
+        await NotificationsRepoImpl(Dio()).deleteFcmToken(fcmToken);
+      }
       await secureStorage.delete(key: 'auth_token');
       return Right(
         AppLocalizations.of(
@@ -171,19 +182,7 @@ class ProfileRepoImpl implements ProfileRepo {
           ? (response.data['user'] ?? response.data)
           : response.data;
 
-      final user = User.fromJson(userData);
-      if (user.id != null && passportFile != null) {
-        await PassportImageCache.save(
-          userId: user.id!,
-          platformFile: passportFile,
-        );
-        final cached = await PassportImageCache.load(user.id!);
-        if (cached != null) {
-          user.idPassport = cached;
-        }
-      }
-
-      return Right(user);
+      return Right(User.fromJson(userData));
     } on DioException catch (e) {
       return Left(ServerFailure.fromDioException(e));
     } catch (e) {

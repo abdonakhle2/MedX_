@@ -1,18 +1,17 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/core/utils/function/custom_snack_bar.dart';
 import 'package:project_1/features/auth/presentation/manager/register_cubit/register_cubit.dart';
-import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_field_label.dart';
-import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/build_step_indiactor.dart';
 import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_tail_text_sign_up.dart';
-import 'package:project_1/core/widgets/custom_upload_id_passport.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
 import 'package:project_1/models/user.dart';
+import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/custom_step_indicator_row.dart';
+import 'package:project_1/features/auth/presentation/view/widgets/sign_up_widgets/sign_up_form_widget.dart';
 
 class SignUpBody extends StatefulWidget {
   const SignUpBody({super.key});
@@ -51,7 +50,6 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   @override
-  @override
   void dispose() {
     firstNameController.dispose();
     lastNameController.dispose();
@@ -74,365 +72,9 @@ class _SignUpBodyState extends State<SignUpBody> {
     user.address = addressController.text.trim();
     user.password = passwordController.text;
     user.confirmPassword = confirmPasswordController.text;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final localeText = AppLocalizations.of(context)!;
-    return BlocConsumer<RegisterCubit, RegisterState>(
-      listener: (context, state) {
-        if (state is RegisterSuccess) {
-          customSnackBar(
-            context,
-            'welcome, ${user.name}',
-            backgroundColor: Colors.green,
-          );
-          GoRouter.of(
-            context,
-          ).pushReplacement(AppRouter.kHomeScreen, extra: state.user.firstName);
-        } else if (state is RegisterFailure) {
-          customSnackBar(
-            context,
-            state.errorMessage,
-            backgroundColor: Theme.of(context).colorScheme.error,
-          );
-        }
-      },
-      builder: (context, state) {
-        return SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            child: SingUpBody(context, state),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget SingUpBody(BuildContext context, RegisterState state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Step indicators
-        CustomStepIndicator(),
-        const SizedBox(height: 30),
-        // Form container
-        SingUpForm(context, state),
-        // Security note
-        const SizedBox(height: 24),
-        // Footer
-        const CustomTailTextSignUp(),
-      ],
-    );
-  }
-
-  Widget BuildGenderOption(BuildContext context, String gender, IconData icon) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    bool isSelected = selectedGender == gender;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            selectedGender = gender;
-            user.gender = selectedGender!;
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          decoration: BoxDecoration(
-            gradient: isSelected ? AppGradients.primaryGradient : null,
-            color: isSelected ? null : colorScheme.onSurface.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: isSelected
-                  ? Colors.transparent
-                  : colorScheme.onSurface.withOpacity(0.1),
-              width: 1,
-            ),
-            boxShadow: isSelected ? AppShadows.elevatedShadow : [],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 20,
-                color: isSelected
-                    ? colorScheme.onPrimary
-                    : colorScheme.onSurface.withOpacity(0.6),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                gender,
-                style: AppFonts.labelLarge.copyWith(
-                  color: isSelected
-                      ? colorScheme.onPrimary
-                      : colorScheme.onSurface,
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget SingUpForm(BuildContext context, RegisterState state) {
-    final localeText = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: isDarkMode ? [] : AppShadows.cardShadow,
-        border: isDarkMode
-            ? Border.all(color: colorScheme.onSurface.withOpacity(0.08))
-            : null,
-      ),
-      child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (currentStep == 0) ...[
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.registerFirstName),
-              const SizedBox(height: 10),
-              CustomFirstNameTextField(context),
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.registerLastName),
-              const SizedBox(height: 10),
-              CustomLastNameTextField(context),
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.registerEmailAddressLabel),
-              const SizedBox(height: 10),
-              CustomEmailAddressTextField(context),
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.registerPhoneNumber),
-              const SizedBox(height: 10),
-              CustomPhoneNumberTextField(context),
-            ] else if (currentStep == 1) ...[
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.registerGender),
-              const SizedBox(height: 10),
-              FormField<String>(
-                key: genderFieldKey,
-                initialValue: selectedGender,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return localeText.registerSelectGender;
-                  }
-                  return null;
-                },
-                builder: (field) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedGender = 'male';
-                                  user.gender = selectedGender!;
-                                  field.didChange(selectedGender);
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: selectedGender == 'male'
-                                      ? AppGradients.primaryGradient
-                                      : null,
-                                  color: selectedGender == 'male'
-                                      ? null
-                                      : colorScheme.onSurface.withOpacity(0.05),
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(
-                                    color: selectedGender == 'male'
-                                        ? Colors.transparent
-                                        : colorScheme.onSurface.withOpacity(
-                                            0.1,
-                                          ),
-                                    width: 1,
-                                  ),
-                                  boxShadow: selectedGender == 'male'
-                                      ? AppShadows.elevatedShadow
-                                      : [],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.male_rounded,
-                                      size: 20,
-                                      color: selectedGender == 'male'
-                                          ? colorScheme.onPrimary
-                                          : colorScheme.onSurface.withOpacity(
-                                              0.6,
-                                            ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      localeText.registerMale,
-                                      style: AppFonts.labelLarge.copyWith(
-                                        color: selectedGender == 'male'
-                                            ? colorScheme.onPrimary
-                                            : colorScheme.onSurface,
-                                        fontWeight: selectedGender == 'male'
-                                            ? FontWeight.w700
-                                            : FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 14),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedGender = 'female';
-                                  user.gender = selectedGender!;
-                                  field.didChange(selectedGender);
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: selectedGender == 'female'
-                                      ? AppGradients.primaryGradient
-                                      : null,
-                                  color: selectedGender == 'female'
-                                      ? null
-                                      : colorScheme.onSurface.withOpacity(0.05),
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(
-                                    color: selectedGender == 'female'
-                                        ? Colors.transparent
-                                        : colorScheme.onSurface.withOpacity(
-                                            0.1,
-                                          ),
-                                    width: 1,
-                                  ),
-                                  boxShadow: selectedGender == 'female'
-                                      ? AppShadows.elevatedShadow
-                                      : [],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.female_rounded,
-                                      size: 20,
-                                      color: selectedGender == 'female'
-                                          ? colorScheme.onPrimary
-                                          : colorScheme.onSurface.withOpacity(
-                                              0.6,
-                                            ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      localeText.registerFemale,
-                                      style: AppFonts.labelLarge.copyWith(
-                                        color: selectedGender == 'female'
-                                            ? colorScheme.onPrimary
-                                            : colorScheme.onSurface,
-                                        fontWeight: selectedGender == 'female'
-                                            ? FontWeight.w700
-                                            : FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (field.hasError)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, left: 4),
-                          child: Text(
-                            field.errorText ?? '',
-                            style: AppFonts.bodySmall.copyWith(
-                              color: colorScheme.error,
-                            ),
-                          ),
-                        ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.registerBirthdate),
-              const SizedBox(height: 10),
-              CustomBirthDateTextField(context),
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.registerAddress),
-              const SizedBox(height: 10),
-              CustomAddressTextField(context),
-            ] else if (currentStep == 2) ...[
-              const SizedBox(height: 20),
-              // const BuildFieldLabel(text: 'ID / Passport Number'),
-              // const SizedBox(height: 10),
-              const SizedBox(height: 20),
-              FormField<PlatformFile?>(
-                key: uploadFieldKey,
-                initialValue: uploadedPassportFile,
-                validator: (value) {
-                  if (value == null) {
-                    return localeText.registerUploadID;
-                  }
-                  return null;
-                },
-                builder: (field) {
-                  return CustomUploadIdPassportFile(
-                    selectedFile: field.value,
-                    errorText: field.errorText,
-                    onFileSelected: (file) {
-                      setState(() {
-                        uploadedPassportFile = file;
-                      });
-                      field.didChange(file);
-                    },
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.passwordLogin),
-              const SizedBox(height: 10),
-              CustomPasswordTextField(context),
-              const SizedBox(height: 20),
-              BuildFieldLabel(text: localeText.registerConfirmPassword),
-              const SizedBox(height: 10),
-              CustomConfirmPasswordTextField(context),
-            ],
-            const SizedBox(height: 28),
-            // Action button
-            CustomNextButton(context, state),
-            if (currentStep > 0) ...[
-              const SizedBox(height: 12),
-              CustomBackButton(context),
-            ],
-            if (currentStep == 0) ...[const SizedBox(height: 12)],
-          ],
-        ),
-      ),
-    );
+    if (uploadedPassportFile != null && uploadedPassportFile!.path != null) {
+      user.idPassport = File(uploadedPassportFile!.path!);
+    }
   }
 
   Future<void> _pickBirthdate(BuildContext context) async {
@@ -458,724 +100,114 @@ class _SignUpBodyState extends State<SignUpBody> {
     }
   }
 
-  Center CustomBackButton(BuildContext context) {
-    final localeText = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
-    return Center(
-      child: TextButton(
-        onPressed: () {
-          setState(() {
-            currentStep--;
-          });
-        },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.arrow_back_rounded,
-              color: colorScheme.onSurface.withOpacity(0.6),
-              size: 16,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              localeText.registerBack,
-              style: AppFonts.labelLarge.copyWith(
-                color: colorScheme.onSurface.withOpacity(0.6),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  SizedBox CustomNextButton(BuildContext context, RegisterState state) {
-    final localeText = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
-    final isLoading = state is RegisterLoading;
-
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
-      child: ElevatedButton(
-        onPressed: isLoading
-            ? null
-            : () {
-                // التأكد من صحة الحقول الموجودة في الخطوة الحالية فقط
-                if (formKey.currentState?.validate() ?? false) {
-                  if (currentStep < 2) {
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listener: (context, state) {
+        if (state is RegisterSuccess) {
+          // context.read<ProfileCubit>().updateUserCache(state.user);
+          context.read<ProfileCubit>().refreshProfile();
+          print('User Info: ${user.toJson()}');
+          print('Uploaded Passport File: ${user.idPassport}');
+          customSnackBar(
+            context,
+            'welcome, ${user.name}',
+            backgroundColor: Colors.green,
+          );
+          GoRouter.of(
+            context,
+          ).pushReplacement(AppRouter.kHomeScreen, extra: state.user.firstName);
+        } else if (state is RegisterFailure) {
+          customSnackBar(
+            context,
+            state.errorMessage,
+            backgroundColor: Theme.of(context).colorScheme.error,
+          );
+        }
+      },
+      builder: (context, state) {
+        return SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Step indicators
+                CustomStepIndicatorRow(currentStep: currentStep),
+                const SizedBox(height: 30),
+                // Form container
+                SignUpFormWidget(
+                  formKey: formKey,
+                  currentStep: currentStep,
+                  state: state,
+                  user: user,
+                  firstNameController: firstNameController,
+                  lastNameController: lastNameController,
+                  emailController: emailController,
+                  phoneController: phoneController,
+                  genderFieldKey: genderFieldKey,
+                  selectedGender: selectedGender,
+                  onGenderSelected: (gender) {
                     setState(() {
-                      currentStep++;
+                      selectedGender = gender;
+                      user.gender = gender;
                     });
-                  } else {
-                    // المزامنة النهائية لجميع الحقول مع كائن user
-                    _syncUserData();
-
-                    // إرسال البيانات للـ Cubit
-                    context.read<RegisterCubit>().registerUser(
-                      user: user,
-                      passportFile: uploadedPassportFile,
-                    );
-                  }
-                }
-              },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: colorScheme.onPrimary,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        child: isLoading
-            ? const SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2.5,
+                  },
+                  birthdateController: birthdateController,
+                  onPickBirthdate: () => _pickBirthdate(context),
+                  addressController: addressController,
+                  uploadFieldKey: uploadFieldKey,
+                  uploadedPassportFile: uploadedPassportFile,
+                  onFileSelected: (file) {
+                    setState(() {
+                      uploadedPassportFile = file;
+                    });
+                  },
+                  passwordController: passwordController,
+                  obscurePassword: obscurePassword,
+                  onToggleObscurePassword: () {
+                    setState(() {
+                      obscurePassword = !obscurePassword;
+                    });
+                  },
+                  confirmPasswordController: confirmPasswordController,
+                  obscureConfirmPassword: obscureConfirmPassword,
+                  onToggleObscureConfirmPassword: () {
+                    setState(() {
+                      obscureConfirmPassword = !obscureConfirmPassword;
+                    });
+                  },
+                  onNext: () {
+                    if (formKey.currentState?.validate() ?? false) {
+                      if (currentStep < 2) {
+                        setState(() {
+                          currentStep++;
+                        });
+                      } else {
+                        _syncUserData();
+                        context.read<RegisterCubit>().registerUser(
+                          user: user,
+                          passportFile: uploadedPassportFile,
+                        );
+                      }
+                    }
+                  },
+                  onBack: () {
+                    setState(() {
+                      currentStep--;
+                    });
+                  },
                 ),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    currentStep == 2
-                        ? localeText.registerVerify
-                        : localeText.registerNext,
-                    style: AppFonts.labelLarge.copyWith(
-                      color: colorScheme.onPrimary,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: colorScheme.onPrimary.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      currentStep == 2
-                          ? Icons.check_rounded
-                          : Icons.arrow_forward_rounded,
-                      color: colorScheme.onPrimary,
-                      size: 16,
-                    ),
-                  ),
-                ],
-              ),
-      ),
-    );
-  }
-
-  TextFormField CustomConfirmPasswordTextField(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localeText = AppLocalizations.of(context)!;
-    return TextFormField(
-      key: const ValueKey('signup_confirm_password'),
-      controller: confirmPasswordController,
-      textDirection: TextDirection.ltr,
-      textAlign: TextAlign.left,
-      style: AppFonts.bodyMedium.copyWith(
-        color: colorScheme.onSurface,
-        letterSpacing: 0.5,
-      ),
-      obscureText: obscureConfirmPassword,
-      keyboardType: TextInputType.visiblePassword,
-      onChanged: (data) {
-        user.confirmPassword = data;
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return localeText.registerConfirmPasswordRequired;
-        }
-        if (value != passwordController.text) {
-          return localeText.registerPasswordsDoNotMatch;
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: localeText.registerRetypePassword,
-        hintStyle: AppFonts.bodyMedium.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        suffixIcon: IconButton(
-          onPressed: () {
-            setState(() {
-              obscureConfirmPassword = !obscureConfirmPassword;
-            });
-          },
-          icon: Icon(
-            obscureConfirmPassword
-                ? Icons.visibility_off_rounded
-                : Icons.visibility_rounded,
-            color: colorScheme.onSurface.withOpacity(0.4),
-          ),
-        ),
-        filled: true,
-        fillColor: colorScheme.onSurface.withOpacity(0.05),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: colorScheme.onSurface.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-      ),
-    );
-  }
-
-  TextFormField CustomPasswordTextField(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localeText = AppLocalizations.of(context)!;
-
-    return TextFormField(
-      key: const ValueKey('signup_password'),
-      controller: passwordController,
-      textDirection: TextDirection.ltr,
-      textAlign: TextAlign.left,
-
-      style: AppFonts.bodyMedium.copyWith(
-        color: colorScheme.onSurface,
-        letterSpacing: 0.5,
-      ),
-      obscureText: obscurePassword,
-      keyboardType: TextInputType.visiblePassword,
-      onChanged: (data) {
-        user.password = data;
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return localeText.passwordRequiredLogin;
-        }
-        if (value.trim().length < 8) {
-          return localeText.passwordLengthLogin;
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: localeText.registerMinimumCharacters,
-        hintStyle: AppFonts.bodyMedium.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        suffixIcon: IconButton(
-          onPressed: () {
-            setState(() {
-              obscurePassword = !obscurePassword;
-            });
-          },
-          icon: Icon(
-            obscurePassword
-                ? Icons.visibility_off_rounded
-                : Icons.visibility_rounded,
-            color: colorScheme.onSurface.withOpacity(0.4),
-          ),
-        ),
-        filled: true,
-        fillColor: colorScheme.onSurface.withOpacity(0.05),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: colorScheme.onSurface.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-      ),
-    );
-  }
-
-  TextFormField CustomAddressTextField(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localeText = AppLocalizations.of(context)!;
-    return TextFormField(
-      key: const ValueKey('signup_address'),
-      controller: addressController,
-      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
-      onChanged: (data) {
-        user.address = data;
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return localeText.registerEnterAddress;
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: localeText.registerAddressExample,
-        hintStyle: AppFonts.bodyMedium.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        suffixIcon: Icon(
-          Icons.location_on_rounded,
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        filled: true,
-        fillColor: colorScheme.onSurface.withOpacity(0.05),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: colorScheme.onSurface.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-      ),
-    );
-  }
-
-  TextFormField CustomBirthDateTextField(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localeText = AppLocalizations.of(context)!;
-    return TextFormField(
-      key: const ValueKey('signup_birthdate'),
-      controller: birthdateController,
-      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
-      readOnly: true,
-      keyboardType: TextInputType.datetime,
-      onTap: () => _pickBirthdate(context),
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return localeText.registerSelectBirthdate;
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: localeText.registerBirthdateExample,
-        hintStyle: AppFonts.bodyMedium.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        suffixIcon: Icon(
-          Icons.calendar_today_rounded,
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        filled: true,
-        fillColor: colorScheme.onSurface.withOpacity(0.05),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: colorScheme.onSurface.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-      ),
-    );
-  }
-
-  Row CustomGenderOption() {
-    final localeText = AppLocalizations.of(context)!;
-    return Row(
-      children: [
-        BuildGenderOption(context, localeText.registerMale, Icons.male_rounded),
-        const SizedBox(width: 14),
-        BuildGenderOption(
-          context,
-          localeText.registerFemale,
-          Icons.female_rounded,
-        ),
-      ],
-    );
-  }
-
-  Widget CustomPhoneNumberTextField(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localeText = AppLocalizations.of(context)!;
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 64,
-            height: 50,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-              color: colorScheme.onSurface.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: colorScheme.onSurface.withOpacity(0.1),
-                width: 1,
-              ),
-            ),
-            child: Center(
-              child: Text(
-                "+963",
-                textDirection: TextDirection.ltr,
-                style: AppFonts.labelLarge.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
-                ),
-              ),
+                // Security note
+                const SizedBox(height: 24),
+                // Footer
+                const CustomTailTextSignUp(),
+              ],
             ),
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: TextFormField(
-              key: const ValueKey('signup_phone'),
-              controller: phoneController,
-              textDirection: TextDirection.ltr,
-              textAlign: TextAlign.left,
-              style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
-              keyboardType: TextInputType.phone,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              onChanged: (data) {
-                user.phoneNumber = data.trim();
-              },
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return localeText.registerEnterPhone;
-                }
-                if (value.trim().length < 9) {
-                  return localeText.registerInvalidPhone;
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: '094 123 456',
-                hintTextDirection: TextDirection.ltr,
-                hintStyle: AppFonts.bodyMedium.copyWith(
-                  color: colorScheme.onSurface.withOpacity(0.4),
-                ),
-                suffixIcon: Icon(
-                  Icons.phone_rounded,
-                  color: colorScheme.onSurface.withOpacity(0.4),
-                  size: 20,
-                ),
-                filled: true,
-                fillColor: colorScheme.onSurface.withOpacity(0.05),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: BorderSide(
-                    color: colorScheme.primary,
-                    width: 1.5,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: BorderSide(
-                    color: colorScheme.onSurface.withOpacity(0.1),
-                    width: 1,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: BorderSide(color: colorScheme.error, width: 1),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 16,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  TextFormField CustomEmailAddressTextField(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localeText = AppLocalizations.of(context)!;
-    return TextFormField(
-      key: const ValueKey('signup_email'),
-      controller: emailController,
-      textDirection: TextDirection.ltr,
-      textAlign: TextAlign.left,
-      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
-      keyboardType: TextInputType.emailAddress,
-      onChanged: (data) {
-        user.email = data;
+        );
       },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return localeText.emailRequiredLogin;
-        }
-        final emailPattern = RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+");
-        if (!emailPattern.hasMatch(value.trim())) {
-          return localeText.emailInvalidLogin;
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: 'ahmad@example.com',
-        hintTextDirection: TextDirection.ltr,
-        hintStyle: AppFonts.bodyMedium.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        suffixIcon: Icon(
-          Icons.email_rounded,
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        filled: true,
-        fillColor: colorScheme.onSurface.withOpacity(0.05),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: colorScheme.onSurface.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-      ),
-    );
-  }
-
-  TextFormField CustomFirstNameTextField(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localeText = AppLocalizations.of(context)!;
-    return TextFormField(
-      key: const ValueKey('signup_first_name'),
-      controller: firstNameController,
-      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
-      keyboardType: TextInputType.name,
-      textCapitalization: TextCapitalization.words,
-      onChanged: (data) {
-        user.firstName = data;
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return localeText.registerFirstNameRequired;
-        }
-        if (value.trim().length < 2) {
-          return localeText.registerInvalidFirstName;
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: localeText.registerFirstNameExample,
-        hintStyle: AppFonts.bodyMedium.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        suffixIcon: Icon(
-          Icons.person_rounded,
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        filled: true,
-        fillColor: colorScheme.onSurface.withOpacity(0.05),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: colorScheme.onSurface.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-      ),
-    );
-  }
-
-  TextFormField CustomLastNameTextField(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localeText = AppLocalizations.of(context)!;
-    return TextFormField(
-      key: const ValueKey('signup_last_name'),
-      controller: lastNameController,
-      style: AppFonts.bodyMedium.copyWith(color: colorScheme.onSurface),
-      keyboardType: TextInputType.name,
-      textCapitalization: TextCapitalization.words,
-      onChanged: (data) {
-        user.lastName = data;
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return localeText.registerLastNameRequired;
-        }
-        if (value.trim().length < 2) {
-          return localeText.registerInvalidLastName;
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: localeText.registerLastNameExample,
-        hintStyle: AppFonts.bodyMedium.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        suffixIcon: Icon(
-          Icons.person_outline_rounded,
-          color: colorScheme.onSurface.withOpacity(0.4),
-        ),
-        filled: true,
-        fillColor: colorScheme.onSurface.withOpacity(0.05),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: colorScheme.onSurface.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-      ),
-    );
-  }
-
-  Row CustomStepIndicator() {
-    final localeText = AppLocalizations.of(context)!;
-    return Row(
-      children: [
-        BuildStepIndiactor(
-          title: localeText.registerTabBasicInfo,
-          isActive: currentStep >= 0,
-          step: 0,
-        ),
-        const SizedBox(width: 8),
-        BuildStepIndiactor(
-          title: localeText.registerTabCredentials,
-          isActive: currentStep >= 1,
-          step: 1,
-        ),
-        const SizedBox(width: 8),
-        BuildStepIndiactor(
-          title: localeText.registerTabVerification,
-          isActive: currentStep >= 2,
-          step: 2,
-        ),
-      ],
     );
   }
 }

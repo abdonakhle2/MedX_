@@ -23,6 +23,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final currentLanguageCode = context.watch<LocaleCubit>().state.languageCode;
     final localeText = AppLocalizations.of(context)!;
+    
     return SafeArea(
       child: CustomScrollView(
         slivers: [

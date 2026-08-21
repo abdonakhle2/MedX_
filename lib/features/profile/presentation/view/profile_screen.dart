@@ -1,23 +1,37 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:project_1/core/utils/app_router.dart';
+import 'package:project_1/core/widgets/bottom_nav_bar.dart';
+import 'package:project_1/features/profile/data/repos/profile_repo/profile_repo_imp.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/update_cubit.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_language_dialog.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/profile_body.dart';
-import 'package:project_1/core/widgets/bottom_nav_bar.dart';
-import 'package:project_1/features/profile/presentation/view/edit_profile_screen.dart';
-import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
-import 'package:project_1/features/profile/presentation/manager/cubit/profile_state.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  Widget build(BuildContext context) {
+    final profileRepo = ProfileRepoImpl(Dio());
+    return BlocProvider(
+      create: (context) => UpdateCubit(profileRepo),
+      child: const _ProfileScreenView(),
+    );
+  }
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenView extends StatefulWidget {
+  const _ProfileScreenView();
+
+  @override
+  State<_ProfileScreenView> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<_ProfileScreenView> {
   final int _navIndex = 4;
 
   @override
@@ -50,28 +64,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           currentIndex: _navIndex,
           onTap: _onNavTap,
         ),
-        body: BlocBuilder<ProfileCubit, ProfileState>(
-          builder: (context, state) {
-            if (state is ProfileLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is ProfileLoaded) {
-              return ProfileBody(
-                user: state.user,
-                onEditPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const EditProfileScreen(),
-                    ),
-                  );
-                },
-                onLanguagePressed: () => CustomLanguageDialog(context),
-              );
-            } else if (state is ProfileError) {
-              return Center(child: Text(state.errorMessage));
-            }
-            return const SizedBox();
-          },
+        body: ProfileBody(
+          onLanguagePressed: () => CustomLanguageDialog(context),
         ),
       ),
     );

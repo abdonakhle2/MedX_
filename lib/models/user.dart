@@ -7,7 +7,7 @@ class User {
   String? gender;
   DateTime? birthdate;
   String? address;
-  String? idPassport;
+  dynamic idPassport;
   String? password;
   String? confirmPassword;
   String? created_at;
@@ -91,6 +91,8 @@ class User {
 
   /// 👈 تم تعديل المفاتيح لكي تطابق استجابة الـ Backend بالكامل
   factory User.fromJson(Map<String, dynamic> json) {
+    print("--- User.fromJson ---");
+    print("Raw id_passport from JSON: ${json['id_passport']}");
     return User(
       id: int.tryParse(json['id']?.toString() ?? '') ?? 0,
       firstName: json['first_name']?.toString() ?? '',
@@ -102,7 +104,7 @@ class User {
           DateTime.tryParse(json['birthdate']?.toString() ?? '') ??
           DateTime.now(),
       address: json['address']?.toString() ?? '',
-      idPassport: json['id_passport']?.toString() ?? '',
+      idPassport: json['id_passport'] ?? '',
       password: json['password']?.toString() ?? '',
       confirmPassword: json['password_confirmation']?.toString() ?? '',
       created_at: json['created_at']?.toString() ?? '',

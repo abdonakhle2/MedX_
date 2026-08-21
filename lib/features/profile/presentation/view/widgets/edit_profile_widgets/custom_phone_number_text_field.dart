@@ -54,6 +54,9 @@ class CustomPhoneNumberTextField extends StatelessWidget {
                 if (value == null || value.trim().isEmpty) {
                   return localeText.registerInvalidPhone;
                 }
+                if (!value.trim().startsWith('9')) {
+                  return localeText.phoneStartWith9;
+                }
                 if (value.trim().length < 9) {
                   return localeText.registerInvalidPhone;
                 }

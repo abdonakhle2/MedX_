@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/update_cubit.dart';
+import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
+import 'package:project_1/features/profile/presentation/view/widgets/edit_profile_widgets/edit_profile_contact_dialog.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_contact_row.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_section_header.dart';
 import 'package:project_1/models/user.dart';
@@ -32,9 +36,18 @@ class CustomContactCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomSectionHeader(
-            title: localeText.profileContactInfo,
-            icon: Symbols.contact_mail,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomSectionHeader(
+                title: localeText.profileContactInfo,
+                icon: Symbols.contact_mail,
+              ),
+              IconButton(
+                onPressed: () => _showEditContactDialog(context),
+                icon: Icon(Symbols.edit, color: colorScheme.primary),
+              ),
+            ],
           ),
           const SizedBox(height: 24),
           CustomContactRow(
@@ -57,6 +70,19 @@ class CustomContactCard extends StatelessWidget {
                 : '',
           ),
         ],
+      ),
+    );
+  }
+
+  void _showEditContactDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: context.read<UpdateCubit>()),
+          BlocProvider.value(value: context.read<ProfileCubit>()),
+        ],
+        child: EditProfileContactDialog(user: user),
       ),
     );
   }

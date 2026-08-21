@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_1/core/utils/app_router.dart';
+import 'package:project_1/features/home/data/repo/home_repo/home_repo_impl.dart';
+import 'package:project_1/features/home/presentation/manager/available_time_cubit/appointment_cubit.dart';
+import 'package:project_1/features/home/presentation/manager/book_appointment_cubit/booking_cubit.dart';
 import 'package:project_1/features/home/presentation/view/widgets/appointment_widget/appointment_body.dart';
 import 'package:project_1/models/doctor.dart';
 import 'package:project_1/core/widgets/bottom_nav_bar.dart';
+import 'package:dio/dio.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final Doctor myDoctor;
@@ -35,14 +40,20 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _navIndex,
-        onTap: _onNavTap,
+    final repo = HomeRepoImpl(Dio());
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AppointmentCubit(repo)),
+        BlocProvider(create: (context) => BookingCubit(repo)),
+      ],
+      child: Scaffold(
+        extendBody: true,
+        bottomNavigationBar: BottomNavBar(
+          currentIndex: _navIndex,
+          onTap: _onNavTap,
+        ),
+        body: AppointmentBody(myDoctor: widget.myDoctor),
       ),
-
-      body: AppointmentBody(myDoctor: widget.myDoctor),
     );
   }
 }
