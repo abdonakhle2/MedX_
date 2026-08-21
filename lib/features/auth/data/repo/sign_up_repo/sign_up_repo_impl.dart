@@ -40,10 +40,32 @@ class AuthRepoImpl implements AuthRepo {
         'birthdate': user.birthdate != null
             ? "${user.birthdate!.year}-${user.birthdate!.month.toString().padLeft(2, '0')}-${user.birthdate!.day.toString().padLeft(2, '0')}"
             : null,
-        'id_passport': user.idPassport,
+        // 'id_passport': user.idPassport,
       };
-
       FormData formData = FormData.fromMap(mapData);
+      if (passportFile != null) {
+        if (passportFile.bytes != null) {
+          formData.files.add(
+            MapEntry(
+              'id_passport', // اسم الحقل الذي يطلبه الباك اند
+              MultipartFile.fromBytes(
+                passportFile.bytes!,
+                filename: passportFile.name,
+              ),
+            ),
+          );
+        } else if (passportFile.path != null) {
+          formData.files.add(
+            MapEntry(
+              'id_passport',
+              await MultipartFile.fromFile(
+                passportFile.path!,
+                filename: passportFile.name,
+              ),
+            ),
+          );
+        }
+      }
 
       var response = await dio.post(
         'https://medx.sy/api/auth/register',
@@ -69,5 +91,11 @@ class AuthRepoImpl implements AuthRepo {
       print("Unexpected Error: $e");
       return Left(ServerFailure(e.toString()));
     }
+  }
+
+  Future<bool> isUserLoggedIn() async {
+    const secureStorage = FlutterSecureStorage();
+    String? token = await secureStorage.read(key: 'auth_token');
+    return token != null && token.isNotEmpty;
   }
 }

@@ -3,10 +3,11 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
 import 'package:project_1/core/localization/l10n/app_localizations.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_section_header.dart';
+import 'package:project_1/models/user.dart';
 
 class CustomVerificationCard extends StatelessWidget {
-  const CustomVerificationCard({super.key});
-
+  const CustomVerificationCard({super.key, required this.user});
+  final User user;
   @override
   Widget build(BuildContext context) {
     final localeText = AppLocalizations.of(context)!;
@@ -40,7 +41,7 @@ class CustomVerificationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      localeText.profilePassportNumber,
+                      localeText.profilePassportFile,
                       style: AppFonts.labelSmall.copyWith(
                         color: colorScheme.onSurface.withOpacity(0.4),
                         fontWeight: FontWeight.w700,
@@ -49,7 +50,7 @@ class CustomVerificationCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      "AA 839 201 02",
+                      user.idPassport.toString(),
                       style: AppFonts.bodyLarge.copyWith(
                         color: colorScheme.onSurface,
                         fontWeight: FontWeight.w800,
@@ -59,27 +60,7 @@ class CustomVerificationCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    localeText.profileStartDate,
-                    style: AppFonts.labelSmall.copyWith(
-                      color: colorScheme.onSurface.withOpacity(0.4),
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    "Jan 2029",
-                    style: AppFonts.bodyLarge.copyWith(
-                      color: colorScheme.onSurface,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ],
-              ),
+
               const SizedBox(width: 20),
               Container(
                 padding: const EdgeInsets.all(10),

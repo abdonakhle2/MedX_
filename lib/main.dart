@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +10,7 @@ import 'package:project_1/core/theme/cubit/theme_cubit.dart';
 import 'package:project_1/core/utils/app_router.dart';
 
 import 'package:project_1/features/favorites/presentation/manager/cubit/favorites_cubit.dart';
+import 'package:project_1/features/profile/data/repos/profile_repo/profile_repo_imp.dart';
 import 'package:project_1/features/profile/presentation/manager/cubit/profile_cubit.dart';
 
 void main() {
@@ -25,7 +27,9 @@ class TheApp extends StatelessWidget {
         BlocProvider(create: (context) => LocaleCubit()),
         BlocProvider(create: (context) => ThemeCubit()),
         BlocProvider(create: (context) => FavoritesCubit()..loadFavorites()),
-        BlocProvider(create: (context) => ProfileCubit()..loadProfile()),
+        BlocProvider(
+          create: (context) => ProfileCubit(ProfileRepoImpl(Dio()))..loadProfile(),
+        ),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         builder: (context, currentLocale) {

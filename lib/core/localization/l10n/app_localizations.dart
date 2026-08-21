@@ -692,11 +692,11 @@ abstract class AppLocalizations {
   /// **'Logout'**
   String get profileLogout;
 
-  /// No description provided for @profilePremium.
+  /// No description provided for @profileMember.
   ///
   /// In en, this message translates to:
-  /// **'PREMIUM'**
-  String get profilePremium;
+  /// **'MEMBER'**
+  String get profileMember;
 
   /// No description provided for @profileIdLabel.
   ///
@@ -716,11 +716,11 @@ abstract class AppLocalizations {
   /// **'Verification Documents'**
   String get profileVerificationDocuments;
 
-  /// No description provided for @profilePassportNumber.
+  /// No description provided for @profilePassportFile.
   ///
   /// In en, this message translates to:
-  /// **'PASSPORT NUMBER'**
-  String get profilePassportNumber;
+  /// **'PASSPORT FILE'**
+  String get profilePassportFile;
 
   /// No description provided for @profileStartDate.
   ///

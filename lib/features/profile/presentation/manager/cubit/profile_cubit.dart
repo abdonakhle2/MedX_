@@ -1,16 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_1/features/profile/data/repos/profile_repo/profile_repo.dart';
 import 'package:project_1/models/user.dart';
 import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileInitial());
+  final ProfileRepo profileRepo;
 
-  void loadProfile() {
+  ProfileCubit(this.profileRepo) : super(ProfileInitial());
+
+  Future<void> loadProfile() async {
     emit(ProfileLoading());
+
     try {
-      emit(ProfileLoaded(User.currentUser));
+      final result = await profileRepo.getUserProfile();
+
+      result.fold(
+        (failure) => emit(ProfileError(failure.errorMessage)),
+        (user) => emit(ProfileLoaded(user)),
+      );
     } catch (e) {
-      emit(ProfileError("Failed to load profile data."));
+      emit(ProfileError('Failed to load profile data.'));
     }
   }
 

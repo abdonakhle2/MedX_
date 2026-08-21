@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:project_1/constants/constants.dart';
@@ -27,8 +28,14 @@ class CustomLogOutButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           highlightColor: errorColor.withOpacity(0.1),
           splashColor: errorColor.withOpacity(0.1),
-          onTap: () {
-            GoRouter.of(context).go(AppRouter.kLogInScreen);
+          onTap: () async {
+            const secureStorage = FlutterSecureStorage();
+
+            // 3. حذف التوكن المخزن لتسجيل الخروج فعلياً
+            await secureStorage.delete(key: 'auth_token');
+            if (context.mounted) {
+              context.go(AppRouter.kLogInScreen);
+            }
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),

@@ -10,6 +10,10 @@ class LoginRepoImpl implements LoginRepo {
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   LoginRepoImpl(this.dio);
+  Future<bool> isUserLoggedIn() async {
+    String? token = await secureStorage.read(key: 'auth_token');
+    return token != null && token.isNotEmpty;
+  }
 
   @override
   Future<Either<Failure, User>> login({
@@ -32,10 +36,11 @@ class LoginRepoImpl implements LoginRepo {
           value: response.data['token'],
         );
         print('token :  ${response.data['token']}');
+        print('status code : ${response.statusCode}');
       }
 
       // 2. تحويل كائن "user" فقط إلى نموذج User
-      final loginResponse = User.fromJson(response.data);
+      final loginResponse = User.fromJson(response.data['user']);
       // final loginResponse = User.fromJson(response.data['user']);
       print('User Data: ${response.data['user']}');
       // print('User Name: ${loginResponse.firstName}');

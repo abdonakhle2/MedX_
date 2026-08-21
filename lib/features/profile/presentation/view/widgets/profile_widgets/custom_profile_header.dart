@@ -65,7 +65,7 @@ class CustomProfileHeader extends StatelessWidget {
                   Icon(Symbols.badge, size: 18, color: colorScheme.primary),
                   const SizedBox(width: 8),
                   Text(
-                    '${localeText.profileIdLabel} ${user.idPassport ?? ''}',
+                    '${localeText.profileIdLabel} ${user.id ?? ''}',
                     style: AppFonts.labelLarge.copyWith(
                       color: colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
@@ -94,7 +94,7 @@ class CustomProfileHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    localeText.profilePremium,
+                    localeText.profileMember,
                     style: AppFonts.labelLarge.copyWith(
                       color: colorScheme.onSurface,
                       fontWeight: FontWeight.w800,

@@ -309,7 +309,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileLogout => 'تسجيل الخروج';
 
   @override
-  String get profilePremium => 'عضوية ممتازة';
+  String get profileMember => 'عضو';
 
   @override
   String get profileIdLabel => 'المعرّف:';
@@ -321,7 +321,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileVerificationDocuments => 'وثائق التحقق';
 
   @override
-  String get profilePassportNumber => 'رقم جواز السفر';
+  String get profilePassportFile => 'ملف جواز السفر';
 
   @override
   String get profileStartDate => 'تاريخ البداية';

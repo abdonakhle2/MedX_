@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_1/core/localization/l10n/app_localizations.dart';
-import 'package:project_1/core/localization/cubit/loacale_cubit.dart';
+
 import 'package:project_1/core/utils/app_router.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/custom_language_dialog.dart';
 import 'package:project_1/features/profile/presentation/view/widgets/profile_widgets/profile_body.dart';

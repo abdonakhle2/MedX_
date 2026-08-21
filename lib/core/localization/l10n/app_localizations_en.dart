@@ -308,7 +308,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileLogout => 'Logout';
 
   @override
-  String get profilePremium => 'PREMIUM';
+  String get profileMember => 'MEMBER';
 
   @override
   String get profileIdLabel => 'ID:';
@@ -320,7 +320,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileVerificationDocuments => 'Verification Documents';
 
   @override
-  String get profilePassportNumber => 'PASSPORT NUMBER';
+  String get profilePassportFile => 'PASSPORT FILE';
 
   @override
   String get profileStartDate => 'START DATE';

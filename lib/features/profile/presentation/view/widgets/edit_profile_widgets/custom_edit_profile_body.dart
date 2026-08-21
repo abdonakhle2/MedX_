@@ -160,7 +160,7 @@ class _CustomEditProfileBodyState extends State<CustomEditProfileBody> {
               const SizedBox(height: 20),
 
               // ID / Passport Number
-              CustomFieldLabel(text: localeText.profilePassportNumber),
+              CustomFieldLabel(text: localeText.profilePassportFile),
               const SizedBox(height: 8),
 
               CustomUploadIdPassportFile(),

@@ -1,104 +1,49 @@
-// import 'package:flutter/material.dart';
-// import 'package:project_1/constants/constants.dart';
-
-// class SplashView extends StatelessWidget {
-//   const SplashView({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold(
-//       backgroundColor: Colors.white,
-//       body: SplashViewBody(),
-//     );
-//   }
-// }
-
-// class SplashViewBody extends StatefulWidget {
-//   const SplashViewBody({super.key});
-
-//   @override
-//   State<SplashViewBody> createState() => _SplashViewBodyState();
-// }
-
-// class _SplashViewBodyState extends State<SplashViewBody>
-//     with SingleTickerProviderStateMixin {
-//   late AnimationController animationController;
-//   late Animation<Offset> slidingAnimation;
-//   @override
-//   void initState() {
-//     super.initState();
-//     initSlidingAnimation();
-//     navigateToHome();
-//   }
-
-//   void dispose() {
-//     super.dispose();
-//     animationController.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       crossAxisAlignment: CrossAxisAlignment.stretch,
-//       children: [
-//         Image.asset('assets/images/logo.png', width: 200, height: 250),
-//         SlidingText(slidingAnimation: slidingAnimation),
-//       ],
-//     );
-//   }
-
-//   void initSlidingAnimation() {
-//     animationController = AnimationController(
-//       vsync: this,
-//       duration: const Duration(seconds: 1),
-//     );
-//     slidingAnimation = Tween<Offset>(
-//       begin: const Offset(0, 2),
-//       end: Offset.zero,
-//     ).animate(animationController);
-//     animationController.forward();
-//   }
-
-//   void navigateToHome() {
-//     Future.delayed(const Duration(seconds: 3), () {
-//       Navigator.pushNamed((context), '/login');
-//     });
-//   }
-// }
-
-// class SlidingText extends StatelessWidget {
-//   const SlidingText({super.key, required this.slidingAnimation});
-//   final Animation<Offset> slidingAnimation;
-//   @override
-//   Widget build(BuildContext context) {
-//     return AnimatedBuilder(
-//       animation: slidingAnimation,
-//       builder: (context, _) {
-//         return SlideTransition(
-//           position: slidingAnimation,
-//           child: Text(
-//             'Your Health,Our Priority',
-//             textAlign: TextAlign.center,
-//             style: AppFonts.bodyLarge.copyWith(fontWeight: FontWeight.bold),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:project_1/core/utils/app_router.dart';
+import 'package:project_1/features/auth/data/repo/log_in_repo/log_in_repo_impl.dart';
 import 'package:project_1/features/splash/presentation/view/widgets/splash_view_body.dart';
 
-class SplashView extends StatelessWidget {
+class SplashView extends StatefulWidget {
   const SplashView({super.key});
 
   @override
+  State<SplashView> createState() => _SplashViewState();
+}
+
+class _SplashViewState extends State<SplashView> {
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    // 1. إنشاء instance من الـ Repo
+    final loginRepo = LoginRepoImpl(Dio());
+
+    // 2. التحقق فوراً من حالة التوكن
+    bool isLoggedIn = await loginRepo.isUserLoggedIn();
+
+    if (!mounted) return;
+
+    if (isLoggedIn) {
+      // إذا كان مسجلاً، انتقل فوراً للرئيسية دون انتظار
+      context.go(AppRouter.kHomeScreen);
+    } else {
+      // إذا لم يكن مسجلاً، انتظر 3 ثوانٍ (لإتمام الـ Animation)
+      // ثم ابقَ في الشاشة (لا تقم بعمل Go Router) ليتمكن المستخدم من اختيار اللغة
+      await Future.delayed(const Duration(seconds: 3));
+
+      // لا توجد عملية تنقل هنا، المستخدم سيظل أمام SplashViewBody
+      debugPrint("User is not logged in, staying on SplashViewBody");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      // backgroundColor: Colors.white,
-      body: SplashViewBody(),
-    );
+    // نقوم بعرض الواجهة التي تحتوي على الشعار والـ Animation واختيار اللغة
+    return const Scaffold(body: SplashViewBody());
   }
 }

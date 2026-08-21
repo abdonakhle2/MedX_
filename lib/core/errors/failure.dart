@@ -49,29 +49,45 @@ class ServerFailure extends Failure {
         );
     }
   }
-
-  // معالجة استجابة السيرفر بشكل آمن من الـ Null
   factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
-    if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
-      // التعامل الآمن مع الاستجابة في حال كانت Map واستخراج الرسالة
-      if (response is Map<String, dynamic> &&
-          response.containsKey('error') &&
-          response['error'] is Map &&
-          response['error']['message'] != null) {
-        return ServerFailure(response['error']['message'].toString());
-      } else if (response is Map<String, dynamic> &&
-          response['message'] != null) {
+    // 1. إذا كانت الاستجابة عبارة عن Map (JSON)
+    if (response is Map<String, dynamic>) {
+      // التحقق من وجود مفتاح 'message' مباشرة (مثل أخطاء الـ Validation في لاراول)
+      if (response.containsKey('message') && response['message'] != null) {
         return ServerFailure(response['message'].toString());
       }
-      return const ServerFailure('Authentication or validation error occurred');
+
+      // التحقق من وجود مفتاح 'error' إذا كان يحتوي على رسالة نصية
+      if (response.containsKey('error')) {
+        final errorField = response['error'];
+        if (errorField is String) {
+          return ServerFailure(errorField);
+        } else if (errorField is Map && errorField['message'] != null) {
+          return ServerFailure(errorField['message'].toString());
+        }
+      }
+    }
+
+    // 2. التعامل مع الأكواد الشهيرة بشكل آمن
+    if (statusCode == 401 || statusCode == 403) {
+      return const ServerFailure('Unauthorized / Forbidden access');
     } else if (statusCode == 404) {
-      return const ServerFailure(
-        'Your request was not found, Please try later!',
-      );
+      return const ServerFailure('Request not found, Please try later!');
+    } else if (statusCode == 422) {
+      // أخطاء التحقق (Validation Errors) غالباً ما ترسل رسالة في 'message' أو الأخطاء مباشرة
+      if (response is Map<String, dynamic> && response['message'] != null) {
+        return ServerFailure(response['message'].toString());
+      }
+      return const ServerFailure('Validation Error, Please check your inputs.');
     } else if (statusCode == 500) {
       return const ServerFailure('Internal server error, Please try later!');
     } else {
-      return const ServerFailure('Opps, There was an Error, Please try again');
+      // 3. الحل الاحتياطي النهائي في حال لم تطابق أي شروط
+      return ServerFailure(
+        response is Map && response.containsKey('message')
+            ? response['message'].toString()
+            : 'Opps, There was an Error, Status Code: $statusCode',
+      );
     }
   }
 }

@@ -10,7 +10,7 @@ class User {
   String? idPassport;
   String? password;
   String? confirmPassword;
-  bool isVerified;
+  String? created_at;
 
   User({
     this.id,
@@ -24,7 +24,7 @@ class User {
     this.idPassport,
     this.password,
     this.confirmPassword,
-    this.isVerified = false,
+    this.created_at,
   });
 
   /// Full name getter
@@ -57,7 +57,6 @@ class User {
     birthdate: DateTime(1992, 10, 24),
     address: '722 Marble Arch, West District, London, UK',
     idPassport: '123456789',
-    isVerified: true,
   );
 
   int get age {
@@ -106,7 +105,7 @@ class User {
       idPassport: json['id_passport']?.toString() ?? '',
       password: json['password']?.toString() ?? '',
       confirmPassword: json['password_confirmation']?.toString() ?? '',
-      isVerified: json['is_verified'] == true || json['is_verified'] == 1,
+      created_at: json['created_at']?.toString() ?? '',
     );
   }
 
@@ -127,7 +126,7 @@ class User {
       'id_passport': idPassport,
       if (password != null) 'password': password,
       if (confirmPassword != null) 'password_confirmation': confirmPassword,
-      'is_verified': isVerified,
+      'created_at': created_at,
     };
   }
 }

@@ -39,11 +39,12 @@ class ProfileBody extends StatelessWidget {
                 const SizedBox(height: 20),
                 CustomIdentityCard(user: user),
                 const SizedBox(height: 20),
-                _buildLanguageTile(context),
+                CustomVerificationCard(user: user),
                 const SizedBox(height: 20),
                 CustomResidentialCard(user: user),
                 const SizedBox(height: 20),
-                const CustomVerificationCard(), // تم تعديل الاسم هنا تزامناً مع تصحيحه
+                _buildLanguageTile(context),
+                // تم تعديل الاسم هنا تزامناً مع تصحيحه
                 const SizedBox(height: 30),
                 const CustomLogOutButton(),
               ],
